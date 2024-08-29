@@ -5,11 +5,13 @@ const cors = require('cors');
 const path = require('path');
 const { sequelize } = require('./config/database');
 
+
+/* EJEMPLO
 const herramientasRoutes = require('./routes/herramientas');
 const ctfsRoutes = require('./routes/ctfs');
 const authRoutes = require('./routes/auth');
 const progressRoutes = require('./routes/progress');
-
+*/
 const app = express();
 
 app.use(express.json());
