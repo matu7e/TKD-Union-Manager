@@ -1,5 +1,6 @@
 const express = require('express');
 const { connectToDatabase } = require('./src/config/bdHelper');
+const { getMiembros, crearMiembro, eliminarMiembro } = require('./src/models/miembros');
 //const { createMember, getMembers, updateMember, deleteMember } = require('./members');
 
 const app = express();
@@ -45,3 +46,31 @@ app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
 
+// Crear un nuevo miembro
+app.post('/miembros', async (req, res) => {
+    const miembro = req.body;
+    await crearMiembro(miembro);
+    res.send('Miembro creado');
+  });
+
+// Obtener todos los miembros
+app.get('/miembros', async (req, res) => {
+    const miembros = await getMiembros();
+    res.json(miembros);
+  });
+
+  // Actualizar un miembro
+app.put('/miembros/:id', async (req, res) => {
+    const { id } = req.params;
+    const miembro = req.body;
+    await updateMember(id, miembro);
+    res.send('Miembro actualizado');
+  });
+  
+  // Eliminar un miembro
+  app.delete('/miembros/:id', async (req, res) => {
+    const { id } = req.params;
+    await eliminarMiembro(id);
+    res.send('Miembro eliminado');
+  });
+  
