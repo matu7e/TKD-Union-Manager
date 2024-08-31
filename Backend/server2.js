@@ -10,32 +10,6 @@ app.use(express.json());
 
 // Conectar a la base de datos
 connectToDatabase();
-/*
-// Rutas de la API
-app.post('/miembros', async (req, res) => {
-  const { nombre, email } = req.body;
-  await createMember(nombre, email);
-  res.send('Miembro creado');
-});
-
-app.get('/miembros', async (req, res) => {
-  const miembros = await getMembers();
-  res.json(miembros);
-});
-
-app.put('/miembros/:id', async (req, res) => {
-  const { id } = req.params;
-  const { nombre, email } = req.body;
-  await updateMember(id, nombre, email);
-  res.send('Miembro actualizado');
-});
-
-app.delete('/miembros/:id', async (req, res) => {
-  const { id } = req.params;
-  await deleteMember(id);
-  res.send('Miembro eliminado');
-});
-*/
 
 // Ruta de prueba
 app.get('/', (req, res) => {
