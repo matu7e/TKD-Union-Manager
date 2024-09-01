@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="assets/union.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="styles/galery.css">
     <link rel="stylesheet" href="styles/footer.css">
     <title>Union Mediterranea</title>
 </head>
@@ -25,10 +26,11 @@
         <nav class="navbar-menu" id="navbar-menu">
             <ul>
                 <img src="assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Acerca de</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Contacto</a></li>
+                <li><a href="#Calendairo">Calendario</a></li>
+                <li><a href="#Sedes">Sedes</a></li>
+                <li><a href="#Autoridades">Autoridades</a></li>
+                <li><a href="#Galeria">Galeria</a></li>
+                
                 <li><button class="login-btn">Iniciar Sesión</button></li>
             </ul>
         </nav>
@@ -131,44 +133,162 @@
                 <div class="cont-img"><img src="assets/gen.-choi-hong-hi-640x853.jpg" alt=""></div>
             </div>
         </section>
-        <section class="slider-calendario">
+        <section id="Calendairo" class="slider-calendario">
             <img src="assets/Slider-ITF-ok.jpg" alt="">
             <button><i class="fa-solid fa-download"></i> Descargar Calendario</button>
         </section>
 
         <section class="sedes">
-            <div class="container-sedes" style="margin-top: 80px">
+            <div class="container-encabezado-sedes" style="margin-top: 80px">
+                <h2 id="Sedes">Encontra tu sede mas cercana</h2>
               <form id="form-buscar" class="buscar-sedes-container">
                 <div class="buscar-sedes-selector">
                   <select id="buscar-input" class="custom-select">
                     <option value="">Seleccione una provincia</option>
-                    <option value="Buenos Aires">Buenos Aires</option>
-                    <option value="Catamarca">Catamarca</option>
-                    <option value="Chaco">Chaco</option>
-                    <option value="Chubut">Chubut</option>
-                    <option value="Córdoba">Córdoba</option>
-                    <option value="Corrientes">Corrientes</option>
-                    <option value="Entre Ríos">Entre Ríos</option>
-                    <option value="Formosa">Formosa</option>
-                    <option value="Jujuy">Jujuy</option>
-                    <option value="La Pampa">La Pampa</option>
-                    <option value="mar">La Rioja</option>
                   </select>
                 </div>
-                <button type="button" class="btn btn-primary buscar-btn" onclick="buscarEscuelas()">Buscar</button>
+                <button type="button" class="button-buscar-sedes" onclick="buscarEscuelas()">Buscar</button>
               </form>
             </div>
             
-            <div class="container" style="margin-top: 80px">
+            <div class="container-sedes" style="margin-top: 80px">
                 <!-- Tabla para mostrar las escuelas de taekwondo -->
                 <table class="table table-bordered table-striped">
                     
                     <tbody id="lista-escuelas">
                         <!-- Las filas de la tabla se llenarán usando fetch -->
-                        <h1 class="buscar-sedes-tittle">Buscar Sedes</h1>
+                        <h1 class="buscar-sedes-tittle">Sedes</h1>
                     </tbody>
                 </table>
         
+            </div>
+          </section>
+
+          <section class="section-autoridades">
+            <div id="Autoridades" class="container-title">
+                <h2 >Autoriadades</h2>
+            </div>
+            <div class="container-cards">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                      <div class="card">
+                        <img src="assets/276124360_126825696588060_8438452098722948946_n.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Director</h5>
+                          <p class="card-text">Gran Master V dan </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <img src="assets/276124360_126825696588060_8438452098722948946_n.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Director</h5>
+                          <p class="card-text">Gran Master V dan </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <img src="assets/276124360_126825696588060_8438452098722948946_n.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Director</h5>
+                          <p class="card-text">Gran Master V dan </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <img src="assets/276124360_126825696588060_8438452098722948946_n.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Director</h5>
+                          <p class="card-text">Gran Master V dan </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            
+          </section>
+          <sectio class="section-galey">
+            <div id="Galeria" class="container-title">
+                <h2 >Galeria</h2>
+            </div>
+            <div class="gallery">
+                <!-- Reemplaza las URLs con las rutas de tus imágenes -->
+                <div class="gallery-item">
+                    <img src="assets/fetra-logo.png" alt="Imagen 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/1.jpg">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/2.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/3.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/4.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/5.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/6.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/7.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/8.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/9.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/10.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/11.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/12.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/13.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/14.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/5.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/16.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/17.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/18.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/19.jpg" alt="Imagen 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/galery/20.jpg" alt="Imagen 3">
+                </div>
+
+                <!-- Añade más imágenes según necesites -->
+            </div>
+        
+            <!-- Modal para mostrar las imágenes ampliadas -->
+            <div class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="modal-img">
+                <a class="prev">&#10094;</a>
+                <a class="next">&#10095;</a>
             </div>
           </section>
     </main>
@@ -240,5 +360,6 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="controllers/menu.js"></script>
     <script src="controllers/contadores.js"></script>
+    <script src="controllers/galery.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Libre Baskerville", serif;
+  font-family: "Libre Baskerville", serif !important;
   background-color: #D2D2D2;
   color: #323232;
   
@@ -165,7 +165,7 @@ body {
 }
 
 .slider-calendario button {
-  margin: 50px; /* Ajusta el margen para tamaños más pequeños */
+  margin: 150px; /* Ajusta el margen para tamaños más pequeños */
   padding: 20px 50px; /* Reduce el padding para tamaños más pequeños */
   border-radius: 25px;
   background-color: #323232;
@@ -179,15 +179,81 @@ body {
   margin-right: 15px;
 }
 
-
-
-.buscar-sedes-container{
-  display: flex;
+.sedes{
+  min-height: 900px;
   
 }
 
+.container-encabezado-sedes{
+  background-color: #323232;
+  color: #D2D2D2;
+  padding: 50px;
+  text-align: center;
+  margin: 0 !important;
+  
+}
+
+.container-encabezado-sedes h2{
+  font-size: 50px;
+}
+
+.buscar-sedes-container{
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+  
+}
+
+.custom-select{
+  padding: 20px 30px;
+  margin: 0px 5px;
+  border-radius: 15px;
+  background-color: #63666B;
+  color: #D2D2D2;
+}
+
+.button-buscar-sedes{
+  border-radius: 15px;
+  background-color: #63666B;
+  color: #D2D2D2;
+  padding: 5px 20px;
+  margin: 0 !important;
+}
+.container-sedes{
+  margin: 0px !important;
+}
+
+.container-sedes h1{
+  text-align: center;
+  margin: auto;
+  min-height: 600px;
+  opacity: 50%;
+  font-size: 80px;
+  align-content: center;
+
+}
+
+.card{
+  margin: auto;
+  max-width: 350px;
+}
 
 
+.container-title{
+  text-align: center;
+  background-color: #323232;
+  color: #D2D2D2;
+  padding: 100px;
+  
+}
+
+.container-title h2{
+  font-size: 50px;
+
+}
+.container-cards{
+  margin: 50px;
+}
 
 
 
@@ -204,6 +270,10 @@ body {
     padding: 10px;    
     width: 120px; /* Ancho fijo para garantizar que todos los contadores tengan el mismo tamaño */
     
+  }
+  .container-title h2{
+    font-size: 30px;
+  
   }
   .contador h2 {
     font-size: 1rem;
@@ -232,6 +302,18 @@ body {
     padding: 0px;
     
   }
+  .container-encabezado-sedes h2{
+    font-size: 30px;
+  }
+
+
+  
+  .custom-select{
+    padding: 15px 20px;
+   
+  }
+  
+  
 }
 
 @media (max-width: 550px){
@@ -265,7 +347,7 @@ body {
 /* Estilos responsivos */
 @media (max-width: 1200px) {
   .slider-calendario button {
-    margin: 30px;
+    margin: 100px;
     padding: 20px 40px;
     font-size: 1.8em;
   }
@@ -278,7 +360,6 @@ body {
 
 @media (max-width: 992px) {
   .slider-calendario button {
-    margin: 20px;
     padding: 15px 30px;
     font-size: 1.6em;
   }
@@ -291,7 +372,6 @@ body {
 
 @media (max-width: 768px) {
   .slider-calendario button {
-    margin: 15px;
     padding: 10px 20px;
     font-size: 1.4em;
   }
@@ -304,7 +384,6 @@ body {
 
 @media (max-width: 576px) {
   .slider-calendario button {
-    margin: 10px;
     padding: 8px 16px;
     font-size: 1.2em;
   }
@@ -317,7 +396,6 @@ body {
 
 @media (max-width: 375px) {
   .slider-calendario button {
-    margin: 5px;
     padding: 5px 10px;
     font-size: 1em;
   }
@@ -326,4 +404,5 @@ body {
     font-size: 0.9em;
     margin-right: 3px;
   }
+
 }
