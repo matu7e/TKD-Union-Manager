@@ -1,0 +1,329 @@
+body {
+  margin: 0;
+  font-family: "Libre Baskerville", serif;
+  background-color: #D2D2D2;
+  color: #323232;
+  
+}
+
+/* Estilos para el carrousel */
+.title-carrousel {
+  color: #f36b2b;
+  font-size: 50px;
+}
+
+.parrafo-carrousel {
+  color: #D2D2D2;
+  font-size: 20px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  filter: invert(50%) sepia(50%) saturate(600%) hue-rotate(-30deg) brightness(90%) contrast(200%) !important;
+}
+
+.carousel-indicators [data-bs-target],
+.carousel-indicators .active {
+  background-color: #f36b2b !important;
+}
+
+.carousel-item {
+  height: 100%;
+}
+
+#carouselExampleDark {
+  background-color: black;
+}
+
+.carousel-image {
+  object-fit: cover;
+  height: 500px;
+  opacity: 0.5;
+}
+
+.carousel-caption {
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  right: 15%;
+  bottom: 1.25rem;
+  left: 15%;
+  padding-top: 45.25rem;
+  padding-bottom: 10.25rem;
+  text-align: center;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+/* Estilos para la sección de contadores */
+
+.contadores {
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias líneas si es necesario */
+  gap: 50px; /* Espacio entre los elementos */
+  margin: 50px;
+}
+
+.logo img {
+  width: 500px;
+}
+
+.contador-container {
+  display: flex;
+  gap: 20px; /* Espacio entre los contadores */
+}
+
+.contador {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 250px; /* Ancho fijo para garantizar que todos los contadores tengan el mismo tamaño */
+  flex: 1; /* Permite que los contadores se distribuyan uniformemente */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.contador h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.contador p {
+  font-size: 2em;
+  color: #ff6600;
+  margin: 5px 0 0 0;
+}
+
+
+
+.section-info{
+  margin: 50px 0;
+  padding: 100px;
+  background-color: #323232;
+}
+
+.traekwondo-info{
+  margin: 50px 20px;
+  padding: 100px;
+  
+}
+
+.container-info-tkd{
+  display: flex;
+  margin: auto;
+}
+.container-info-tkd p{
+  margin: auto 30px;
+  color: #323232;
+
+}
+
+.cont-img{
+  width: 1000px;
+  max-width: 1000px;
+  min-width: 150px;
+  margin: auto;
+}
+
+.container-info-tkd img{
+  width: 100%;
+  
+}
+
+.container-info-tkd b{
+  font-size: x-large;
+  color: #323232;
+}
+.section-info b{
+  color: #ff6600;
+  font-size: x-large;
+}
+.section-info, p{
+  color: #D2D2D2;
+  font-size: large;
+}
+
+.slider-calendario{
+  text-align: center;
+  
+  
+}
+.slider-calendario img{
+  width: 100vw;
+  height: 550px;
+  overflow: hidden; 
+  object-fit: cover; 
+}
+
+.slider-calendario button {
+  margin: 50px; /* Ajusta el margen para tamaños más pequeños */
+  padding: 20px 50px; /* Reduce el padding para tamaños más pequeños */
+  border-radius: 25px;
+  background-color: #323232;
+  color: #f36b2b;
+  font-size: 2em; /* Ajusta el tamaño de fuente */
+  transition: all 0.3s ease; /* Transición para un efecto más suave */
+}
+
+.slider-calendario button i {
+  font-size: 1.5em; /* Tamaño de ícono responsivo */
+  margin-right: 15px;
+}
+
+
+
+.buscar-sedes-container{
+  display: flex;
+  
+}
+
+
+
+
+
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .logo img {
+    width: 250px;
+  }
+  .contadores{
+    gap: 10px;
+  }
+  .contador {
+    
+    padding: 10px;    
+    width: 120px; /* Ancho fijo para garantizar que todos los contadores tengan el mismo tamaño */
+    
+  }
+  .contador h2 {
+    font-size: 1rem;
+  }
+  .contador p {
+    font-size: 1.5rem;
+  }
+
+  .section-info{
+    margin: 25px 0;
+    padding: 50px;
+    
+  }
+  .section-info b{
+    font-size: small;
+  }
+  .container-info-tkd b{
+    font-size: small;
+  }
+  .section-info, p{
+   
+    font-size: x-small;
+  }
+  .traekwondo-info{
+    
+    padding: 0px;
+    
+  }
+}
+
+@media (max-width: 550px){
+  .logo-itf{
+    display: none;
+  }
+  .container-info-tkd{
+    display: block;
+    
+  }
+  .cont-img{
+    width: 100%;
+    max-width: 400px;
+    min-width: 150px;
+    margin: auto;
+    text-align: center  ;
+  }
+  .container-info-tkd img{
+    width: 250px;
+   
+    
+  }
+  .container-info-tkd p{
+    margin: 25px;
+    
+  
+  }
+
+}
+
+/* Estilos responsivos */
+@media (max-width: 1200px) {
+  .slider-calendario button {
+    margin: 30px;
+    padding: 20px 40px;
+    font-size: 1.8em;
+  }
+
+  .slider-calendario button i {
+    font-size: 1.4em;
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  .slider-calendario button {
+    margin: 20px;
+    padding: 15px 30px;
+    font-size: 1.6em;
+  }
+
+  .slider-calendario button i {
+    font-size: 1.3em;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-calendario button {
+    margin: 15px;
+    padding: 10px 20px;
+    font-size: 1.4em;
+  }
+
+  .slider-calendario button i {
+    font-size: 1.2em;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .slider-calendario button {
+    margin: 10px;
+    padding: 8px 16px;
+    font-size: 1.2em;
+  }
+
+  .slider-calendario button i {
+    font-size: 1em;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 375px) {
+  .slider-calendario button {
+    margin: 5px;
+    padding: 5px 10px;
+    font-size: 1em;
+  }
+
+  .slider-calendario button i {
+    font-size: 0.9em;
+    margin-right: 3px;
+  }
+}
