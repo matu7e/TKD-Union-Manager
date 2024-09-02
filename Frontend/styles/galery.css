@@ -32,6 +32,7 @@
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
+    
 }
 
 .modal-content {
@@ -41,6 +42,7 @@
     max-width: 700px;
     border-radius: 8px;
 }
+
 
 .close {
     position: absolute;
