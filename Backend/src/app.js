@@ -3,15 +3,12 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { sequelize } = require('./config/database');
+const { connectToDatabase } = require('./config/bdHelper');
+
+const cintosRoutes = require('./routes/rutasCintos')
+const tutoresRoutes = require('./routes/rutasTutores');
 
 
-/* EJEMPLO
-const herramientasRoutes = require('./routes/herramientas');
-const ctfsRoutes = require('./routes/ctfs');
-const authRoutes = require('./routes/auth');
-const progressRoutes = require('./routes/progress');
-*/
 const app = express();
 
 app.use(express.json());
@@ -24,16 +21,12 @@ app.use('/ctf', ctfsRoutes);
 app.use('/auth', authRoutes);
 app.use('/progress', progressRoutes);
 */
-async function inicializarBaseDeDatos() {
-    try {
-        await sequelize.authenticate();
-        console.log('Conexión establecida correctamente.');
-        await sequelize.sync();
-    } catch (error) {
-        console.error('No se pudo establecer la conexión:', error);
-    }
-}
 
-inicializarBaseDeDatos();
+
+connectToDatabase();
+
+app.use('/cintos', cintosRoutes);
+app.use('/tutores', tutoresRoutes);
+
 
 module.exports = app;
