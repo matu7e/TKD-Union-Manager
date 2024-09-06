@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Unión Mediterránea - Taekwondo IFT</title>
+    <link rel="stylesheet" href="../styles/login.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/menu.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-left">
+            <img src="../assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
+            <h1 class="navbar-title">UNION MEDITERRANEA</h1>
+        </div>
+        <nav class="navbar-menu" id="navbar-menu">
+            <ul>
+                <img src="assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
+                <li><a href="#Calendairo">Calendario</a></li>
+                <li><a href="#Sedes">Sedes</a></li>
+                <li><a href="#Autoridades">Autoridades</a></li>
+                <li><a href="#Galeria">Galeria</a></li>
+                
+                <li><button class="login-btn">Iniciar Sesión</button></li>
+            </ul>
+        </nav>
+        <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Unión Mediterránea</h1>
+            <h2>Taekwondo IFT</h2>
+            <div class="form-container" id="formContainer">
+                <!-- Formulario de Login -->
+                <form class="form login-form" id="loginForm">
+                    <img src="../assets/log1.png" alt="Logo" class="logo">
+                    <input type="text" placeholder="Usuario" required>
+                    <input type="password" placeholder="Contraseña" required>
+                    <button type="submit" class="btn-login">Ingresar</button>
+                    <p class="switch-form">
+                        ¿No tienes cuenta? <a href="#" id="showRegister">Registrate</a>
+                    </p>
+                </form>
+    
+                <!-- Formulario de Registro -->
+                <form class="form register-form" id="registerForm">
+                    <img src="../assets/log1.png" alt="Logo" class="logo">
+                    <input type="text" placeholder="DNI" required>
+                    <input type="password" placeholder="Contraseña" required>
+                    <input type="password" placeholder="Repetir Contraseña" required>
+                    <button type="submit" class="btn-register">Registrarse</button>
+                    <p class="switch-form">
+                        ¿Ya tienes cuenta? <a href="#" id="showLogin">Ingresar</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <div class="footer-content">
+                <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
+            
+                <div class="footer-icons-container">
+                  <div class="icon-arrow">
+                    <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
+                  </div>
+                  <div class="footer-icons">
+                    <a href="#"><i class="fa-solid fa-xmark"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                  </div>
+                  <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                </div>
+            
+                <div class="footer-right">
+                  <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                </div>
+              </div>
+        </div>
+        
+
+        <div class="footer-bottom">
+          <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>   
+        </div>
+    </footer>
+
+
+
+
+
+    <script>
+        const formContainer = document.getElementById('formContainer');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            formContainer.classList.add('show-register');
+        });
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            formContainer.classList.remove('show-register');
+        });
+    </script>
+</body>
+</html>
