@@ -23,8 +23,6 @@ async function getLocalidadByNombre(nombre) {
   }
 }
 
-
-
 async function getLocalidadesPorProvincia(id_provincia) {
   try {
     const response = await axios.get(`${BASE_URL}/municipios?`, {
@@ -40,8 +38,20 @@ async function getLocalidadesPorProvincia(id_provincia) {
     throw err;
   }
 }
+
+async function getProvincias() {
+    try {
+      const response = await axios.get(`${BASE_URL}/provincias`);
+      return response.data.provincias[0];
+    } catch (err) {
+      console.error('Error al obtener las provincias: ', err);
+      throw err;
+    }
+  }
+
 module.exports = {
   getProvinciaById,
   getLocalidadByNombre,
-  getLocalidadesPorProvincia
+  getLocalidadesPorProvincia,
+  getProvincias
 };

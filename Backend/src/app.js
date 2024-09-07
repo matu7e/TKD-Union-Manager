@@ -7,7 +7,8 @@ const { connectToDatabase } = require('./config/bdHelper');
 
 const cintosRoutes = require('./routes/rutasCintos')
 const tutoresRoutes = require('./routes/rutasTutores');
-
+const escuelasRoutes = require('./routes/rutasEscuelas');
+const georefRoutes = require('./routes/rutasGeoref');
 
 const app = express();
 
@@ -21,6 +22,6 @@ connectToDatabase();
 app.use('/cintos', cintosRoutes);
 app.use('/tutores', tutoresRoutes);
 app.use('/escuelas', escuelasRoutes);
-
+app.use('/georef', georefRoutes);
 
 module.exports = app;
