@@ -15,18 +15,12 @@ app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-/* EJEMPLO
-app.use('/herramienta', herramientasRoutes);
-app.use('/ctf', ctfsRoutes);
-app.use('/auth', authRoutes);
-app.use('/progress', progressRoutes);
-*/
-
 
 connectToDatabase();
 
 app.use('/cintos', cintosRoutes);
 app.use('/tutores', tutoresRoutes);
+app.use('/escuelas', escuelasRoutes);
 
 
 module.exports = app;
