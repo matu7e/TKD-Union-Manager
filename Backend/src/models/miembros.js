@@ -2,12 +2,15 @@ const { sql } = require('./../config/bdHelper');
 
 // Crear un nuevo miembro
 async function crearMiembro(miembro) {
-    const { DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, LocalidadID } = miembro;
-    try {
+  const { DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, Password, FichaMedica } = miembro;
+      try {
       await sql.query`
-        INSERT INTO Miembros (DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado)
-        VALUES (${DNI}, ${Nombres}, ${Apellidos}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}})
-      `;
+        INSERT INTO Miembros (dni_miembro, nombre, apellido, fecha_nacimiento, grupo_sanguineo, 
+                              telefono, email, direccion, dni_tutor, realacion_tutor, 
+                              id_escuela, id_cinto, id_rol, activo, password, ficha_medica)
+        VALUES (${DNI}, ${Nombres}, ${Apellidos}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}, ${Password}, ${FichaMedica})
+        `;
+
       console.log('Miembro creado correctamente.');
     } catch (err) {
       console.error('Error al crear miembro:', err);
@@ -24,7 +27,7 @@ async function getMiembros() {
     }
   }
 
-// Actualizar un miembro
+// Actualizar un miembro TENGO QUE ACTUALIZAR ESTO DEBIDO A LOS CAMBIOS EN LA BD
 async function updateMember(id, miembro) {
     const { Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, LocalidadID } = miembro;
     try {
@@ -41,6 +44,20 @@ async function updateMember(id, miembro) {
     }
   }
 
+  async function asignarEscuela(dni, escuela_id) {
+    const escuela = escuela_id;
+    const miembro = dni;
+    try{  
+      await sql.query`
+      UPDATE Miembros SET id_escuela = ${escuela} WHERE dni = ${miembro}
+      `;
+    console.log('Escuela asignada con exito');
+    } catch (err){
+      console.error('Error al asignar la escuela: ', err)
+    }
+    
+  }
+  
 // Eliminar un miembro
 async function eliminarMiembro(id) {
     try {
@@ -51,4 +68,4 @@ async function eliminarMiembro(id) {
     }
   }
 
-module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro };
+module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela };

@@ -8,11 +8,13 @@ async function getByID(id) {
 
 // Crear una nueva localidad
 async function createLocalidad(localidad) {
-  const { id_localidad, id_provincia } = localidad;
+  const { id, nombre, id_provincia } = localidad;
   try {
     const result = await sql.query`
-      INSERT INTO Localidades (id_localidad, id_provincia)
-      VALUES (${id_localidad}, ${id_provincia})
+      SET IDENTITY_INSERT Provincias ON;
+
+      INSERT INTO Localidades (id_localidad, id_provincia, nombre)
+      VALUES (${id}, ${id_provincia}, ${nombre})
       OUTPUT INSERTED.id_localidad;
     `;
     return result.recordset[0].id_localidad;

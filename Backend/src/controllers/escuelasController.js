@@ -1,5 +1,6 @@
 const Escuela = require('../models/escuelas');
 const Localidad = require('../models/localidades');
+const Georef = require('../middleware/georefSerice');
 
 async function create(req, res) {
   const escuelaData = req.body;
@@ -11,10 +12,7 @@ async function create(req, res) {
 
     // Si no existe, crear la nueva localidad
     if (!localidad) {
-      localidad = {
-        id_localidad: localidadID,
-        id_provincia: id_provincia
-      };
+      localidad = Georef.getLocalidadByID(localidadID);
       const newLocalidadId = await Localidad.createLocalidad(localidad);
       escuelaData.localidad = newLocalidadId;
     } else {

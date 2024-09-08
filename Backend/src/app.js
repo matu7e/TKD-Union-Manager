@@ -9,7 +9,7 @@ const cintosRoutes = require('./routes/rutasCintos')
 const tutoresRoutes = require('./routes/rutasTutores');
 const escuelasRoutes = require('./routes/rutasEscuelas');
 const georefRoutes = require('./routes/rutasGeoref');
-
+const miembrosRoutes = require('./routes/rutasMiembros');
 const app = express();
 
 app.use(express.json());
@@ -23,5 +23,6 @@ app.use('/cintos', cintosRoutes);
 app.use('/tutores', tutoresRoutes);
 app.use('/escuelas', escuelasRoutes);
 app.use('/georef', georefRoutes);
+app.use('/miembros', miembrosRoutes);
 
 module.exports = app;

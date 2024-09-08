@@ -9,7 +9,8 @@ async function obtenerTodos(req, res) {
         res.status(500).send('Error al obtener miembros');
     }
     
-}async function registrarMiembro(req, res) {
+}
+async function registrarMiembro(req, res) {
     const datosMiembro = req.body;
 
     try{    
@@ -20,5 +21,15 @@ async function obtenerTodos(req, res) {
     }
     
 }
-
-module.exports = { obtenerTodos, registrarMiembro}
+async function asignarEscuela(req, res) {
+    const dni_miembro = req.params.dni;
+    const escuela = req.params.id_escuela;
+    try{
+        await Miembro.asignarEscuela(dni_miembro, escuela);
+        res.send('Escuela asignada con exito')
+    } catch (err){
+        res.status(500).send('No se pudo asignar la escuela');
+    }
+    
+}
+module.exports = { obtenerTodos, registrarMiembro, asignarEscuela}
