@@ -33,11 +33,11 @@ async function getEscuelasByLocalidad(id_localidad) {
 
 // Crear una nueva escuela
 async function createEscuela(escuela) {
-  const { nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad } = escuela;
+  const { nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad, fecha_de_alta } = escuela;
   try {
     await sql.query`
       INSERT INTO Escuelas (nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad)
-      VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${direccion}, ${enlace}, ${logo}, ${localidad})
+      VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${direccion}, ${enlace}, ${logo}, ${localidad}, ${fecha_de_alta})
     `;
     console.log('Escuela creada correctamente.');
   } catch (err) {

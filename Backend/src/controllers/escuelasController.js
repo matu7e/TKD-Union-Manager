@@ -3,17 +3,17 @@ const Localidad = require('../models/localidades');
 
 async function create(req, res) {
   const escuelaData = req.body;
-  const { localidadNombre, id_provincia } = escuelaData;
+  const { localidadID, id_provincia } = escuelaData;
 
   try {
     // Verificar si la localidad ya existe
-    let localidad = await Localidad.getByNombre(localidadNombre);
+    let localidad = await Localidad.getByID(localidadID);
 
     // Si no existe, crear la nueva localidad
     if (!localidad) {
       localidad = {
-        nombre: localidadNombre,
-        id_provincia: id_provincia,
+        id_localidad: localidadID,
+        id_provincia: id_provincia
       };
       const newLocalidadId = await Localidad.createLocalidad(localidad);
       escuelaData.localidad = newLocalidadId;
