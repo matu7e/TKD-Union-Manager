@@ -3,41 +3,39 @@ body {
     font-family: "Libre Baskerville", serif !important;
     background-color: #D2D2D2;
     color: #323232;
-    
-  }
+}
+
 .container {
     text-align: center;
 }
 
 h1 {
     margin: 0;
-    font-size: 5em;
+    font-size: 3em; /* Ajuste para pantallas más pequeñas */
     color: #000;
 }
 
 h2 {
     margin: 5px 0 20px;
-    font-size: 2em;
+    font-size: 1.5em; /* Ajuste para pantallas más pequeñas */
     color: #63666B;
 }
 
-
-
-.form-container{
-    perspective: 1000px;    
-    margin: 100px auto;
-    margin-bottom: 1000px;
-    width: auto;
+.form-container {
+    perspective: 1000px;
+    margin: 50px auto; /* Ajustado para pantallas más pequeñas */
+    width: 90%; /* Ajustado para pantallas más pequeñas */
+    max-width: 600px; /* Añadido para limitar el ancho máximo */
     height: auto;
-    
 }
 
 .form {
     background-color: #63666B;
     border-radius: 30px;
-    padding: 50px;
+    padding: 30px; /* Reducido para pantallas más pequeñas */
     height: auto;
-    width: 600px;
+    width: 100%; /* Ajustado para pantallas más pequeñas */
+    max-width: 600px; /* Añadido para limitar el ancho máximo */
     backface-visibility: hidden;
     transition: transform 0.6s;
 }
@@ -53,20 +51,21 @@ h2 {
 }
 
 .logo {
-    width: 200px;
-    margin-bottom: 50px;
+    width: 150px; /* Ajustado para pantallas más pequeñas */
+    margin-bottom: 30px; /* Reducido para pantallas más pequeñas */
 }
 
 input {
-    width: 80%;
+    width: calc(100% - 30px); /* Ajustado para pantallas más pequeñas */
     padding: 15px;
-    margin: 20px 0;
+    margin: 10px 0; /* Reducido para pantallas más pequeñas */
     border: none;
     border-radius: 5px;
 }
 
 .btn-login, .btn-register {
-    width: 150px;
+    width: 100%;
+    max-width: 150px; /* Añadido para limitar el ancho máximo */
     padding: 10px;
     background-color: #f36b2b;
     color: #fff;
@@ -74,9 +73,7 @@ input {
     border-radius: 5px;
     cursor: pointer;
 }
-.btn-login{
-    width: 80%;
-}
+
 .btn-login:hover, .btn-register:hover {
     background-color: #f36b2b;
 }
@@ -108,24 +105,102 @@ input {
     transform: rotateY(0deg);
 }
 
-.btn-prev{
-
-    width: 150px;
+.btn-prev, .btn-next {
+    width: 100%;
+    max-width: 150px; /* Añadido para limitar el ancho máximo */
     padding: 10px;
-    background-color: #323232;
-    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.btn-next{
-    width: 150px;
-    padding: 10px;
-    background-color: #f36b2b;
-    
+.btn-prev {
+    background-color: #323232;
     color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+}
+
+.btn-next {
+    background-color: #f36b2b;
+    color: #fff;
+}
+
+.form-container input {
+    margin-bottom: 10px;
+}
+
+.form-container label {
+    display: block;
+    font-weight: bold;
+    margin: auto;
+    text-align: left;
+    padding-left: 20px; /* Reducido para pantallas más pequeñas */
+    color: #D2D2D2;
+}
+
+.form-container .form-group {
+    margin-bottom: 15px;
+}
+
+.error {
+    color: #f36b2b;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: none;
+    text-align: left;
+    padding-left: 20px; /* Reducido para pantallas más pequeñas */
+}
+
+.is-invalid {
+    border-color: red;
+}
+
+/* Media Queries para hacer el diseño más responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    .form {
+        padding: 20px;
+    }
+
+    .logo {
+        width: 120px;
+    }
+
+    .btn-login, .btn-register {
+        max-width: 100%; /* Asegura que los botones no sean más anchos que su contenedor */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1em;
+    }
+
+    .form-container {
+        margin: 20px auto;
+    }
+
+    .form {
+        padding: 15px;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .btn-login, .btn-register {
+        max-width: 100%;
+        padding: 8px;
+    }
 }

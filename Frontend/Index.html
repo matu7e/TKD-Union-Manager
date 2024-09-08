@@ -21,8 +21,11 @@
     
     <header class="navbar">
         <div class="navbar-left">
-            <img src="assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
-            <h1 class="navbar-title">UNION MEDITERRANEA</h1>
+            <a href="Index.html">
+                <img src="assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
+                <h1 class="navbar-title">UNION MEDITERRANEA</h1>
+            </a>
+            
         </div>
         <nav class="navbar-menu" id="navbar-menu">
             <ul>
@@ -32,7 +35,7 @@
                 <li><a href="#Autoridades">Autoridades</a></li>
                 <li><a href="#Galeria">Galeria</a></li>
                 
-                <li><button class="login-btn" hre>Iniciar Sesión</button></li>
+                <li><a href="src/login.html" class="login-btn" hre>Iniciar Sesión</a></li>
             </ul>
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
@@ -160,28 +163,28 @@
 
 
 
-        <section class="sedes">
-            <div class="container-encabezado-sedes" style="margin-top: 80px">
-                <h2 id="Sedes">Encuentra tu sede más cercana</h2>
-                <form id="form-buscar" class="buscar-sedes-container">
-                    <div class="buscar-sedes-selector">
-                        <select id="buscar-input" class="custom-select">
-                            <option value="">Seleccione una provincia</option>
-                        </select>
-        
-                        <select id="buscar-localidad" class="custom-select">
-                            <option value="">Seleccione una localidad</option>
-                        </select>
-                    </div>
-                    <button type="button" class="button-buscar-sedes" onclick="buscarEscuelas()">Buscar</button>
-                </form>
-            </div>
-        
-            <div class="container-sedes" style="margin-top: 80px">
-                <!-- Contenedor para mostrar las tarjetas de las escuelas -->
-                <div id="tarjetas-sedes" class="tarjetas-sedes"></div>
-            </div>
-        </section>
+            <section class="sedes">
+                <div class="container-encabezado-sedes" style="margin-top: 80px">
+                    <h2 id="Sedes">Encuentra tu sede más cercana</h2>
+                    <form id="form-buscar" class="buscar-sedes-container">
+                        <div class="buscar-sedes-selector">
+                            <select id="buscar-input" class="custom-select">
+                                <option value="">Seleccione una provincia</option>
+                            </select>
+            
+                            <select id="buscar-localidad" class="custom-select">
+                                <option value="">Seleccione una localidad</option>
+                            </select>
+                        </div>
+                        <button type="button" class="button-buscar-sedes" onclick="buscarEscuelas()">Buscar</button>
+                    </form>
+                </div>
+            
+                <div class="container-sedes" style="margin-top: 80px">
+                    <!-- Contenedor para mostrar las tarjetas de las escuelas -->
+                    <div id="tarjetas-sedes" class="tarjetas-sedes"></div>
+                </div>
+            </section>
           
           
 
