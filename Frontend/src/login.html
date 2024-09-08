@@ -10,6 +10,25 @@
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/menu.css">
+    <style>
+        .form-container input {
+            margin-bottom: 10px;
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin: auto;
+            text-align: left;
+            padding-left: 50px;
+            color: #D2D2D2;
+        }
+
+
+        .form-container .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <header class="navbar">
@@ -24,8 +43,7 @@
                 <li><a href="#Sedes">Sedes</a></li>
                 <li><a href="#Autoridades">Autoridades</a></li>
                 <li><a href="#Galeria">Galeria</a></li>
-                
-                <li><button class="login-btn">Iniciar Sesión</button></li>
+                <li><button class="login-btn" id="showLoginFromMenu">Iniciar Sesión</button></li>
             </ul>
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
@@ -36,28 +54,98 @@
             <h1>Unión Mediterránea</h1>
             <h2>Taekwondo IFT</h2>
             <div class="form-container" id="formContainer">
+                
                 <!-- Formulario de Login -->
-                <form class="form login-form" id="loginForm">
+                <div class="form login-form" id="loginForm">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
-                    <input type="text" placeholder="Usuario" required>
-                    <input type="password" placeholder="Contraseña" required>
+                    <div class="form-group">
+                        <label for="loginUsername">Usuario:</label>
+                        <input type="text" id="loginUsername" placeholder="Usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña:</label>
+                        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    </div>
                     <button type="submit" class="btn-login">Ingresar</button>
                     <p class="switch-form">
-                        ¿No tienes cuenta? <a href="#" id="showRegister">Registrate</a>
+                        ¿No tienes cuenta? <a href="#" id="showRegister">Registrarse</a>
                     </p>
-                </form>
-    
-                <!-- Formulario de Registro -->
-                <form class="form register-form" id="registerForm">
+                </div>
+
+                <!-- Paso 1: Datos de Usuario -->
+                <div class="form register-form" id="step1Form" style="display: none;">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
-                    <input type="text" placeholder="DNI" required>
-                    <input type="password" placeholder="Contraseña" required>
-                    <input type="password" placeholder="Repetir Contraseña" required>
-                    <button type="submit" class="btn-register">Registrarse</button>
+                    <div class="form-group">
+                        <label for="dni">DNI:</label>
+                        <input type="text" id="dni" placeholder="DNI" pattern="\d{8}" title="El DNI debe tener 8 dígitos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña:</label>
+                        <input type="password" id="registerPassword" placeholder="Contraseña" pattern=".{8,}" title="La contraseña debe tener al menos 8 caracteres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeatPassword">Repetir Contraseña:</label>
+                        <input type="password" id="repeatPassword" placeholder="Repetir Contraseña" required>
+                    </div>
+                    <button type="button" class="btn-next" id="nextToStep2">Siguiente</button>
                     <p class="switch-form">
                         ¿Ya tienes cuenta? <a href="#" id="showLogin">Ingresar</a>
                     </p>
-                </form>
+                </div>
+
+                <!-- Paso 2: Datos Personales -->
+                <div class="form register-form" id="step2Form" style="display: none;">
+                    <img src="../assets/log1.png" alt="Logo" class="logo">
+                    <div class="form-group">
+                        <label for="firstName">Nombre:</label>
+                        <input type="text" id="firstName" placeholder="Nombre" pattern="[A-Za-z]{4,16}" title="El nombre debe tener entre 4 y 16 letras" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Apellido:</label>
+                        <input type="text" id="lastName" placeholder="Apellido" pattern="[A-Za-z]{4,16}" title="El apellido debe tener entre 4 y 16 letras" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Fecha de Nacimiento:</label>
+                        <input type="date" id="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono:</label>
+                        <input type="text" id="phone" placeholder="Teléfono" pattern="\d{10}" title="El teléfono debe tener 10 dígitos" required>
+                    </div>
+                    <div class="buttons-container">
+                        <button type="button" class="btn-prev" id="backToStep1">Anterior</button>
+                        <button type="button" class="btn-next" id="nextToStep3">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Datos del Tutor o Representante -->
+                <div class="form register-form" id="step3Form" style="display: none;">
+                    <img src="../assets/log1.png" alt="Logo" class="logo">
+                    <div class="form-group">
+                        <label for="tutorDNI">DNI del Tutor:</label>
+                        <input type="text" id="tutorDNI" placeholder="DNI del Tutor" pattern="\d{8}" title="El DNI del tutor debe tener 8 dígitos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorPhone">Teléfono del Tutor:</label>
+                        <input type="text" id="tutorPhone" placeholder="Teléfono del Tutor" pattern="\d{10}" title="El teléfono del tutor debe tener 10 dígitos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorFirstName">Nombre del Tutor:</label>
+                        <input type="text" id="tutorFirstName" placeholder="Nombre del Tutor" pattern="[A-Za-z]{4,16}" title="El nombre del tutor debe tener entre 4 y 16 letras" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorLastName">Apellido del Tutor:</label>
+                        <input type="text" id="tutorLastName" placeholder="Apellido del Tutor" pattern="[A-Za-z]{4,16}" title="El apellido del tutor debe tener entre 4 y 16 letras" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="relation">Relación con el Estudiante:</label>
+                        <input type="text" id="relation" placeholder="Relación con el Estudiante" pattern="[A-Za-z]{4,16}" title="La relación debe tener entre 4 y 16 letras" required>
+                    </div>
+                    <div class="buttons-container">
+                        <button type="button" class="btn-prev" id="backToStep2">Anterior</button>
+                        <button type="submit" class="btn-register">Registrar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -66,50 +154,102 @@
         <div class="footer">
             <div class="footer-content">
                 <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
-            
                 <div class="footer-icons-container">
-                  <div class="icon-arrow">
-                    <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
-                  </div>
-                  <div class="footer-icons">
-                    <a href="#"><i class="fa-solid fa-xmark"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                  </div>
-                  <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                    <div class="icon-arrow">
+                        <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                    <div class="footer-icons">
+                        <a href="#"><i class="fa-solid fa-xmark"></i></
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        </div>
+                        <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                    </div>
+                    <div class="footer-right">
+                        <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                    </div>
                 </div>
-            
-                <div class="footer-right">
-                  <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
-                </div>
-              </div>
-        </div>
-        
-
-        <div class="footer-bottom">
-          <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>   
-        </div>
-    </footer>
-
-
-
-
-
-    <script>
-        const formContainer = document.getElementById('formContainer');
-        const showRegister = document.getElementById('showRegister');
-        const showLogin = document.getElementById('showLogin');
-
-        showRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            formContainer.classList.add('show-register');
-        });
-
-        showLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            formContainer.classList.remove('show-register');
-        });
-    </script>
-</body>
-</html>
+            </div>
+            <div class="footer-bottom">
+                <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>
+            </div>
+        </footer>
+    
+        <!-- Script para el manejo del formulario por pasos y login -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const formContainer = document.getElementById('formContainer');
+                const loginForm = document.getElementById('loginForm');
+                const step1Form = document.getElementById('step1Form');
+                const step2Form = document.getElementById('step2Form');
+                const step3Form = document.getElementById('step3Form');
+    
+                const nextToStep2 = document.getElementById('nextToStep2');
+                const nextToStep3 = document.getElementById('nextToStep3');
+                const backToStep1 = document.getElementById('backToStep1');
+                const backToStep2 = document.getElementById('backToStep2');
+    
+                const showRegister = document.getElementById('showRegister');
+                const showLogin = document.getElementById('showLogin');
+                const showLoginFromMenu = document.getElementById('showLoginFromMenu');
+    
+                function showStep(formToShow) {
+                    loginForm.style.display = 'none';
+                    step1Form.style.display = 'none';
+                    step2Form.style.display = 'none';
+                    step3Form.style.display = 'none';
+                    formToShow.style.display = 'block';
+                }
+    
+                showRegister.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    formContainer.classList.add('show-register');
+                    setTimeout(() => {
+                        showStep(step1Form);
+                    }, 300); // Tiempo igual al de la transición
+                });
+    
+                showLogin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    formContainer.classList.remove('show-register');
+                    setTimeout(() => {
+                        showStep(loginForm);
+                    }, 300); // Tiempo igual al de la transición
+                });
+    
+                showLoginFromMenu.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    formContainer.classList.remove('show-register');
+                    setTimeout(() => {
+                        showStep(loginForm);
+                    }, 300); // Tiempo igual al de la transición
+                });
+    
+                nextToStep2.addEventListener('click', () => {
+                    // Validar contraseña en paso 1
+                    const password = document.getElementById('registerPassword').value;
+                    const repeatPassword = document.getElementById('repeatPassword').value;
+                    if (password !== repeatPassword) {
+                        alert('Las contraseñas no coinciden.');
+                        return;
+                    }
+                    showStep(step2Form);
+                });
+    
+                nextToStep3.addEventListener('click', () => {
+                    showStep(step3Form);
+                });
+    
+                backToStep1.addEventListener('click', () => {
+                    showStep(step1Form);
+                });
+    
+                backToStep2.addEventListener('click', () => {
+                    showStep(step2Form);
+                });
+            });
+        </script>
+    </body>
+    </html>
+    

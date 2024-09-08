@@ -34,7 +34,7 @@ async function getLocalidadesPorProvincia(req, res) {
     const response = await axios.get(`${BASE_URL}/localidades`, {
       params: {
         provincia: id_provincia,
-        campos: id, nombre,
+        campos: 'id, nombre',
         max: 600
       }
     });

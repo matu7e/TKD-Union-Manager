@@ -11,83 +11,93 @@ body {
 
 h1 {
     margin: 0;
-    font-size: 2em;
+    font-size: 5em;
     color: #000;
 }
 
 h2 {
     margin: 5px 0 20px;
-    font-size: 1.2em;
-    color: #666;
+    font-size: 2em;
+    color: #63666B;
 }
 
-.form-container {
-    perspective: 1000px;
-    width: 300px;
-    height: 400px;
-    position: relative;
-    margin: 100px auto;
 
+
+.form-container{
+    perspective: 1000px;    
+    margin: 100px auto;
+    margin-bottom: 1000px;
+    width: auto;
+    height: auto;
+    
 }
 
 .form {
-    background-color: #4f4f4f;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    background-color: #63666B;
+    border-radius: 30px;
+    padding: 50px;
+    height: auto;
+    width: 600px;
     backface-visibility: hidden;
     transition: transform 0.6s;
 }
 
 .login-form {
     transform: rotateY(0deg);
+    margin: auto;
 }
 
 .register-form {
     transform: rotateY(180deg);
+    margin: auto;
 }
 
 .logo {
-    width: 100px;
-    margin-bottom: 20px;
+    width: 200px;
+    margin-bottom: 50px;
 }
 
 input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    width: 80%;
+    padding: 15px;
+    margin: 20px 0;
     border: none;
     border-radius: 5px;
 }
 
 .btn-login, .btn-register {
-    width: 100%;
+    width: 150px;
     padding: 10px;
-    background-color: #ff5722;
+    background-color: #f36b2b;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-
+.btn-login{
+    width: 80%;
+}
 .btn-login:hover, .btn-register:hover {
-    background-color: #e64a19;
+    background-color: #f36b2b;
 }
 
 .switch-form {
     margin-top: 10px;
     font-size: 0.9em;
     color: #fff;
+    text-align: center; /* Opcional, centra el texto */
 }
 
 .switch-form a {
     color: #ff5722;
     text-decoration: none;
-    cursor: pointer;
+    display: block; /* Hace que el enlace se muestre en una línea separada */
+    margin-top: 5px; /* Añade espacio entre la pregunta y el enlace */
+    font-weight: bold; /* Opcional, para resaltar el enlace */
+}
+
+.switch-form a:hover {
+    text-decoration: underline; /* Opcional, subraya el enlace al pasar el ratón */
 }
 
 .form-container.show-register .login-form {
@@ -96,4 +106,26 @@ input {
 
 .form-container.show-register .register-form {
     transform: rotateY(0deg);
+}
+
+.btn-prev{
+
+    width: 150px;
+    padding: 10px;
+    background-color: #323232;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-next{
+    width: 150px;
+    padding: 10px;
+    background-color: #f36b2b;
+    
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
