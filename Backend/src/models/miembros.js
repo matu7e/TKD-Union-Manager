@@ -5,8 +5,8 @@ async function crearMiembro(miembro) {
     const { DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, LocalidadID } = miembro;
     try {
       await sql.query`
-        INSERT INTO Miembros (DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, LocalidadID)
-        VALUES (${DNI}, ${Nombres}, ${Apellidos}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}, ${LocalidadID})
+        INSERT INTO Miembros (DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado)
+        VALUES (${DNI}, ${Nombres}, ${Apellidos}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}})
       `;
       console.log('Miembro creado correctamente.');
     } catch (err) {

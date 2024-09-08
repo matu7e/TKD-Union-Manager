@@ -1,4 +1,4 @@
-const { sql } = require('../config/db');
+const { sql } = require('../config/bdHelper');
 
 // Obtener todas las escuelas
 async function getAllEscuelas() {

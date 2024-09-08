@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const escuelasController = require('../controllers/escuelasController');
 
-// Ruta para obtener todas las escuelas
-router.get('/', escuelasController.getAll);
-
 // Ruta para obtener una escuela por su Localidad
 router.get('/:id_localidad', escuelasController.getByLocalidad);
 
