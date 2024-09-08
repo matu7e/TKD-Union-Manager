@@ -23,31 +23,41 @@ async function getLocalidadByNombre(nombre) {
   }
 }
 
-async function getLocalidadesPorProvincia(id_provincia) {
+async function getLocalidadesPorProvincia(req, res) {
+  const { id_provincia } = req.params;
   try {
-    const response = await axios.get(`${BASE_URL}/municipios?`, {
+    const response = await axios.get(`${BASE_URL}/localidades`, {
       params: {
-        provincia: id_provincia,
-        campos: 'id,nombre',
-        max: 1000, // Número máximo de localidades a devolver por solicitud
-      },
+        provincia: id_provincia
+      }
     });
-    return response.data.localidades;
+    const localidades = response.data.localidades.map(localidad => ({
+      id: localidad.id,
+      nombre: localidad.nombre,
+    }));
+    return res.json(localidades);
   } catch (err) {
-    console.error('Error al obtener localidades por provincia:', err);
-    throw err;
+    console.error('Error al obtener las localidades: ', err.message);
+    return res.status(500).json({ error: 'Error al obtener las localidades' });
   }
 }
 
-async function getProvincias() {
-    try {
-      const response = await axios.get(`${BASE_URL}/provincias`);
-      return response.data.provincias[0];
-    } catch (err) {
-      console.error('Error al obtener las provincias: ', err);
-      throw err;
-    }
+async function getProvincias(req, res) {
+  try {
+    const response = await axios.get(`${BASE_URL}/provincias`);
+    const provincias = response.data.provincias;
+
+    // Procesar las provincias (aquí solo se imprimen en la consola)
+    provincias.forEach(provincia => {
+      console.log(`ID: ${provincia.id}, Nombre: ${provincia.nombre}`);
+    });
+
+    return res.json(provincias); // Enviar la lista de provincias como respuesta JSON
+  } catch (err) {
+    console.error('Error al obtener las provincias: ', err);
+    return res.status(500).json({ error: 'Error al obtener las provincias' });
   }
+}
 
 module.exports = {
   getProvinciaById,
