@@ -12,12 +12,12 @@ const georefRoutes = require('./routes/rutasGeoref');
 const miembrosRoutes = require('./routes/rutasMiembros');
 const app = express();
 
+connectToDatabase();
+
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
-connectToDatabase();
 
 app.use('/cintos', cintosRoutes);
 app.use('/tutores', tutoresRoutes);

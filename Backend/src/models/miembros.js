@@ -2,13 +2,13 @@ const { sql } = require('./../config/bdHelper');
 
 // Crear un nuevo miembro
 async function crearMiembro(miembro) {
-  const { DNI, Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, Password, FichaMedica } = miembro;
+  const { DNI, Nombre, Apellido, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, relacion_tutor, InstitutoID, CintoID, RolID, Estado, Password } = miembro;
       try {
       await sql.query`
         INSERT INTO Miembros (dni_miembro, nombre, apellido, fecha_nacimiento, grupo_sanguineo, 
-                              telefono, email, direccion, dni_tutor, realacion_tutor, 
-                              id_escuela, id_cinto, id_rol, activo, password, ficha_medica)
-        VALUES (${DNI}, ${Nombres}, ${Apellidos}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}, ${Password}, ${FichaMedica})
+                              telefono, email, direccion, dni_tutor, relacion_tutor, 
+                              id_escuela, id_cinto, id_rol, activo, password)
+        VALUES (${DNI}, ${Nombre}, ${Apellido}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${relacion_tutor},${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}, ${Password})
         `;
 
       console.log('Miembro creado correctamente.');
