@@ -1,8 +1,13 @@
-// Este es el archivo que se encarga de inicilizar el servidor.
-
 const app = require('./src/app');
+const port = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+
+// Ruta de prueba
+app.get('/', (req, res) => {
+    res.send('¡Hola, mundo!');
 });
+
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
+  

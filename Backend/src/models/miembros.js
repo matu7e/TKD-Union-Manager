@@ -2,13 +2,14 @@ const { sql } = require('./../config/bdHelper');
 
 // Crear un nuevo miembro
 async function crearMiembro(miembro) {
-  const { DNI, Nombre, Apellido, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, relacion_tutor, InstitutoID, CintoID, RolID, Estado, Password } = miembro;
+  const { dni, Nombre, Apellido, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, relacion_tutor, password } = miembro;
+  const fecha = new Date();
       try {
       await sql.query`
         INSERT INTO Miembros (dni_miembro, nombre, apellido, fecha_nacimiento, grupo_sanguineo, 
                               telefono, email, direccion, dni_tutor, relacion_tutor, 
-                              id_escuela, id_cinto, id_rol, activo, password)
-        VALUES (${DNI}, ${Nombre}, ${Apellido}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${relacion_tutor},${InstitutoID}, ${CintoID}, ${RolID}, ${Estado}, ${Password})
+                              id_escuela, id_cinto, id_rol, activo, password, fecha_alta)
+        VALUES (${dni}, ${Nombre}, ${Apellido}, ${FechaNacimiento}, ${GrupoSanguineo}, ${Telefono}, ${Email}, ${Direccion}, ${TutorID}, ${relacion_tutor},null, 1, 1, 0, ${password}, ${fecha})
         `;
 
       console.log('Miembro creado correctamente.');
@@ -67,5 +68,21 @@ async function eliminarMiembro(id) {
       console.error('Error al eliminar miembro:', err);
     }
   }
+  async function getBydni(dni) {
+    try {
+        const result = await sql.query`SELECT * FROM Miembros WHERE dni_miembro = ${dni}`;
 
-module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela };
+        // Verificar si la consulta devolvió algún resultado
+        if (!result || result.recordset.length === 0) {
+            console.log('No existe miembro con ese dni');
+            return null;
+        }
+
+        console.log('Miembro obtenido con éxito');
+        return result.recordset[0];  // Retornar el primer resultado
+    } catch (err) {
+        console.error('Hubo un error al obtener el miembro:', err);
+        throw err;  // Lanza el error para manejo externo
+    }
+}
+module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni };
