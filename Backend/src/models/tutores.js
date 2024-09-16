@@ -25,19 +25,15 @@ async function getTutorByDni(dni_tutor) {
 // Crear un nuevo tutor
 async function createTutor(tutor, transaction = null) {
     const { dni_tutor, nombre, apellido, telefono } = tutor;
-    const query = `
+    try {
+      await sql.query`
       INSERT INTO Tutores (dni_tutor, nombre, apellido, telefono)
-      VALUES (@dni_tutor, @nombre, @apellido, @telefono);
+      VALUES (${dni_tutor}, ${nombre}, ${apellido}, ${telefono});
     `;
-    const request = transaction ? new sql.Request(transaction) : sql;
-    
-    await request.input('dni_tutor', sql.Int, dni_tutor)
-                 .input('nombre', sql.VarChar, nombre)
-                 .input('apellido', sql.VarChar, apellido)
-                 .input('telefono', sql.Int, telefono)
-                 .query(query);
-    
-    return tutor;
+    console.log('Tutor registrado correctamente');
+    } catch(err){
+      console.log('Error al registrar tutor: ', err);
+    }
   }
   
 

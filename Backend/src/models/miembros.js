@@ -21,7 +21,22 @@ async function crearMiembro(miembro) {
 // Leer todos los miembros
 async function getMiembros() {
     try {
-      const result = await sql.query`SELECT * FROM Miembros`;
+      const result = await sql.query`SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
+        m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
+    m.ficha_medica,
+    r.descripcion AS rol,
+    c.descripcion AS cinto,
+    e.nombre AS escuela,
+    m.dni_tutor,
+    m.relacion_tutor
+  FROM 
+    Miembros m
+  LEFT JOIN 
+    Roles r ON m.id_rol = r.id_rol
+  LEFT JOIN 
+    Cintos c ON m.id_cinto = c.id_cinto
+  LEFT JOIN
+    Escuelas e ON m.id_escuela = e.id_escuela`;
       return result.recordset;
     } catch (err) {
       console.error('Error al obtener miembros:', err);
@@ -29,15 +44,19 @@ async function getMiembros() {
   }
 
 // Actualizar un miembro TENGO QUE ACTUALIZAR ESTO DEBIDO A LOS CAMBIOS EN LA BD
-async function updateMember(id, miembro) {
-    const { Nombres, Apellidos, FechaNacimiento, GrupoSanguineo, Telefono, Email, Direccion, TutorID, InstitutoID, CintoID, RolID, Estado, LocalidadID } = miembro;
+async function updateMember(dni, miembro) {
+    const { telefono, email, direccion, dni_tutor, id_escuela, id_cinto} = miembro;
     try {
       await sql.query`
         UPDATE Miembros 
-        SET Nombres = ${Nombres}, Apellidos = ${Apellidos}, FechaNacimiento = ${FechaNacimiento}, GrupoSanguineo = ${GrupoSanguineo}, 
-            Telefono = ${Telefono}, Email = ${Email}, Direccion = ${Direccion}, TutorID = ${TutorID}, InstitutoID = ${InstitutoID}, 
-            CintoID = ${CintoID}, RolID = ${RolID}, Estado = ${Estado}, LocalidadID = ${LocalidadID}
-        WHERE DNI = ${id}
+        SET 
+        telefono = ${telefono}, 
+        email = ${email}, 
+        direccion = ${direccion}, 
+        dni_tutor = ${dni_tutor}, 
+        id_escuela = ${id_escuela}, 
+        id_cinto = ${id_cinto}
+        WHERE dni_miembro = ${dni}
       `;
       console.log('Miembro actualizado correctamente.');
     } catch (err) {
@@ -70,7 +89,23 @@ async function eliminarMiembro(id) {
   }
   async function getBydni(dni) {
     try {
-        const result = await sql.query`SELECT * FROM Miembros WHERE dni_miembro = ${dni}`;
+        const result = await sql.query`SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
+        m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
+    m.ficha_medica,
+    r.descripcion AS rol,
+    c.descripcion AS cinto,
+    e.nombre AS escuela,
+    m.dni_tutor,
+    m.relacion_tutor
+  FROM 
+    Miembros m
+  LEFT JOIN 
+    Roles r ON m.id_rol = r.id_rol
+  LEFT JOIN 
+    Cintos c ON m.id_cinto = c.id_cinto
+  LEFT JOIN
+    Escuelas e ON m.id_escuela = e.id_escuela
+  WHERE dni_miembro = ${dni}`;
 
         // Verificar si la consulta devolvió algún resultado
         if (!result || result.recordset.length === 0) {
