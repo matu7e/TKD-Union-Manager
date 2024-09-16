@@ -69,7 +69,7 @@ async function loginMiembro(req, res) {
         if (!esValida) {
             return res.status(401).send('El dni o la contraseña son incorrectos');
         }
-        const token = jwt.sign({ dni: miembro.dni_miembro }, JWT_SECRET, { expiresIn: '2h' }); 
+        const token = jwt.sign({ dni: miembro.dni_miembro, rol: miembro.rol }, JWT_SECRET, { expiresIn: '2h' }); 
 
         res.status(200).json({token});
         
