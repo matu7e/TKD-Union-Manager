@@ -87,6 +87,7 @@ async function eliminarMiembro(id) {
       console.error('Error al eliminar miembro:', err);
     }
   }
+
   async function getBydni(dni) {
     try {
         const result = await sql.query`SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
@@ -112,12 +113,48 @@ async function eliminarMiembro(id) {
             console.log('No existe miembro con ese dni');
             return null;
         }
-
-        console.log('Miembro obtenido con éxito');
         return result.recordset[0];  // Retornar el primer resultado
     } catch (err) {
         console.error('Hubo un error al obtener el miembro:', err);
-        throw err;  // Lanza el error para manejo externo
+        throw err;
     }
 }
-module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni };
+
+async function getLogin(dni) {
+  try {
+      const result = await sql.query`SELECT m.dni_miembro, m.activo, r.descripcion AS rol, m.password 
+      FROM Miembros m LEFT JOIN Roles r ON m.id_rol = r.id_rol
+      WHERE dni_miembro = ${dni}`;
+
+      // Verificar si la consulta devolvió algún resultado
+      if (!result || result.recordset.length === 0) {
+          console.log('Usuario incorrecto');
+          return null;
+      }
+      return result.recordset[0];  // Retornar el primer resultado
+  } catch (err) {
+      console.error('Error en base de datos:', err);
+      throw err;
+  }
+}
+
+  async function cargaImagen(dni, ruta) {
+    try{
+      await sql.query`UPDATE Miembros SET imagen = ${ruta} WHERE dni_miembro = ${dni}`;
+      console.log('Ruta de imagen cargada correctamente')
+    } catch(err){
+      console.error('Error al cargar la ruta: ', err)
+    }
+  }
+
+  async function cargaFichaMedica(dni, ruta) {
+    try{
+      console.log("Dni a ingresar: ", dni);
+      console.log("Ruta del pdf: ", ruta)
+      await sql.query`UPDATE Miembros SET ficha_medica = ${ruta} WHERE dni_miembro = ${dni}`;
+      console.log('Ficha medica cargada con exito')
+    } catch(err){
+      console.error('Error al cargar la ficha medica: ', err)
+    }
+  }
+module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni, getLogin,cargaImagen, cargaFichaMedica };

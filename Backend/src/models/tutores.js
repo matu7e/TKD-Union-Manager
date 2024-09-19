@@ -23,7 +23,7 @@ async function getTutorByDni(dni_tutor) {
 }
 
 // Crear un nuevo tutor
-async function createTutor(tutor, transaction = null) {
+async function createTutor(tutor) {
     const { dni_tutor, nombre, apellido, telefono } = tutor;
     try {
       await sql.query`
@@ -35,7 +35,6 @@ async function createTutor(tutor, transaction = null) {
       console.log('Error al registrar tutor: ', err);
     }
   }
-  
 
 // Actualizar un tutor por su DNI
 async function updateTutor(dni_tutor, tutor) {

@@ -58,18 +58,18 @@ async function loginMiembro(req, res) {
     const { dni, password } = req.body;
 
     try {
-        const miembro = await Miembro.getBydni(dni);
+        const miembro = await Miembro.getLogin(dni);
         if (!miembro) {
             return res.status(404).send('El dni o la contraseña son incorrectos');
         }
-
+        
         // Comparar la contraseña ingresada con el hash almacenado
         const esValida = await bcrypt.compare(password, miembro.password);
 
         if (!esValida) {
             return res.status(401).send('El dni o la contraseña son incorrectos');
         }
-        const token = jwt.sign({ dni: miembro.dni_miembro, rol: miembro.rol }, JWT_SECRET, { expiresIn: '2h' }); 
+        const token = jwt.sign({ dni: miembro.dni_miembro, rol: miembro.rol, estado: miembro.activo }, JWT_SECRET, { expiresIn: '2h' }); 
 
         res.status(200).json({token});
         
@@ -83,7 +83,6 @@ async function actualizarMiembro(req, res) {
     const datosMiembro = req.body; // Obtener los datos del cuerpo de la solicitud
 
     try {
-        // Llamar a la función del modelo para actualizar al miembro
         await Miembro.updateMember(dni, datosMiembro);
         
         res.status(200).send('Miembro actualizado correctamente');
@@ -93,4 +92,37 @@ async function actualizarMiembro(req, res) {
     }
 }
 
-module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro}
+async function cargarImagen(req, res) {
+    const dni_miembro = req.params.dni_miembro;
+    const imagen = req.file;
+
+    if (!imagen) {
+        return res.status(400).send('No se ha proporcionado una imagen');
+      }
+    try{
+        const ruta_imagen = imagen.path;
+        await Miembro.cargaImagen(dni_miembro, ruta_imagen);
+        res.status(200).send('Imagen cargada con exito');
+    } catch(err) {
+        res.status(500).send('Problemas con la carga de imagen');
+    }    
+}
+
+async function cargarFichaMedica(req, res) {
+    const dni_miembro = req.params.dni_miembro;
+    const ficha_medica = req.file;
+
+    if (!ficha_medica) {
+        return res.status(400).send('No se ha proporcionado una ficha médica');
+      }
+
+    try{
+        const ruta_ficha = ficha_medica.path;
+        await Miembro.cargaFichaMedica(dni_miembro, ruta_ficha);
+        res.status(200).send('Ficha medica cargada con exito');
+    } catch(err) {
+        res.status(500).send('Problemas con la carga de ficha medica');
+    }
+}
+
+module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro, cargarFichaMedica, cargarImagen}
