@@ -1,0 +1,141 @@
+.table-container {
+    margin: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+.actions i {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.records-count {
+    font-weight: bold;
+}
+
+.export-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background-color: #555;
+}
+
+.pagination select {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.container {
+    text-align: center;
+    max-width: 1200px;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    margin: 150px auto;
+}
+
+.search-filters {
+    background-color: #5a5d66;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.filter-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+    margin-bottom: 10px;
+}
+
+.filter-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.filter-group:last-child {
+    margin-right: 0;
+}
+
+label {
+    display: block;
+    color: #fff;
+    margin-bottom: 5px;
+    text-align: initial;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    background-color: #d5d7d8;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    background-color: #d5d7d8;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    display: block;
+}
+
+.search-button:hover {
+    background-color: #555;
+}
+
+/* Nueva clase para alinear el botón a la derecha */
+.filter-row.right-align {
+    justify-content: flex-end;
+}
+h2{
+    margin: 30px;
+    font-size: 40px;
+}

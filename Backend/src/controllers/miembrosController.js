@@ -64,6 +64,8 @@ async function loginMiembro(req, res) {
         }
         
         // Comparar la contraseña ingresada con el hash almacenado
+
+        
         const esValida = await bcrypt.compare(password, miembro.password);
 
         if (!esValida) {
@@ -77,6 +79,7 @@ async function loginMiembro(req, res) {
         res.status(500).send('Problemas en el inicio de sesión');
     }
 }
+
 
 async function actualizarMiembro(req, res) {
     const dni = req.params.dni; // Obtener el DNI de los parámetros de la ruta

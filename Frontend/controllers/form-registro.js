@@ -64,12 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateStep2() {
         let isValid = true;
-
+    
         const firstName = document.getElementById('firstName');
         const lastName = document.getElementById('lastName');
         const dob = document.getElementById('dob');
         const phone = document.getElementById('phone');
-
+        const address = document.getElementById('address'); // Nuevo campo Dirección
+        const email = document.getElementById('email'); // Nuevo campo Email
+        const bloodGroup = document.getElementById('bloodGroup'); // Nuevo campo Grupo Sanguíneo
+    
         // Validar Nombre
         if (!/^[A-Za-z]{4,16}$/.test(firstName.value)) {
             document.getElementById('firstNameError').style.display = 'block';
@@ -79,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('firstNameError').style.display = 'none';
             firstName.classList.remove('is-invalid');
         }
-
+    
         // Validar Apellido
         if (!/^[A-Za-z]{4,16}$/.test(lastName.value)) {
             document.getElementById('lastNameError').style.display = 'block';
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('lastNameError').style.display = 'none';
             lastName.classList.remove('is-invalid');
         }
-
+    
         // Validar Fecha de Nacimiento
         if (!dob.value) {
             document.getElementById('dobError').style.display = 'block';
@@ -99,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('dobError').style.display = 'none';
             dob.classList.remove('is-invalid');
         }
-
+    
         // Validar Teléfono
         if (!/^\d{10}$/.test(phone.value)) {
             document.getElementById('phoneError').style.display = 'block';
@@ -109,9 +112,40 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('phoneError').style.display = 'none';
             phone.classList.remove('is-invalid');
         }
-
+    
+        // Validar Dirección
+        if (!address.value.trim()) {
+            document.getElementById('addressError').style.display = 'block';
+            address.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('addressError').style.display = 'none';
+            address.classList.remove('is-invalid');
+        }
+    
+        // Validar Email
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email.value)) {
+            document.getElementById('emailError').style.display = 'block';
+            email.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('emailError').style.display = 'none';
+            email.classList.remove('is-invalid');
+        }
+    
+        // Validar Grupo Sanguíneo
+        if (!/^(A|B|AB|O)[+-]$/.test(bloodGroup.value)) {
+            document.getElementById('bloodGroupError').style.display = 'block';
+            bloodGroup.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            document.getElementById('bloodGroupError').style.display = 'none';
+            bloodGroup.classList.remove('is-invalid');
+        }
+    
         return isValid;
     }
+    
 
     function validateStep3() {
         let isValid = true;
@@ -176,20 +210,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function collectFormData() {
-        return {
+        // Datos que van a /miembros
+        const miembroData = {
             dni: document.getElementById('dni').value,
             password: document.getElementById('registerPassword').value,
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            dob: document.getElementById('dob').value,
-            phone: document.getElementById('phone').value,
-            tutorDNI: document.getElementById('tutorDNI').value,
-            tutorPhone: document.getElementById('tutorPhone').value,
-            tutorFirstName: document.getElementById('tutorFirstName').value,
-            tutorLastName: document.getElementById('tutorLastName').value,
-            relationship: document.getElementById('relationship').value
+            Nombre: document.getElementById('firstName').value,
+            Apellido: document.getElementById('lastName').value,
+            FechaNacimiento: document.getElementById('dob').value,
+            Telefono: document.getElementById('phone').value,
+            relacion_tutor: document.getElementById('relationship').value,
+            Email: document.getElementById('email').value,
+            Direccion: document.getElementById('address').value,
+            GrupoSanguineo: document.getElementById('bloodGroup').value,
+            TutorID: document.getElementById('tutorDNI').value
         };
+    
+        // Datos que van a /tutores
+        const tutorData = {
+            dni_tutor: document.getElementById('tutorDNI').value,
+            telefono: document.getElementById('tutorPhone').value,
+            nombre: document.getElementById('tutorFirstName').value,
+            apellido: document.getElementById('tutorLastName').value
+        };
+    
+        return { miembroData, tutorData };
     }
+    
+    document.querySelector('.btn-register').addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (validateStep3()) {
+            const { miembroData, tutorData } = collectFormData();
+            try {
+                // Enviar datos a /miembros
+                const miembroResponse = await fetch('http://localhost:3000/miembros', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(miembroData)
+                });
+    
+                if (!miembroResponse.ok) {
+                    throw new Error('Error al enviar los datos a /miembros');
+                }
+                alert(tutorData);
+                // Enviar datos a /tutores
+                const tutorResponse = await fetch('http://localhost:3000/tutores', {
+                    method: 'POST',
+                    headers: {  
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tutorData)
+                    
+                });
+                alert(tutorData);
+                if (!tutorResponse.ok) {
+                    throw new Error('Error al enviar los datos a /tutores');
+                }
+    
+                alert('Formulario enviado con éxito');
+                // Limpia los datos del formulario
+                document.querySelectorAll('input').forEach(input => input.value = '');
+                // Recarga la página para mostrar el formulario de inicio de sesión por defecto
+                setTimeout(() => location.reload(), 500);
+    
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Hubo un error al enviar el formulario');
+            }
+        }
+    });
+    
 
     showRegister.addEventListener('click', (e) => {
         e.preventDefault();
@@ -235,31 +326,5 @@ document.addEventListener('DOMContentLoaded', () => {
         showStep(step2Form);
     });
 
-    document.querySelector('.btn-register').addEventListener('click', async (e) => {
-        e.preventDefault();
-        if (validateStep3()) {
-            const formData = collectFormData();
-            try {
-                const response = await fetch('http://localhost:3000/miembros', { // Reemplaza con la URL de tu API
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                if (response.ok) {
-                    alert('Formulario enviado con éxito');
-                    // Limpia los datos del formulario
-                    document.querySelectorAll('input').forEach(input => input.value = '');
-                    // Recarga la página para mostrar el formulario de inicio de sesión por defecto
-                    setTimeout(() => location.reload(), 500);
-                } else {
-                    alert('Hubo un error al enviar el formulario');
-                }
-            } catch (error) {
-                console.error('Error en la solicitud:', error);
-                alert('Hubo un error al enviar el formulario');
-            }
-        }
-    });
+    
 });
