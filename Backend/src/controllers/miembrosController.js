@@ -26,8 +26,12 @@ async function obtenerByDni(req, res) {
 
 async function registrarMiembro(req, res) {
     const datosMiembro = req.body;
-
     try{
+        const miembroExistente = await Miembro.getBydni(datosMiembro.dni);
+        if (miembroExistente) {
+            return res.status(409).send('El miembro con este DNI ya existe');
+        }
+        
         // Generar el hash de la contraseña antes de guardar
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(datosMiembro.password, salt);

@@ -29,6 +29,11 @@ async function getByDni(req, res) {
 async function create(req, res) {
   const tutorData = req.body;
   try {
+    const tutorExistente = await Tutor.getTutorByDni(tutorData.dni_tutor);
+    if (tutorExistente) {
+      return res.status(409).send('El tutor con este DNI ya existe');
+    }
+
     await Tutor.createTutor(tutorData);
     res.status(201).send('Tutor creado con éxito');
   } catch (err) {

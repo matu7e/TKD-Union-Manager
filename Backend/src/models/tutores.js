@@ -15,6 +15,9 @@ async function getAllTutores() {
 async function getTutorByDni(dni_tutor) {
   try {
     const result = await sql.query`SELECT * FROM Tutores WHERE dni_tutor = ${dni_tutor}`;
+    if (!result || result.recordset.length === 0) {
+      return null;
+  }
     return result.recordset[0];
   } catch (err) {
     console.error('Error al obtener tutor:', err);
