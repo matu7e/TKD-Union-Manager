@@ -1,222 +1,318 @@
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <title>Unión Mediterránea - Taekwondo IFT</title>
-        <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/footer.css">
-        <link rel="stylesheet" href="../styles/menu.css">
-        <link rel="stylesheet" href="../styles/mi-perfil.css">
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+            <title>Unión Mediterránea - Taekwondo IFT</title>
+            <link rel="stylesheet" href="../styles/style.css">
+            <link rel="stylesheet" href="../styles/footer.css">
+            <link rel="stylesheet" href="../styles/menu.css">
+            <link rel="stylesheet" href="../styles/mi-perfil.css">
+            
         
-    </head>
+            <style>
+    /* Contenedor de alertas */
+    .alert-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espacio entre las alertas */
+            z-index: 1000; /* Para asegurarse de que esté encima de otros elementos */
+            
+        }
 
-    <body>
+        /* Estilos para las alertas */
+        .alert {
+            padding: 15px;
+            width: 450px;
+            border-right: 4px;
+            color: #fff;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .alert-aviso{
+            background-color: #f36b2b;
+            display: none;
+            color: #000;
+            
+        }
+        .alert-danger {
+            background-color: #bd2d2a;
+            display: none;
+        }
 
-        <header class="navbar">
-            <div class="navbar-left">
-                <a href="../Index.html">
-                    <img src="../assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
-                    <h1 class="navbar-title">UNION MEDITERRANEA</h1>
-                </a>
+        .alert-success {
+            background-color: #2c9900;
+            display: none;
+        }       
                 
-            </div>
-            <nav class="navbar-menu" id="navbar-menu">
-                <ul>
-                    <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
-                    <li><a href="publicaicones.html">Publicaciones</a></li>
-                    <li><a href="mi-perfil.html">mi perfil</a></li>
-                    <li><a href="src/login.html" class="login-btn" hre>Cerrar sesion</a></li>
+        .disabled {
+            opacity: 0.6;
+        }
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #323232;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+            align-content: center;
+            margin: auto;
+        }
+
+        .loader {
+            border: 16px solid #000000b6;
+            border-radius: 50%;
+            border-top: 16px solid #f36b2b;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            text-align: center;
+            margin: auto;
+            align-content: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+            </style>
+        </head>
+        <body>
+            <div class="alert-container">
+                <div id="alert-aviso" class="alert alert-aviso">            
+                </div>
+                <div id="alert-success" class="alert alert-success">            
+                </div>
+                <div id="alert-error" class="alert alert-danger">
                     
-                </ul>
-            </nav>
-            <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
-        </header>
-
-        <main>
-            <div class="container">
-                <!-- Primera sección: Avatar y botón de generar carnet -->
-                <section class="user-info">
-                    <div class="avatar-container">
-                        <img alt="Avatar del usuario" class="avatar">
-                    </div>
-                    <button class="btn-generate-card">Generar Carnet Digital</button>
-                </section>
-        
-            <!-- Segunda sección: Botones de descarga y carga de documentos -->
-            <section class="downloads">
-                <div class="download-section">
-                    <button class="btn-download">Descargar Ficha Médica</button>
-                    <button class="btn-download">Descargar Plantilla</button>
                 </div>
-                <div class="upload-section">
-                    <label for="file-upload" class="drop-area" id="drop-area">
-                        Haz clic para seleccionar un archivo
-                        <input type="file" id="file-upload" class="file-input" multiple>
-                    </label>
-                    <button class="btn-upload">Importar Ficha Médica</button>
-                </div>
-            </section>
+            
+                
+            </div>
+            
 
-        
-                <!-- Tercera sección: Formulario de datos -->
-                <section class="form-section">
-                    <form class="user-form" novalidate>
-                        <!-- Datos personales -->
-                        <div class="form-group">
-                            <label for="firstName">Nombre:</label>
-                            <input type="text" id="firstName" placeholder="Nombre" pattern="[A-Za-z]{4,16}" required>
-                            <span class="error" id="firstNameError">El nombre debe tener entre 4 y 16 letras</span>
+            <header class="navbar">
+                <div class="navbar-left">
+                    <a href="../Index.html">
+                        <img src="../assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
+                        <h1 class="navbar-title">UNION MEDITERRANEA</h1>
+                    </a>
+                    
+                </div>
+                <nav class="navbar-menu" id="navbar-menu">
+                    <ul>
+                        <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
+                        <li><a href="publicaicones.html">Publicaciones</a></li>
+                        <li><a href="mi-perfil.html">mi perfil</a></li>
+                        <li><a href="#" id="logoutButton" class="login-btn">Cerrar sesión</a></li>
+
+                        
+                    </ul>
+                </nav>
+                <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
+            </header>
+            <!-- Loader -->
+            <div id="loader" class="loader-container">
+                <div class="loader"></div>
+            </div>
+            <main>
+                <div class="container">
+                    <!-- Primera sección: Avatar y botón de generar carnet -->
+                    <section class="user-info">
+                        <div class="avatar-container">
+                            <img alt="Avatar del usuario" class="avatar">
                         </div>
-                        <div class="form-group">
-                            <label for="lastName">Apellido:</label>
-                            <input type="text" id="lastName" placeholder="Apellido" pattern="[A-Za-z]{4,16}" required>
-                            <span class="error" id="lastNameError">El apellido debe tener entre 4 y 16 letras</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="dni">DNI:</label>
-                            <input type="text" id="dni" placeholder="DNI" pattern="\d{8}" required>
-                            <span class="error" id="dniError">El DNI debe tener 8 dígitos</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="dob">Fecha de Nacimiento:</label>
-                            <input type="date" id="dob" required>
-                            <span class="error" id="dobError">La fecha de nacimiento es obligatoria</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="bloodGroup">Grupo Sanguíneo:</label>
-                            <input type="text" id="bloodGroup" placeholder="Grupo Sanguíneo" pattern="^(A|B|AB|O)[+-]$" required>
-                            <span class="error" id="bloodGroupError">El grupo sanguíneo debe ser A+, A-, B+, B-, AB+, AB-, O+, o O-</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="image-upload" class="drop-area2" id="drop-area-img">
-                                Imagen tipo carnet
-                                <input type="file" id="image-upload" class="file-input" accept="image/*">
+                        <button class="btn-generate-card">Generar Carnet Digital</button>
+                    </section>
+            
+                    <!-- Segunda sección: Botones de descarga y carga de documentos -->
+                    <section class="downloads">
+                        <div class="download-section">
+                            <a class="btn-download" id="download-ficha" href="#" download>Descargar Ficha Médica</a>
+                            <a class="btn-download" href="../../Backend/uploads/plantilla-ficha-medica.pdf" download>Descargar Plantilla</a>
+                        </div>  
+                        <div class="upload-section">
+                            <label for="file-upload" class="drop-area" id="drop-area">
+                                Seleccionar un archivo PDF
+                                <input type="file" id="file-upload" class="file-input" multiple style="display: none;">
                             </label>
-                                
+                            <button id="upload-ficha-button" type="button" class="btn-upload">Importar Ficha Médica</button>
+                            
                         </div>
-        
-                        <!-- Datos de Contacto -->
-                        <div class="form-group">
-                            <label for="phone">Teléfono:</label>
-                            <input type="text" id="phone" placeholder="Teléfono" pattern="\d{10}" required>
-                            <span class="error" id="phoneError">El teléfono debe tener 10 dígitos</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" placeholder="Email" required>
-                            <span class="error" id="emailError">Por favor, introduce un email válido</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Dirección:</label>
-                            <input type="text" id="address" placeholder="Dirección" required>
-                            <span class="error" id="addressError">La dirección es obligatoria</span>
-                        </div>
-        
-                        <!-- Datos del Tutor o Encargado -->
-                        <div class="form-group">
-                            <label for="tutorDNI">DNI del Tutor:</label>
-                            <input type="text" id="tutorDNI" placeholder="DNI del Tutor" pattern="\d{8}" title="El DNI debe tener 8 dígitos" required>
-                            <span class="error" id="tutorDNIError">El DNI debe tener 8 dígitos</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="tutorFirstName">Nombre del Tutor:</label>
-                            <input type="text" id="tutorFirstName" placeholder="Nombre del Tutor" pattern="[A-Za-z]{4,16}" required>
-                            <span class="error" id="tutorFirstNameError">El nombre del tutor debe tener entre 4 y 16 letras</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="tutorLastName">Apellido del Tutor:</label>
-                            <input type="text" id="tutorLastName" placeholder="Apellido del Tutor" pattern="[A-Za-z]{4,16}" required>
-                            <span class="error" id="tutorLastNameError">El apellido del tutor debe tener entre 4 y 16 letras</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="relationship">Relación:</label>
-                            <input type="text" id="relationship" placeholder="Relación" pattern="[A-Za-z\s]{4,16}" required>
-                            <span class="error" id="relationshipError">La relación debe tener entre 4 y 16 letras</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="tutorPhone">Teléfono del Tutor:</label>
-                            <input type="text" id="tutorPhone" placeholder="Teléfono del Tutor" pattern="\d{10}" title="El teléfono debe tener 10 dígitos" required>
-                            <span class="error" id="tutorPhoneError">El teléfono debe tener 10 dígitos</span>
-                        </div>
-        
-                        <!-- Datos Académicos -->
-                        <div class="form-group">
-                            <label for="escuela">Escuela</label>
-                            <select id="escuela" required>
-                                <option value="">Selecciona su escuela</option>
-                                <!-- Opciones se llenarán dinámicamente -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="cinto">Cinto</label>
-                            <select id="cinto" required>
-                                <option value="">Selecciona un cinto</option>
-                                <!-- Opciones se llenarán dinámicamente -->
-                            </select>
-                        </div>
-        
-                        <!-- Botón Actualizar -->
-                        <button type="submit" class="btn-update">Actualizar</button>
-                    </form>
-                </section>
-            </div>
-        </main>
+                    </section>
 
-        <footer>
-            <div class="footer">
-                <div class="footer-content">
-                    <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
                 
-                    <div class="footer-icons-container">
-                    <div class="icon-arrow">
-                        <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
-                    </div>
-                    <div class="footer-icons">
-                        <a target="_blank" href="https://www.facebook.com/p/Union-Mediterranea-de-Taekwondo-100063475813834/"><i class="fa-brands fa-facebook"></i></a>
-                        <a target="_blank" href="https://www.instagram.com/union_mediterranea/"><i class="fa-brands fa-instagram"></i></a>
-                        <a target="_blank" href="#"><i class="fa-brands fa-youtube"></i></a>
-                        <a target="_blank" href="https://wa.me/3517014308"><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                    <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
-                    </div>
-                
-                    <div class="footer-right">
-                    <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                    
+                    <!-- Formulario reorganizado con secciones -->
+                    <section class="form-section">
+                        <form class="user-form" id="user-form"  novalidate>
+
+                            <!-- Sección: Datos Personales -->
+                            <div class="personal-info section-prin">
+                                <h2>Datos Personales</h2>
+                                <div class="section-grid">
+                                    <div class="form-group">
+                                        <label for="firstName">Nombre:</label>
+                                        <input type="text" class="disabled" id="firstName" name="firstName" placeholder="Nombre" pattern="[A-Za-z]{4,16}" required>
+                                        <span class="error" id="firstNameError">El nombre debe tener entre 4 y 16 letras</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Apellido:</label>
+                                        <input type="text" class="disabled" id="lastName" name="lastName" placeholder="Apellido" pattern="[A-Za-z]{4,16}" required>
+                                        <span class="error" id="lastNameError">El apellido debe tener entre 4 y 16 letras</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dni">DNI:</label>
+                                        <input type="text" class="disabled" id="dni" name="dni" placeholder="DNI" pattern="\d{8}" required>
+                                        <span class="error" id="dniError">El DNI debe tener 8 dígitos</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dob">Fecha de Nacimiento:</label>
+                                        <input type="date" class="disabled" id="dob" name="dob" required>
+                                        <span class="error" id="dobError">La fecha de nacimiento es obligatoria</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bloodGroup">Grupo Sanguíneo:</label>
+                                        <input type="text" class="disabled" id="bloodGroup" name="bloodGroup" placeholder="Grupo Sanguíneo" pattern="^(A|B|AB|O)[+-]$" required>
+                                        <span class="error" id="bloodGroupError">El grupo sanguíneo debe ser A+, A-, B+, B-, AB+, AB-, O+, o O-</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="image-upload" class="drop-area2" id="drop-area-img">
+                                            Imagen tipo carnet
+                                            
+                                            <input type="file" id="image-upload" name="avatar" class="file-input" accept="image/*">
+
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Teléfono:</label>
+                                        <input type="text" id="phone" name="phone" placeholder="Teléfono" pattern="\d{10}" required>
+                                        <span class="error" id="phoneError">El teléfono debe tener 10 dígitos</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" id="email" name="email" placeholder="Email" required>
+                                        <span class="error" id="emailError">Por favor, introduce un email válido</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Dirección:</label>
+                                        <input type="text" id="address" name="address" placeholder="Dirección" required>
+                                        <span class="error" id="addressError">La dirección es obligatoria</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sección: Datos Académicos -->
+                            <div class="academic-info section-prin">
+                                <h2>Datos Académicos</h2>
+                                <div class="section-grid">
+                                    <div class="form-group">
+                                        <label for="escuela">Escuela</label>
+                                        <select id="escuela" name="escuela" required>
+                                            <option value="">Selecciona su escuela</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cinto">Cinto</label>
+                                        <select id="cinto" name="cinto" required>
+                                            <option value="">Selecciona un cinto</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sección: Datos del Tutor o Encargado -->
+                            <div class="tutor-info section-prin">
+                                <h2>Datos del Tutor o Encargado</h2>
+                                <div class="section-grid">
+                                    <div class="form-group">
+                                        <label for="tutorDNI">DNI del Tutor:</label>
+                                        <input type="text" class="disabled" id="tutorDNI" name="tutorDNI" placeholder="DNI del Tutor" pattern="\d{8}" title="El DNI debe tener 8 dígitos" required>
+                                        <span class="error" id="tutorDNIError">El DNI debe tener 8 dígitos</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tutorFirstName">Nombre del Tutor:</label>
+                                        <input type="text" class="disabled" id="tutorFirstName" name="tutorFirstName" placeholder="Nombre del Tutor" pattern="[A-Za-z]{4,16}" required>
+                                        <span class="error" id="tutorFirstNameError">El nombre del tutor debe tener entre 4 y 16 letras</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tutorLastName">Apellido del Tutor:</label>
+                                        <input type="text" class="disabled" id="tutorLastName" name="tutorLastName" placeholder="Apellido del Tutor" pattern="[A-Za-z]{4,16}" required>
+                                        <span class="error" id="tutorLastNameError">El apellido del tutor debe tener entre 4 y 16 letras</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="relationship">Relación:</label>
+                                        <input type="text" class="disabled" id="relationship" name="relationship" placeholder="Relación" pattern="[A-Za-z\s]{4,16}" required>
+                                        <span class="error" id="relationshipError">La relación debe tener entre 4 y 16 letras</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tutorPhone">Teléfono del Tutor:</label>
+                                        <input type="text" id="tutorPhone" name="tutorPhone" placeholder="Teléfono del Tutor" pattern="\d{10}" title="El teléfono debe tener 10 dígitos" required>
+                                        <span class="error" id="tutorPhoneError">El teléfono debe tener 10 dígitos</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón Actualizar -->
+                            <button type="submit" id="update-button" class="btn-update">Actualizar</button>
+                        </form>
+                    </section>
+
+                </div>
+            </main>
+            <footer>
+                <div class="footer">
+                    <div class="footer-content">
+                        <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
+                    
+                        <div class="footer-icons-container">
+                        <div class="icon-arrow">
+                            <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
+                        </div>
+                        <div class="footer-icons">
+                            <a target="_blank" href="https://www.facebook.com/p/Union-Mediterranea-de-Taekwondo-100063475813834/"><i class="fa-brands fa-facebook"></i></a>
+                            <a target="_blank" href="https://www.instagram.com/union_mediterranea/"><i class="fa-brands fa-instagram"></i></a>
+                            <a target="_blank" href="#"><i class="fa-brands fa-youtube"></i></a>
+                            <a target="_blank" href="https://wa.me/3517014308"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                        <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                        </div>
+                    
+                        <div class="footer-right">
+                        <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+
+                <div class="footer-bottom">
+                <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>   
+                </div>
+            </footer> 
+                <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+                 <script src="../controllers/gets-data-perfil.js"></script>
+                <script src="../controllers/validate-form-miembro.js"></script>
+                <script src="../controllers/menu.js"></script>
+                <script src="../controllers/apidocumento-img.js"></script>
+                <script>
+                    
+
+                </script>
+                
+                
+
+                
+            </body>
+            </html>
             
-
-            <div class="footer-bottom">
-            <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>   
-            </div>
-        </footer>   
-
-
-
-
-
-
-
-
-            
-            <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-
-            
-
-
-            <script src="../controllers/gets-data-perfil"></script>
-            <script src="../controllers/validate-form-miembro.js"></script>
-            <script src="../controllers/menu.js"></script>
-            
-            
-            
-            
-
-        </body>
-        </html>
-        

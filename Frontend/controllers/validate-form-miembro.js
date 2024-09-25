@@ -1,108 +1,3 @@
-
-                //manejar los campos de arrastre de documento
-                
-                // Selección de los elementos del DOM
-                const fileInputDoc = document.getElementById('file-upload');
-                const dropAreaDoc = document.getElementById('drop-area');
-                const fileInputImg = document.getElementById('image-upload');
-                const dropAreaImg = document.getElementById('drop-area-img');
-            
-                // Función para mostrar el nombre del archivo en la zona de arrastre
-                function showFileName(inputElement, dropAreaElement) {
-                    inputElement.addEventListener('change', function() {
-                        if (inputElement.files.length > 0) {
-                            const fileNames = Array.from(inputElement.files).map(file => file.name).join(', ');
-                            dropAreaElement.textContent = fileNames;
-                        }
-                    });
-                }
-            
-                // Aplicar la función tanto al campo de documento como de imagen
-                showFileName(fileInputDoc, dropAreaDoc);
-                showFileName(fileInputImg, dropAreaImg);
-            
-                // Añadir eventos para cambiar la apariencia cuando se arrastra un archivo
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropAreaDoc.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        dropAreaDoc.classList.add('hover');
-                    });
-                    dropAreaImg.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        dropAreaImg.classList.add('hover');
-                    });
-                });
-            
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropAreaDoc.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        dropAreaDoc.classList.remove('hover');
-                    });
-                    dropAreaImg.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        dropAreaImg.classList.remove('hover');
-                    });
-                });
-
-
-
-                // fech para treer los cintos al select
-                document.addEventListener('DOMContentLoaded', () => {
-                    const cintoSelect = document.getElementById('cinto');
-            
-                    // Realizar la solicitud al endpoint
-                    fetch('http://localhost:3000/cintos')
-                        .then(response => response.json())
-                        .then(data => {
-                            // Iterar sobre los datos y crear opciones para el select
-                            data.forEach(cinto => {
-                                const option = document.createElement('option');
-                                option.value = cinto.id_cinto;
-                                option.textContent = cinto.descripcion;
-                                cintoSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error al cargar los cintos:', error);
-                        });
-                });
-            
-                // fech para treer las escuelas al select
-                document.addEventListener('DOMContentLoaded', () => {
-                    const escuelaSelect = document.getElementById('escuela');
-            
-                    // Realizar la solicitud al endpoint
-                    fetch('http://localhost:3000/escuela')
-                        .then(response => response.json())
-                        .then(data => {
-                            // Iterar sobre los datos y crear opciones para el select
-                            data.forEach(escuela => {
-                                const option = document.createElement('option');
-                                option.value = cinto.id_escuela;
-                                option.textContent = escuela.nombre;
-                                escuelaSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error al cargar las Escuelas:', error);
-                        });
-                });
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Validación del formulario
 function validateForm(event) {
     event.preventDefault(); // Evita que el formulario se envíe hasta que sea válido
@@ -175,14 +70,103 @@ function validateForm(event) {
     toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
 
     if (isValid) {
-        // Si el formulario es válido, puedes enviarlo
-        alert("Formulario enviado con éxito");
-        // Aquí puedes agregar el código para enviar el formulario
-    } else {
-        // En caso de que haya errores, mostrar un mensaje de error
-        
+        // Llamada para actualizar datos del alumno
+        updateAlumno(dni.value);
+
+        // Llamada para subir la imagen del alumno
+        uploadImage(dni.value);
+
+        // Llamada para actualizar datos del tutor
+        updateTutor(tutorDNI.value);
+    }
+}
+
+// Actualiza los datos del alumno
+async function updateAlumno(dni) {
+    const data = {
+        Nombre: document.getElementById('firstName').value,
+        Apellido: document.getElementById('lastName').value,
+        dni: dni,
+        FechaNacimiento: document.getElementById('dob').value,
+        GrupoSanguineo: document.getElementById('bloodGroup').value,
+        Telefono: document.getElementById('phone').value,
+        Email: document.getElementById('email').value,
+        Direccion: document.getElementById('address').value,
+        relacion_tutor: document.getElementById('relationship').value,
+        TutorID: document.getElementById('tutorDNI').value
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('Datos del alumno actualizados con éxito');
+        } else {
+            alert('Error al actualizar los datos del alumno');
+        }
+    } catch (error) {
+        console.error('Error al actualizar datos del alumno:', error);
+        alert('Ocurrió un error al actualizar los datos del alumno');
+    }
+}
+
+// Sube la imagen del alumno
+async function uploadImage(dni) {
+    const imageInput = document.getElementById('image-upload'); // Se cambió a 'image-upload'
+    const formData = new FormData();
+    formData.append('image', imageInput.files[0]); // Asegurarse de que la imagen esté seleccionada
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/miembros/${dni}/cargarImagen`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            alert('Imagen subida con éxito');
+        } else {
+            alert('Error al subir la imagen');
+        }
+    } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        alert('Ocurrió un error al subir la imagen');
+    }
+}
+
+// Actualiza los datos del tutor
+async function updateTutor(tutorDNI) {
+    const tutorData = {
+        dni_tutor: tutorDNI,
+        nombre: document.getElementById('tutorFirstName').value,
+        apellido: document.getElementById('tutorLastName').value,
+        telefono: document.getElementById('tutorPhone').value
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/tutores/${tutorDNI}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tutorData)
+        });
+
+        if (response.ok) {
+            alert('Datos del tutor actualizados con éxito');
+        } else {
+            alert('Error al actualizar los datos del tutor');
+        }
+    } catch (error) {
+        console.error('Error al actualizar datos del tutor:', error);
+        alert('Ocurrió un error al actualizar los datos del tutor');
     }
 }
 
 // Asigna el evento 'submit' al formulario
-document.querySelector('.user-form').addEventListener('submit', validateForm);
+document.getElementById('user-form').addEventListener('submit', validateForm);
