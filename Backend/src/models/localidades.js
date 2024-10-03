@@ -2,22 +2,31 @@ const { sql } = require('../config/bdHelper');
 
 // Obtener una localidad por id
 async function getByID(id) {
-  const result = await sql.query`SELECT * FROM Localidades WHERE id_localidad = ${id}`;
-  return result.recordset[0];
+  try{
+    const result = await sql.query`SELECT * FROM Localidades WHERE id_localidad = ${id}`;
+
+      if (!result || result.recordset.length === 0) {
+        console.log('No existe localidad');
+        return null;
+      }
+      return result.recordset[0];
+  } catch(err){
+    console.error("Error al obtener localidad");
+  }
+
 }
 
 // Crear una nueva localidad
 async function createLocalidad(localidad) {
-  const { id, nombre, id_provincia } = localidad;
+  const { id, nombre, provincia } = localidad;
+  console.log("Entro al Localidades Models");
   try {
-    const result = await sql.query`
-      SET IDENTITY_INSERT Provincias ON;
-
+      await sql.query`
+      SET IDENTITY_INSERT Localidades ON;
       INSERT INTO Localidades (id_localidad, id_provincia, nombre)
-      VALUES (${id}, ${id_provincia}, ${nombre})
-      OUTPUT INSERTED.id_localidad;
+      VALUES (${id}, ${provincia}, ${nombre})
     `;
-    return result.recordset[0].id_localidad;
+    console.log("Localidad cargada con exito");
   } catch (err) {
     console.error('Error al crear localidad:', err);
     throw err;

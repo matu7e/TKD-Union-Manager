@@ -4,9 +4,9 @@ const { sql } = require('../config/bdHelper');
 async function getAllEscuelas() {
   try {
     const result = await sql.query`
-      SELECT e.*, l.nombre as localidad
+      SELECT e.nombre, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
       FROM Escuelas e
-      LEFT JOIN Localidades l ON e.localidad = l.id_localidad
+      LEFT JOIN Miembros m ON e.dni_instructor = m.dni_miembro
     `;
     return result.recordset;
   } catch (err) {
@@ -15,29 +15,14 @@ async function getAllEscuelas() {
   }
 }
 
-// Obtener una escuela por su Localidad
-async function getEscuelasByLocalidad(id_localidad) {
-  try {
-    const result = await sql.query`
-      SELECT e.*, l.nombre as localidad
-      FROM Escuelas e
-      LEFT JOIN Localidades l ON e.localidad = l.id_localidad
-      WHERE e.id_localidad = ${id_localidad}
-    `;
-    return result.recordset[0];
-  } catch (err) {
-    console.error('Error al obtener escuela:', err);
-    throw err;
-  }
-}
-
 // Crear una nueva escuela
 async function createEscuela(escuela) {
-  const { nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad, fecha_de_alta } = escuela;
+  const { nombre, dni_instructor, email, telefono, enlace, logo} = escuela;
+  const fecha = new Date();
   try {
     await sql.query`
-      INSERT INTO Escuelas (nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad)
-      VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${direccion}, ${enlace}, ${logo}, ${localidad}, ${fecha_de_alta})
+      INSERT INTO Escuelas (nombre, dni_instructor, email_escuela, telefono_escuela, enlace, logo_escuela, fecha_de_alta)
+      VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${enlace}, ${logo}, ${fecha})
     `;
     console.log('Escuela creada correctamente.');
   } catch (err) {
@@ -48,12 +33,12 @@ async function createEscuela(escuela) {
 
 // Actualizar una escuela por su ID
 async function updateEscuela(id_escuela, escuela) {
-  const { nombre, dni_instructor, email, telefono, direccion, enlace, logo, localidad } = escuela;
+  const { dni_instructor, email, telefono, enlace, logo} = escuela;
   try {
     await sql.query`
       UPDATE Escuelas
-      SET nombre = ${nombre}, dni_instructor = ${dni_instructor}, email = ${email}, telefono = ${telefono},
-          direccion = ${direccion}, enlace = ${enlace}, logo = ${logo}, localidad = ${localidad}
+      SET dni_instructor = ${dni_instructor}, email_escuela = ${email}, telefono_escuela = ${telefono},
+          enlace = ${enlace}, logo_escuela = ${logo}
       WHERE id_escuela = ${id_escuela}
     `;
     console.log('Escuela actualizada correctamente.');
@@ -76,7 +61,6 @@ async function deleteEscuela(id_escuela) {
 
 module.exports = {
   getAllEscuelas,
-  getEscuelasByLocalidad,
   createEscuela,
   updateEscuela,
   deleteEscuela,

@@ -1,28 +1,10 @@
 const Escuela = require('../models/escuelas');
-const Localidad = require('../models/localidades');
-const Georef = require('../middleware/georefSerice');
 
-async function create(req, res) {
+async function crearEscuela(req, res) {
   const escuelaData = req.body;
-  const { localidadID, id_provincia } = escuelaData;
 
   try {
-    // Verificar si la localidad ya existe
-    let localidad = await Localidad.getByID(localidadID);
-
-    // Si no existe, crear la nueva localidad
-    if (!localidad) {
-      localidad = Georef.getLocalidadByID(localidadID);
-      const newLocalidadId = await Localidad.createLocalidad(localidad);
-      escuelaData.localidad = newLocalidadId;
-    } else {
-      // Si existe, asignar el ID de la localidad existente
-      escuelaData.localidad = localidad.id_localidad;
-    }
-
-    // Crear la nueva escuela con el ID de la localidad
     await Escuela.createEscuela(escuelaData);
-
     res.status(201).send('Escuela creada con éxito');
   } catch (err) {
     console.error('Error al crear escuela:', err);
@@ -70,7 +52,7 @@ async function getByLocalidad(req, res) {
 
   module.exports = {
     getByLocalidad,
-    create,
+    crearEscuela,
     update,
     remove,
   };

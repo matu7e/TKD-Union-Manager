@@ -1,0 +1,66 @@
+const { sql } = require('../config/bdHelper');
+
+async function createPublicacion(publicacion) {
+    const { titulo, descripcion, imagen, enlace, id_escuela } = publicacion;
+
+    try {
+        await sql.query`
+            INSERT INTO Publicaciones (titulo, descripcion, imagen, enlace, id_escuela)
+            VALUES (${titulo}, ${descripcion}, ${imagen}, ${enlace}, ${id_escuela})
+        `;
+    } catch (err) {
+        throw new Error('Error al crear la publicación');
+    }
+}
+
+async function getAllPublicaciones() {
+    try {
+        const result = await sql.query`SELECT * FROM Publicaciones`;
+        return result.recordset;
+    } catch (err) {
+        throw new Error('Error al obtener las publicaciones');
+    }
+}
+
+async function getPublicacionById(id_publicacion) {
+    try {
+        const result = await sql.query`
+            SELECT * FROM Publicaciones WHERE id_publicacion = ${id_publicacion}
+        `;
+        return result.recordset[0];
+    } catch (err) {
+        throw new Error('Error al obtener la publicación');
+    }
+}
+
+async function updatePublicacion(id_publicacion, publicacion) {
+    const { titulo, descripcion, imagen, enlace, id_escuela } = publicacion;
+
+    try {
+        await sql.query`
+            UPDATE Publicaciones
+            SET titulo = ${titulo}, descripcion = ${descripcion}, imagen = ${imagen}, enlace = ${enlace}, id_escuela = ${id_escuela}
+            WHERE id_publicacion = ${id_publicacion}
+        `;
+    } catch (err) {
+        throw new Error('Error al actualizar la publicación');
+    }
+}
+
+async function deletePublicacion(id_publicacion) {
+    try {
+        await sql.query`
+            DELETE FROM Publicaciones WHERE id_publicacion = ${id_publicacion}
+        `;
+    } catch (err) {
+        throw new Error('Error al eliminar la publicación');
+    }
+}
+
+module.exports = {
+    getAllPublicaciones,
+    getPublicacionById,
+    createPublicacion,
+    updatePublicacion,
+    deletePublicacion
+};
