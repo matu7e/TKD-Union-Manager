@@ -20,7 +20,7 @@ async function getLocalidadByID(id) {
     return data.localidades.map(localidad => ({
       id: localidad.id,
       nombre: localidad.nombre,
-      id_provincia: localidad.provincia.id
+      provincia: localidad.provincia.id
     }));
     } catch (err) {
     console.error('Error al obtener localidad:', err);
