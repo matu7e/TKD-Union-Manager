@@ -67,9 +67,7 @@ async function loginMiembro(req, res) {
             return res.status(404).send('El dni o la contraseña son incorrectos');
         }
         
-        // Comparar la contraseña ingresada con el hash almacenado
-
-        
+        // Comparar la contraseña ingresada con el hash almacenado        
         const esValida = await bcrypt.compare(password, miembro.password);
 
         if (!esValida) {
