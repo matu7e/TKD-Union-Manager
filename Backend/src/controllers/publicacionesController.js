@@ -1,4 +1,7 @@
 const Publicacion = require('../models/publicaciones');
+const fs = require('fs');
+const path = require('path');
+
 
 // Crear una nueva publicación
 async function crearPublicacion(req, res) {
@@ -85,6 +88,14 @@ async function cargarImagen(req, res) {
         return res.status(400).send('No se ha proporcionado una imagen');
       }
     try{
+        // 1. Obtener la ruta de la imagen anterior del miembro
+        const publ = await Publicacion.getPublicacionById(id_publ);
+        const imagenAntigua = publ.imagen;
+
+        // 2. Eliminar la imagen anterior si existe
+        if (imagenAntigua && fs.existsSync(imagenAntigua)) {
+            fs.unlinkSync(path.resolve(imagenAntigua));
+        }
         const ruta_imagen = imagen.path;
         await Publicacion.cargaImagen(id_publ, ruta_imagen);
         res.status(200).send('Imagen cargada con exito');

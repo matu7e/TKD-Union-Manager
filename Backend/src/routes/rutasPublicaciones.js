@@ -9,7 +9,7 @@ router.get('/:id_publicacion', publicacionesController.getById);
 router.post('/', publicacionesController.crearPublicacion);
 router.put('/:id_publicacion', publicacionesController.actualizarPublicacion);
 router.delete('/:id_publicacion', publicacionesController.eliminarPublicacion);
-router.post('/:id_publicacion/cargaImagen', upload.single('imagen'), miembrosController.cargarImagen);
+router.post('/:id_publicacion/cargaImagen', upload.single('imagen'), publicacionesController.cargarImagen);
 
 
 module.exports = router;
