@@ -88,8 +88,6 @@ async function cargarImagen(req, res) {
         return res.status(400).send('No se ha proporcionado una imagen');
       }
     try{
-<<<<<<< HEAD
-=======
         // 1. Obtener la ruta de la imagen anterior del miembro
         const publ = await Publicacion.getPublicacionById(id_publ);
         const imagenAntigua = publ.imagen;
@@ -98,7 +96,6 @@ async function cargarImagen(req, res) {
         if (imagenAntigua && fs.existsSync(imagenAntigua)) {
             fs.unlinkSync(path.resolve(imagenAntigua));
         }
->>>>>>> 54a2d0db3d7ff84ab4454c2562aea8b72266a555
         const ruta_imagen = imagen.path;
         await Publicacion.cargaImagen(id_publ, ruta_imagen);
         res.status(200).send('Imagen cargada con exito');
