@@ -4,7 +4,7 @@ const { sql } = require('../config/bdHelper');
 async function getAllEscuelas() {
   try {
     const result = await sql.query`
-      SELECT e.nombre, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
+      SELECT e.id_escuela e.nombre, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
       FROM Escuelas e
       LEFT JOIN Miembros m ON e.dni_instructor = m.dni_miembro
     `;
