@@ -4,7 +4,8 @@
 // Selección de los elementos del DOM
 const fileInputDoc = document.getElementById('file-upload');
 const dropAreaDoc = document.getElementById('drop-area');
-
+const fileInputImg = document.getElementById('image-upload');
+    const dropAreaImg = document.getElementById('drop-area-img');
 // Mostrar el nombre del archivo seleccionado
 fileInputDoc.addEventListener('change', function() {
     if (fileInputDoc.files.length > 0) {
@@ -13,10 +14,13 @@ fileInputDoc.addEventListener('change', function() {
     }
 });
 
+
+
+
 // Asumiendo que ya tienes el token en una variable
 const token = localStorage.getItem('authToken');
 const decodedToken = jwt_decode(token);
-const dni = decodedToken.dni;
+const dni = decodedToken.dni;  
 
 
 

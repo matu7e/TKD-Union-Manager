@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 loader.style.display = 'none'; // Ocultar el loader en caso de error
             });
 
+        // Evento para generar el carnet
+        const generarCarnetButton = document.getElementById('generarCarnetBtn');
+        generarCarnetButton.addEventListener('click', () => {
+            generatePDF(dni, token); // Llamar a la función para generar el PDF
+        });
+
     } catch (error) {
         console.error('Error al decodificar el token:', error);
         loader.style.display = 'none'; // Ocultar el loader en caso de error
@@ -75,7 +81,7 @@ function populateUserInfo(data) {
     document.getElementById('dob').value = data.fecha_nacimiento.split('T')[0];
     document.getElementById('bloodGroup').value = data.grupo_sanguineo;
 
-    const avatarPath = `../../Backend/uploads/avatares/${data.imagen}`;
+    const avatarPath = `../../Backend/${data.imagen}`;
     const avatarElement = document.querySelector('.user-info .avatar');
     avatarElement.src = data.imagen ? avatarPath : '../../Backend/uploads/default.jpg';
 
@@ -92,7 +98,7 @@ function populateUserInfo(data) {
         'tutorLastName', 'relationship'
     ]);
 }
-
+    
 function makeFieldsReadOnly(fields) {
     fields.forEach(field => {
         document.getElementById(field).readOnly = true;
@@ -169,6 +175,7 @@ function cargarCintos(cintoActual) {
                     option.selected = true;
                 }
                 cintoSelect.appendChild(option);
+                
             });
         })
         .catch(error => console.error('Error al cargar los cintos:', error));
@@ -207,12 +214,12 @@ function construirMenu(rol) {
 
     if (rol === 'Instructor') {
         navbarMenu.innerHTML += `
-            <li><a href="mis-alumnos.html">Mis alumnos</a></li>
-            <li><a href="mis-sedes.html">Mis sedes</a></li>
+            <li><a href="ABM_escuelas.html">Mi Escuela</a></li>
+            <li><a href="ABM_alumnos.html">Mis Alumnos</a></li>
         `;
     }
     navbarMenu.innerHTML += `
-        <li><a href="mi-perfil.html">Mi perfil</a></li>
+        <li><a id="actual" href="mi-perfil.html">Mi perfil</a></li>
     `;
 
     navbarMenu.innerHTML += `

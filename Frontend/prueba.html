@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .confirmacion-modal {
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .confirmacion-modal.show {
+            display: flex;
+        }
+
+        .modal-content-confirmacion {
+            background-color: #323232;
+            padding: 60px;
+            border-radius: 8px;
+            width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: modalShow 0.3s ease;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            background-color: #D2D2D2;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .modal-header-confirmacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header-confirmacion h5 {
+            margin: 0;
+            color: #D2D2D2;
+            margin-bottom: 60px;
+            font-size: 35px;
+        }
+
+        .btn-close-confirmacion {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-footer-confirmacion {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-footer-confirmacion button {
+            margin-left: 10px;
+        }
+
+        .btn-cancelar {
+            background-color: #63666B;
+        }
+
+        .btn-confirmar {
+            background-color: #f36b2b;
+        }
+
+        .btn {
+            color: #D2D2D2;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #63666B;
+            color: #323232;
+            transform: scale(1.05);
+        }
+
+        .btn-confirmar:hover {
+            color: #D2D2D2;
+            background-color: #f36b2b;
+            transform: scale(1.05);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .custom-modal {
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .custom-modal.show {
+            display: flex;
+        }
+
+        .modal-content-custom {
+            padding: 90px;
+            border-radius: 20px;
+            width: 1200px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            min-height: 800px;
+            background-color: #323232;
+        }
+
+        .modal-header-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header-custom h5 {
+            margin: 0;
+            color: #D2D2D2;
+            margin-bottom: 60px;
+            font-size: 35px;
+        }
+
+        .btn-close-custom {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .modal-footer-custom {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-footer-custom button {
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <button class="new-publication" id="openModalButton">Nueva Publicación</button>
+
+    <!-- Modal personalizado -->
+    <div id="newPublicationModal" class="custom-modal">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h5 class="modal-title">Nueva Publicación</h5>
+                <button class="btn-close-custom" id="closeModalButton">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="publicationForm">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" required style="height: 150px;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="enlace" class="form-label">Enlace</label>
+                        <input type="url" class="form-control" id="enlace" name="enlace" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Imagen</label>
+                        <div class="contenedor-img">
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required onchange="previewImage(event)">
+                            <img id="imagePreview" src="" alt="Vista previa" class="vista-previa">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-cancelar" id="closeModalButtonFooter">Cerrar</button>
+                <button type="button" class="btn btn-guardar" id="btnGuardar">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="confirmacion-modal">
+        <div class="modal-content-confirmacion">
+            <div class="modal-header-confirmacion">
+                <h5 class="modal-title">Confirmación</h5>
+                <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
+            </div>
+            <div class="confirmacion-modal-body">
+                <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+            </div>
+            <div class="modal-footer-confirmacion">
+                <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
+                <button type="button" class="btn btn-confirmar" id="confirmActionButton" onclick="submitForm()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('newPublicationModal');
+            const confirmModal = document.getElementById('confirmModal');
+            const btnGuardar = document.getElementById('btnGuardar');
+            const closeConfirmModal = document.getElementById('closeConfirmModal');
+            const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+            const loader = document.getElementById('loader'); // Loader para la carga
+
+            let currentPublicationId = null;
+            let isEditMode = false;
+
+            function submitForm() {
+                const url = isEditMode ? `http://localhost:3000/api/publicaciones/${currentPublicationId}` : 'http://localhost:3000/api/publicaciones';
+                const method = isEditMode ? 'PUT' : 'POST';
+
+                loader.style.display = 'block'; // Muestra el loader
+
+                fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        titulo: document.getElementById('titulo').value,
+                        descripcion: document.getElementById('descripcion').value,
+                        enlace: document.getElementById('enlace').value,
+                    })
+                })
+                .then(response => {
+                    loader.style.display = 'none'; // Oculta el loader
+                    if (response.ok) {
+                        alert('Publicación guardada exitosamente.');
+                        closeModal();
+                        confirmModal.style.display = 'none';
+                        confirmModal.classList.remove('show');
+                        document.body.classList.remove('modal-open'); // Restablece el body
+                        loadPublications(); // Recargar publicaciones
+                    } else {
+                        alert('Hubo un error al guardar la publicación.');
+                    }
+                })
+                .catch(error => {
+                    loader.style.display = 'none'; // Ocultar loader en caso de error
+                    console.error('Error:', error);
+                });
+            }
+
+            // Modal de confirmación
+            document.getElementById('openModalButton').addEventListener('click', () => {
+                modal.style.display = 'flex';
+                modal.classList.add('show');
+                document.body.classList.add('modal-open');
+            });
+
+            document.getElementById('closeModalButton').addEventListener('click', () => {
+                closeModal();
+            });
+
+            document.getElementById('closeModalButtonFooter').addEventListener('click', () => {
+                closeModal();
+            });
+
+            document.getElementById('btnGuardar').addEventListener('click', () => {
+                openModal();
+            });
+
+            closeConfirmModal.addEventListener('click', () => {
+                closeModal();
+            });
+
+            cancelConfirmButton.addEventListener('click', () => {
+                closeModal();
+            });
+
+            function openModal() {
+                confirmModal.style.display = 'flex'; // Cambia display a flex para centrar el modal
+                confirmModal.classList.add('show');
+            }
+
+            function closeModal() {
+                confirmModal.style.display = 'none';
+                confirmModal.classList.remove('show');
+                document.body.classList.remove('modal-open');
+            }
+        });
+    </script>
+</body>
+</html>

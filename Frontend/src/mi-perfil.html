@@ -7,7 +7,12 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+            
             <title>Unión Mediterránea - Taekwondo IFT</title>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+            <link rel="shortcut icon" href="../assets/union.ico" type="image/x-icon">
             <link rel="stylesheet" href="../styles/style.css">
             <link rel="stylesheet" href="../styles/footer.css">
             <link rel="stylesheet" href="../styles/menu.css">
@@ -86,6 +91,15 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /*----------------- DESHABILITAR EL SELECT DEL CINTO -----------------------*/
+        #cinto {
+            pointer-events: none;
+            background-color: #e9ecef; 
+            opacity: 0.6;
+        }
+        /*--------------------------------------------------------------------------*/
+        
             </style>
         </head>
         <body>
@@ -114,7 +128,7 @@
                     <ul>
                         <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
                         <li><a href="publicaicones.html">Publicaciones</a></li>
-                        <li><a href="mi-perfil.html">mi perfil</a></li>
+                        <li><a id="actual" href="mi-perfil.html">mi perfil</a></li>
                         <li><a href="#" id="logoutButton" class="login-btn">Cerrar sesión</a></li>
 
                         
@@ -126,14 +140,14 @@
             <div id="loader" class="loader-container">
                 <div class="loader"></div>
             </div>
-            <main>
+            <main  class="main-content">
                 <div class="container">
                     <!-- Primera sección: Avatar y botón de generar carnet -->
                     <section class="user-info">
                         <div class="avatar-container">
                             <img alt="Avatar del usuario" class="avatar">
                         </div>
-                        <button class="btn-generate-card">Generar Carnet Digital</button>
+                        <button class="btn-generate-card" id="generarCarnetBtn">Generar Carnet Digital</button>
                     </section>
             
                     <!-- Segunda sección: Botones de descarga y carga de documentos -->
@@ -194,6 +208,7 @@
                                             <input type="file" id="image-upload" name="avatar" class="file-input" accept="image/*">
 
                                         </label>
+                                        
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Teléfono:</label>
@@ -303,8 +318,9 @@
                 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
                  <script src="../controllers/gets-data-perfil.js"></script>
                 <script src="../controllers/validate-form-miembro.js"></script>
-                <script src="../controllers/menu.js"></script>
+                <script src="../controllers/public/menu.js"></script>
                 <script src="../controllers/apidocumento-img.js"></script>
+                <script src="../controllers/generar-carnet.js"></script>
                 <script>
                     
 
