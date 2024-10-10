@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 const Miembro = require('../models/miembros');
 
 const JWT_SECRET = 'AnalistasNoIngenieros';
@@ -105,6 +107,14 @@ async function cargarImagen(req, res) {
         return res.status(400).send('No se ha proporcionado una imagen');
       }
     try{
+        // 1. Obtener la ruta de la imagen anterior del miembro
+        const miembro = await Miembro.getBydni(dni_miembro);
+        const imagenAntigua = miembro.imagen; // Campo 'imagen' en la base de datos
+
+        // 2. Eliminar la imagen anterior si existe
+        if (imagenAntigua && fs.existsSync(imagenAntigua)) {
+            fs.unlinkSync(path.resolve(imagenAntigua));
+        }
         const ruta_imagen = imagen.path;
         await Miembro.cargaImagen(dni_miembro, ruta_imagen);
         res.status(200).send('Imagen cargada con exito');
