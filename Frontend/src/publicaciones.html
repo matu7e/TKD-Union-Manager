@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Unión Mediterránea - Taekwondo IFT</title>
+    <link rel="shortcut icon" href="../assets/union.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/mi-perfil.css">
+    
+
+    <style>
+/* Contenedor de alertas */
+.alert-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espacio entre las alertas */
+    z-index: 1000; /* Para asegurarse de que esté encima de otros elementos */
+    
+}
+
+/* Estilos para las alertas */
+.alert {
+    padding: 15px;
+    width: 450px;
+    border-right: 4px;
+    color: #fff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.alert-aviso{
+    background-color: #f36b2b;
+    display: none;
+    color: #000;
+    
+}
+.alert-danger {
+    background-color: #bd2d2a;
+    display: none;
+}
+
+.alert-success {
+    background-color: #2c9900;
+    display: none;
+}       
+        
+.disabled {
+    opacity: 0.6;
+}
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #323232;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+
+.loader {
+    border: 16px solid #000000b6;
+    border-radius: 50%;
+    border-top: 16px solid #f36b2b;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    text-align: center;
+    margin: auto;
+    align-content: center;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+    </style>
+</head>
+<body>
+    <div class="alert-container">
+        <div id="alert-aviso" class="alert alert-aviso">            
+        </div>
+        <div id="alert-success" class="alert alert-success">            
+        </div>
+        <div id="alert-error" class="alert alert-danger">
+            
+        </div>
+    
+        
+    </div>
+    
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="../Index.html">
+                <img src="../assets/log4.png" alt="Logo" class="navbar-logo"> <!-- Reemplaza con la ruta de tu logo -->
+                <h1 class="navbar-title">UNION MEDITERRANEA</h1>
+            </a>
+            
+        </div>
+        <nav class="navbar-menu" id="navbar-menu">
+            <ul>
+                <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
+                <li><a id="actual" href="publicaicones.html">Publicaciones</a></li>
+                <li><a href="mi-perfil.html">mi perfil</a></li>
+                <li><a href="#" id="logoutButton" class="login-btn">Cerrar sesión</a></li>
+
+                
+            </ul>
+        </nav>
+        <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
+    </header>
+    <!-- Loader -->
+    <div id="loader" class="loader-container">
+        <div class="loader"></div>
+    </div>
+    <main  class="main-content">
+        
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="footer-content">
+                <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
+            
+                <div class="footer-icons-container">
+                <div class="icon-arrow">
+                    <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+                <div class="footer-icons">
+                    <a target="_blank" href="https://www.facebook.com/p/Union-Mediterranea-de-Taekwondo-100063475813834/"><i class="fa-brands fa-facebook"></i></a>
+                    <a target="_blank" href="https://www.instagram.com/union_mediterranea/"><i class="fa-brands fa-instagram"></i></a>
+                    <a target="_blank" href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a target="_blank" href="https://wa.me/3517014308"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+                <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                </div>
+            
+                <div class="footer-right">
+                <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="footer-bottom">
+        <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>   
+        </div>
+    </footer> 
+        <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+         <script src="../controllers/gets-data-perfil.js"></script>
+        <script src="../controllers/validate-form-miembro.js"></script>
+        <script src="../controllers/menu.js"></script>
+        <script src="../controllers/apidocumento-img.js"></script>
+        <script>
+            
+
+        </script>
+        
+        
+
+        
+    </body>
+    </html>
+    

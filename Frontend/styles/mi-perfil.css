@@ -1,12 +1,10 @@
 .container {
-    text-align: center;
-    max-width: 1200px;
-    padding: 100px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    margin: 50px auto;
+    
+    padding: 100px 0;
+    
 }
-
+.main-content{
+    padding: 50px 150px;}
 select {
     padding: 15px;
     margin-bottom: 10px;
@@ -47,6 +45,7 @@ select option {
     width: 300px;
     height: 300px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .btn-generate-card {

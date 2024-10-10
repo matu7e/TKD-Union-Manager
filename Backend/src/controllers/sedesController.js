@@ -12,6 +12,20 @@ async function getAll(req, res) {
     }
 }
 
+async function getByLocalidad(req, res) {
+    const localidad = req.params.id_localidad;
+    try{
+        const sedes = await Sede.getSedesByLocalidad(localidad);
+        if(!sedes || sedes.length === 0){
+            return res.status(404).send("No hay sedes en esa localidad");
+        }
+        return res.status(200).json(sedes);
+    } catch(err){
+        res.status(500).send("Problemas al obtener Sedes: ", err);
+    }
+
+    
+}
 async function getById(req, res) {
     const { id_sede } = req.params;
     try {
@@ -31,10 +45,6 @@ async function create(req, res) {
 
     try {
         const localidad = await Localidades.getByID(sedeData.localidad.id);
-        console.log("Localidad id: ", sedeData.localidad.id);
-        console.log("Localidad nom: ", sedeData.localidad.nombre);
-        console.log("Localidad prov: ", sedeData.localidad.provincia);
-
 
         // Si no existe, guardar la localidad
         if (!localidad) {
@@ -42,8 +52,6 @@ async function create(req, res) {
             await Localidades.createLocalidad(sedeData.localidad);
         }
 
-        // Crear la sede con la localidad ya verificada
-        console.log("Se salta el if de creacion");
         await Sede.createSede(sedeData);
         res.status(201).send('Sede creada con éxito');
     } catch (err) {
@@ -94,5 +102,6 @@ module.exports = {
     getById,
     create,
     update,
-    remove
+    remove,
+    getByLocalidad
 };

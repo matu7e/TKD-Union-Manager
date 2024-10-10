@@ -81,19 +81,20 @@ function validateForm(event) {
     }
 }
 
+    
+   
+
+
+
 // Actualiza los datos del alumno
 async function updateAlumno(dni) {
     const data = {
-        Nombre: document.getElementById('firstName').value,
-        Apellido: document.getElementById('lastName').value,
-        dni: dni,
-        FechaNacimiento: document.getElementById('dob').value,
-        GrupoSanguineo: document.getElementById('bloodGroup').value,
-        Telefono: document.getElementById('phone').value,
         Email: document.getElementById('email').value,
         Direccion: document.getElementById('address').value,
-        relacion_tutor: document.getElementById('relationship').value,
-        TutorID: document.getElementById('tutorDNI').value
+        dni_tutor: document.getElementById('tutorDNI').value,
+        id_escuela: document.getElementById('escuela').value,
+        id_cinto: document.getElementById('cinto').value,
+        Telefono: document.getElementById('phone').value
     };
 
     try {
@@ -102,7 +103,7 @@ async function updateAlumno(dni) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data)  
         });
 
         if (response.ok) {
@@ -116,16 +117,20 @@ async function updateAlumno(dni) {
     }
 }
 
+
 // Sube la imagen del alumno
 async function uploadImage(dni) {
     const imageInput = document.getElementById('image-upload'); // Se cambió a 'image-upload'
     const formData = new FormData();
-    formData.append('image', imageInput.files[0]); // Asegurarse de que la imagen esté seleccionada
+    formData.append('imagen', imageInput.files[0]); // Asegurarse de que la imagen esté seleccionada
 
     try {
-        const response = await fetch(`${API_BASE_URL}/miembros/${dni}/cargarImagen`, {
+        const response = await fetch(`${API_BASE_URL}/miembros/${dni}/cargaImagen`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         if (response.ok) {

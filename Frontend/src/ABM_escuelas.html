@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Unión Mediterránea - Taekwondo IFT</title>
+    <link rel="shortcut icon" href="../assets/union.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/ABM_publicaciones.css">
+    <link rel="stylesheet" href="../styles/administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<style>
+.img-circular-container {
+    display: flex;
+    justify-content: center; /* Centra la imagen horizontalmente */
+    margin-top: 10px; /* Espacio entre el input y la imagen */
+}
+
+.img-circular {
+    width: 250px; /* Ancho de la imagen */
+    height: 250px; /* Alto de la imagen */
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    object-fit: cover; /* Recorta la imagen para que encaje en el contenedor */
+    border: 2px solid #ccc; /* Bordes opcionales para la imagen */
+}
+
+</style>
+<body>
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="../Index.html">
+                <img src="../assets/log4.png" alt="Logo" class="navbar-logo">
+                <h1 class="navbar-title">PANEL DE ADMINISTRACION</h1>
+            </a>
+        </div>
+        <nav class="navbar-menu" id="navbar-menu">
+            <ul>
+                <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U">
+                <li><a href="ABM_publicaciones.html">Publicaciones</a></li>
+                <li><a href="ABM_alumnos.html">Mis Alumnos</a></li> 
+                <li><a id="actual" href="ABM_escuelas.html">Mi Escuela</a></li>
+                <li><a href="mi-perfil.html">Mi Perfil</a></li>
+                <li><a href="../src/login.html" class="login-btn">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+        <i class="fas fa-bars hamburger" id="hamburger"></i>
+    </header>       
+
+    <main class="container">
+        <h2>Escuela</h2>
+        <button class="new-publication" id="openModalButton">Mi Escuela</button>
+    
+        <!-- Modal personalizado -->
+        <div id="newPublicationModal" class="custom-modal">
+            <div class="modal-content-custom">
+                <div class="modal-header-custom">
+                    <h5 class="modal-title">Crear Nueva Escuela</h5>
+                    <button class="btn-close-custom" id="closeModalButton">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="publicationForm">
+                        <!-- Campo para el logo de la escuela con vista previa -->
+                        <div class="mb-3 img-circular-container">
+                            <img id="imagePreview" src="../../../backend/default/logo.png" alt="Vista previa" class="img-circular">
+                        </div>
+    
+                        <!-- Campo para el nombre de la escuela -->
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Nombre de la Escuela</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" required>
+                        </div>
+    
+                        <!-- Campo para el logo de la escuela -->
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Cargar Logo de la Escuela</label>
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" onchange="previewImage(event)">
+                        </div>
+    
+                        <!-- Campo para el email -->
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="descripcion" name="descripcion" required>
+                        </div>
+    
+                        <!-- Campo para el teléfono -->
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+    
+                        <!-- Campo para el enlace de Instagram -->
+                        <div class="mb-3">
+                            <label for="enlaceInstagram" class="form-label">Enlace de Instagram</label>
+                            <input type="text" class="form-control" id="enlaceInstagram" name="enlaceInstagram" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-cancelar" id="closeModalButtonFooter">Cerrar</button>
+                    <button type="button" class="btn btn-guardar" id="btnGuardar">Guardar</button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Modal de Confirmación -->
+        <div id="confirmModal" class="confirmacion-modal">
+            <div class="modal-content-confirmacion">
+                <div class="modal-header-confirmacion">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
+                </div>
+                <div class="confirmacion-modal-body">
+                    <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+                </div>
+                <div class="modal-footer-confirmacion">
+                    <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
+                    <button type="button" class="btn btn-confirmar" id="confirmActionButton">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+    <footer>
+        <div class="footer">
+            <div class="footer-content">
+                <img src="../assets/union-logo.png" alt="Logo Unión Mediterránea de Taekwondo" class="footer-logo">
+                <div class="footer-icons-container">
+                    <div class="icon-arrow">
+                        <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                    <div class="footer-icons">
+                        <a target="_blank" href="https://www.facebook.com/p/Union-Mediterranea-de-Taekwondo-100063475813834/"><i class="fa-brands fa-facebook"></i></a>
+                        <a target="_blank" href="https://www.instagram.com/union_mediterranea/"><i class="fa-brands fa-instagram"></i></a>
+                        <a target="_blank" href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a target="_blank" href="https://wa.me/3517014308"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                    <a href="mailto:supportunion@gmail.com" class="footer-email">supportunion@gmail.com</a>
+                </div>
+                <div class="footer-right">
+                    <img src="../assets/fetra-logo.png" alt="Logo Federación Taekwondo" class="footer-logo">
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>
+        </div>
+    </footer>
+
+    <!-- <script src="../controllers/validate-form-miembro.js"></script> -->
+    <script src="../controllers/public/menu.js"></script>
+    <!--<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openModalButton = document.getElementById('openModalButton');
+            const btnGuardar = document.getElementById('btnGuardar');
+            const confirmModal = document.getElementById('confirmModal');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const closeModalButtonFooter = document.getElementById('closeModalButtonFooter');
+            const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+            const confirmActionButton = document.getElementById('confirmActionButton');
+    
+            // Muestra el modal para crear una nueva escuela
+            openModalButton.addEventListener('click', () => {
+                document.getElementById('newPublicationModal').style.display = 'block';
+            });
+    
+            // Función para mostrar el modal de confirmación
+            btnGuardar.addEventListener('click', () => {
+                confirmModal.style.display = 'block'; // Muestra el modal de confirmación
+            });
+    
+            // Cerrar modal de creación de escuela
+            closeModalButton.onclick = closeModal;
+            closeModalButtonFooter.onclick = closeModal;
+    
+            // Cerrar modal de confirmación
+            cancelConfirmButton.onclick = () => {
+                confirmModal.style.display = 'none';
+            };
+    
+            // Confirmar acción para guardar la escuela
+            confirmActionButton.onclick = submitForm;
+    
+            // Función para cerrar el modal de creación
+            function closeModal() {
+                document.getElementById('newPublicationModal').style.display = 'none';
+            }
+    
+            // Función para enviar los datos al backend
+            function submitForm() {
+                const formData = new FormData(document.getElementById('publicationForm'));
+    
+                // Agregar logo como null si no se carga
+                if (!formData.get('imagen') || formData.get('imagen').size === 0) {
+                    formData.set('logo', null);
+                }
+    
+                // Función para decodificar el token JWT
+                function decodeJWT(token) {
+                    const payload = token.split('.')[1]; // Obtener la parte del payload
+                    const decodedPayload = JSON.parse(atob(payload)); // Decodificar y parsear
+                    return decodedPayload;
+                }
+    
+                // Obtener el token del Local Storage
+                const token = localStorage.getItem('tu_token'); // Reemplaza 'tu_token' con la clave donde guardas tu token
+    
+                if (token) {
+                    const decodedToken = decodeJWT(token);
+                    const dniInstructor = decodedToken.dni; // Asegúrate de que 'dni' sea el nombre correcto de la propiedad en tu token
+    
+                    // Enviar los datos al backend
+                    fetch('http://localhost:3000/escuelas', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            nombre: formData.get('titulo'),
+                            dni_instructor: dniInstructor, // Asignar el DNI extraído
+                            email: formData.get('descripcion'),
+                            telefono: formData.get('telefono'),
+                            enlace: formData.get('enlaceInstagram'),
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la respuesta del servidor');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Escuela creada:', data);
+                        confirmModal.style.display = 'none'; // Cerrar modal de confirmación
+                        closeModal(); // Cerrar modal de creación
+                    })
+                    .catch(error => {
+                        console.error('Error al crear la escuela:', error);
+                        // Aquí puedes agregar una alerta o un mensaje para el usuario
+                    });
+                } else {
+                    console.error('Token no encontrado en Local Storage');
+                    // Aquí también puedes agregar una alerta para informar al usuario
+                }
+            }
+        });
+    </script>-->
+
+    <script>
+        // Función para ejecutar la acción de confirmación y enviar los datos
+function submitForm() {
+    // Obtener los valores del formulario
+    const nombre = document.getElementById('titulo').value;
+    const email = document.getElementById('descripcion').value;
+    const telefono = document.getElementById('telefono').value;
+    const enlace = document.getElementById('enlaceInstagram').value;
+
+    // Crear el objeto que se enviará en el cuerpo del POST
+    const data = {
+        nombre: nombre,
+        dni_instructor: null, // Se deja null como se indicó
+        email: email,
+        telefono: telefono,
+        enlace: enlace,
+        logo: null // Se deja null por defecto, la imagen se envía por otro endpoint
+    };
+
+    // Realizar la solicitud POST utilizando fetch
+    fetch('http://localhost:3000/escuelas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Se especifica el tipo de contenido
+        },
+        body: JSON.stringify(data) // Convertir el objeto a JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Éxito:', data);
+        // Mostrar una alerta de éxito, cerrar los modales, etc.
+        alert('La escuela ha sido creada exitosamente');
+        closeModal(confirmModal); // Cerrar el modal de confirmación
+        closeModal(newPublicationModal); // Cerrar el modal de nueva publicación
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Hubo un error al crear la escuela');
+    });
+}
+
+// Evento para confirmar la acción
+confirmActionButton.addEventListener('click', submitForm);
+
+    </script>
+    
+    <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
+    <!--<script src="../controllers/controllers-publicaciones/ABM_publicacione.js"></script>-->
+    <!--<script src="../controllers/escuelas.js"></script>-->
+</body>
+</html>

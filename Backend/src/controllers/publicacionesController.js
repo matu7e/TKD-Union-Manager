@@ -77,10 +77,27 @@ async function eliminarPublicacion(req, res) {
     }
 }
 
+async function cargarImagen(req, res) {
+    const id_publ = req.params.id_publicacion;
+    const imagen = req.file;
+
+    if (!imagen) {
+        return res.status(400).send('No se ha proporcionado una imagen');
+      }
+    try{
+        const ruta_imagen = imagen.path;
+        await Publicacion.cargaImagen(id_publ, ruta_imagen);
+        res.status(200).send('Imagen cargada con exito');
+    } catch(err) {
+        res.status(500).send('Problemas con la carga de imagen');
+    }    
+}
+
 module.exports = {
     crearPublicacion,
     getAll,
     getById,
     actualizarPublicacion,
-    eliminarPublicacion
+    eliminarPublicacion,
+    cargarImagen
 };

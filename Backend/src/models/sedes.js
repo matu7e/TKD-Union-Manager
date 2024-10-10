@@ -12,6 +12,20 @@ async function getAllSedes() {
     }
 }
 
+async function getSedesByLocalidad(localidad_id) {
+    try{
+        const result = await sql.query`SELECT s.direccion, l.nombre AS localidad, e.nombre AS escuela 
+        FROM Sedes s 
+        LEFT JOIN Escuelas e ON s.id_escuela = e.id_escuela 
+        LEFT JOIN Localidades l ON s.localidadID = l.id_localidad 
+        WHERE s.localidadID = ${localidad_id}`;
+        
+        return result.recordset;
+    }   catch(err){
+        console.error("Problemas al obtener Sedes por Localidad: ", err);
+    }
+}
+
 async function getSedeById(id_sede) {
     try {
         const result = await sql.query`
@@ -70,5 +84,6 @@ module.exports = {
     getSedeById,
     createSede,
     updateSede,
-    deleteSede
+    deleteSede,
+    getSedesByLocalidad
 };

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administradores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Libre Baskerville", serif !important;
+            background-color: #D2D2D2;
+            color: #323232;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 100px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .login-container {
+            background-color: #63666B;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #D2D2D2;
+            border-radius: 4px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #f36b2b;
+            color: #D2D2D2;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.05);
+        }
+
+        .error-message {
+            color: #f36b2b;
+            font-size: 14px;
+            display: none;
+            margin-top: 10px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UNIÓN MEDITERRÁNEA ADMIN</h1>
+        <div class="login-container">
+            <img src="../../../Frontend/assets/log1.png" alt="Logo Administrador" class="login-logo">
+            <form id="loginForm">
+                <input type="text" id="usuario" class="input-field" placeholder="Usuario" required>
+                <input type="password" id="contrasena" class="input-field" placeholder="Contraseña" required>
+                <button type="submit" class="btn-login">Ingresar</button>
+                <p class="error-message" id="errorMessage">Usuario o contraseña incorrectos</p>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        El acceso a esta pestaña es solo para usuarios autorizados. Si no tiene permisos, comuníquese con el administrador.
+    </footer>
+
+    <script>
+        const form = document.getElementById("loginForm");
+        const errorMessage = document.getElementById("errorMessage");
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const usuarioInput = document.getElementById("usuario").value;
+            const contrasenaInput = document.getElementById("contrasena").value;
+
+            try {
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        usuario: usuarioInput,
+                        contrasena: contrasenaInput
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.token) {
+                    const tokenPayload = parseJwt(data.token);
+                    if (tokenPayload.rol === "admin") {
+                        alert("Bienvenido, administrador");
+                        localStorage.setItem('token', data.token);
+                        window.location.href = "/admin-dashboard.html";
+                    } else {
+                        errorMessage.textContent = "Acceso denegado: No tiene permisos de administrador.";
+                        errorMessage.style.display = "block";
+                    }
+                } else {
+                    errorMessage.textContent = "Usuario o contraseña incorrectos";
+                    errorMessage.style.display = "block";
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                errorMessage.textContent = "Ocurrió un error. Inténtelo de nuevo.";
+                errorMessage.style.display = "block";
+            }
+        });
+
+        function parseJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+    </script>
+</body>
+</html>
