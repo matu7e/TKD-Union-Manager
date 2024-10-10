@@ -43,12 +43,12 @@ async function getSedeById(id_sede) {
 
 async function createSede(sede) {
     const {id_escuela, direccion} = sede;
-    const localidad_id = sede.localidad.id;
+    const id_localidad = sede.localidad.id;
 
     try {
         await sql.query`
             INSERT INTO Sedes (id_escuela, direccion, localidadID)
-            VALUES (${id_escuela}, ${direccion}, ${localidad_id})
+            VALUES (${id_escuela}, ${direccion}, ${id_localidad})
         `;
         console.log("Sede registrada correctamente");
     } catch (err) {
@@ -56,11 +56,12 @@ async function createSede(sede) {
     }
 }
 
-async function updateSede(id_sede, direccion, localidadID) {
+async function updateSede(id_sede, sede) {
+    const {direccion, id_localidad} = sede;
     try {
         await sql.query`
             UPDATE Sedes
-            SET direccion = ${direccion}, localidadID = ${localidadID}
+            SET direccion = ${direccion}, localidadID = ${id_localidad}
             WHERE id_sede = ${id_sede}
         `;
     } catch (err) {

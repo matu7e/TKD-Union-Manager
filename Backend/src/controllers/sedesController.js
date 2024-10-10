@@ -63,7 +63,7 @@ async function create(req, res) {
 // Actualizar una sede
 async function update(req, res) {
     const { id_sede } = req.params;
-    const { id_escuela, direccion, id_localidad } = req.body;
+    const datosSede = req.body;
 
     try {
         const sedeExistente = await Sede.getSedeById(id_sede);
@@ -71,7 +71,7 @@ async function update(req, res) {
             return res.status(404).send('Sede no encontrada');
         }
 
-        await Sede.updateSede(id_sede, id_escuela, direccion, id_localidad);
+        await Sede.updateSede(id_sede, datosSede);
         res.status(200).send('Sede actualizada con éxito');
     } catch (err) {
         console.error('Error al actualizar la sede:', err);

@@ -88,7 +88,6 @@ async function cargarImagen(req, res) {
         return res.status(400).send('No se ha proporcionado una imagen');
       }
     try{
-        // 1. Obtener la ruta de la imagen anterior del miembro
         const publ = await Publicacion.getPublicacionById(id_publ);
         const imagenAntigua = publ.imagen;
 
@@ -101,7 +100,7 @@ async function cargarImagen(req, res) {
         res.status(200).send('Imagen cargada con exito');
     } catch(err) {
         res.status(500).send('Problemas con la carga de imagen');
-    }    
+    }
 }
 
 module.exports = {

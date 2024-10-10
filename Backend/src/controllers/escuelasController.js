@@ -50,9 +50,20 @@ async function getByLocalidad(req, res) {
     }
   }
 
+  async function getAll(req, res) {
+    try {
+        const sedes = await Escuela.getAllEscuelas();
+        res.status(200).json(sedes);
+    } catch (err) {
+        console.error('Error al obtener las escuelas:', err);
+        res.status(500).send('Error al obtener las escuelas');
+    }
+}
+
   module.exports = {
     getByLocalidad,
     crearEscuela,
     update,
     remove,
+    getAll
   };

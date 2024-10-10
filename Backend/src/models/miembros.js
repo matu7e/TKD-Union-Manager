@@ -43,7 +43,6 @@ async function getMiembros() {
     }
   }
 
-// Actualizar un miembro TENGO QUE ACTUALIZAR ESTO DEBIDO A LOS CAMBIOS EN LA BD
 async function updateMember(dni, miembro) {
     const { telefono, email, direccion, dni_tutor, id_escuela, id_cinto} = miembro;
     try {
