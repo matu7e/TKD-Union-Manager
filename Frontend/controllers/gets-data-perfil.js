@@ -183,22 +183,23 @@ function cargarCintos(cintoActual) {
 
 function cargarEscuelas(escuelaActual) {
     const escuelaSelect = document.getElementById('escuela');
-    fetch(`${API_BASE_URL}/escuela`)
+    fetch(`${API_BASE_URL}/escuelas`)
         .then(response => response.json())
         .then(data => {
             escuelaSelect.innerHTML = '<option value="">Selecciona su escuela</option>'; // Limpiar opciones
             data.forEach(escuela => {
                 const option = document.createElement('option');
                 option.value = escuela.id_escuela; // Asegúrate de que este sea el ID correcto
-                option.textContent = escuela.nombre;
+                option.textContent = escuela.nombre; // Asumir que el nombre de la escuela es lo que quieres mostrar
                 if (escuela.nombre === escuelaActual) {
-                    option.selected = true;
+                    option.selected = true; // Seleccionar la escuela actual si coincide
                 }
-                escuelaSelect.appendChild(option);
+                escuelaSelect.appendChild(option); // Agregar la opción al select
             });
         })
         .catch(error => console.error('Error al cargar las escuelas:', error));
 }
+
 
 // Construir el menú
 function construirMenu(rol) {
