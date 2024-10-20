@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/ABM_publicaciones.css">
-    <link rel="stylesheet" href="../styles/administrador.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
 </head>
@@ -30,6 +30,225 @@
     object-fit: cover; /* Recorta la imagen para que encaje en el contenedor */
     border: 2px solid #ccc; /* Bordes opcionales para la imagen */
 }
+
+
+
+
+
+
+
+
+.container {
+    text-align: center;
+    max-width: 1500px;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    margin: 150px auto;
+    flex: 1;
+}
+
+.search-filters {
+    background-color: #63666B;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 0 auto;
+    height: auto;  /* Ajusta la altura automáticamente */
+    align-content: center;
+}
+
+.filter-row {
+    display: flex;
+    justify-content: flex-end;  /* Cambiado a 'flex-start' para alinear a la izquierda */
+    padding-bottom: 15px;
+    margin: 15px;
+}
+
+.filter-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.filter-group:last-child {
+    margin-right: 0;
+}
+
+label {
+    display: block;
+    color: #fff;
+    margin-bottom: 5px;
+    text-align: initial;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 16px;
+    background-color: #d5d7d8;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+}
+
+.search-button {
+    background-color: #323232;
+    color: white;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    display: block;
+}
+
+.search-button:hover {
+    background-color: #f36a2bc2;
+}
+
+
+h2, h3{
+    margin: 30px;
+    margin-bottom: 30px;
+    font-size: 40px;
+    text-align: left;
+    margin-bottom: 50px;
+}
+h3{
+    color: #D2D2D2;
+}
+
+
+/* Estilos personalizados del modal */
+        .confirmacion-modal {
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            align-content: center;
+            margin: auto;
+            
+        }
+
+        .confirmacion-modal.show {
+            display: flex;
+        }
+
+        .modal-content-confirmacion {
+            background-color: #323232;
+            padding: 60px;
+            border-radius: 8px;
+            width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: modalShow 0.3s ease;
+            align-content: center;
+            margin: auto;
+        }
+        .form-control{
+            width: 100%;
+            padding: 16px;
+            background-color: #D2D2D2;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .modal-header-confirmacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header-confirmacion h5 {
+            margin: 0;
+            color: #D2D2D2;
+            margin-bottom: 60px;
+            font-size: 35px;
+        }
+
+        .btn-close-confirmacion {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-footer-confirmacion {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-footer-confirmacion button {
+            margin-left: 10px;
+        }
+        .btn-cancelar{
+            background-color: #63666B;;
+            
+        }
+        .btn-confirmar{
+            
+            background-color: #f36b2b;
+            
+        
+        }
+        .btn{
+            color: #D2D2D2;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+        }
+        .btn-cancelar:hover{
+            background-color: #63666B;
+            color: #323232;
+            transform: scale(1.05); /* Efecto de aumento en el hover */
+            
+        }
+        .btn-confirmar:hover {
+            color: #D2D2D2;
+            background-color: #f36b2b;
+            transform: scale(1.05); /* Efecto de aumento en el hover */
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+        .vista-previa{
+            display: block;
+            width: 150px;
+            height: 140px;
+            margin-top: 10px;
+            margin: auto;
+        }
+        .contenedor-img{
+            background-color: #D2D2D2;
+        }
 
 </style>
 <body>
@@ -125,6 +344,51 @@
                 </div>
             </div>
         </div>
+
+       
+        <!-- Formulario reorganizado para crear sedes manteniendo las clases -->
+        <section class="search-filters">
+            <h3>Sedes</h3>
+            <form action="#" method="POST" id="create-sede-form" novalidate>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" id="direccion" name="direccion" placeholder="Ingresa la dirección" required />
+                    </div>
+        
+                    <div class="filter-group">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" id="descripcion" name="descripcion" placeholder="Ingresa la descripción" required />
+                    </div>
+                </div>
+        
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="provincia">Provincia</label>
+                        <select id="provincia" name="provincia" required>
+                            <option value="">Selecciona la provincia</option>
+                            <!-- Opciones dinámicas de provincias -->
+                        </select>
+                    </div>
+        
+                    <div class="filter-group">
+                        <label for="localidad">Localidad</label>
+                        <select id="localidad" name="localidad" required>
+                            <option value="">Selecciona la localidad</option>
+                            <!-- Opciones dinámicas de localidades -->
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="filter-row">
+                    <button type="button" id="add-sede-button" class="search-button">Añadir</button>
+                </div>
+            </form>
+        
+            <div id="sedes-list"></div>
+        </section>
+        
+
     </main>
     
 
@@ -154,7 +418,7 @@
         </div>
     </footer>
 
-    <!-- <script src="../controllers/validate-form-miembro.js"></script> -->
+    
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="../controllers/public/menu.js"></script>
     
@@ -240,7 +504,161 @@ confirmActionButton.addEventListener('click', submitForm);
     
     </script>
     <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
-    
+
+
+
+    <!-- FALTA PROBAR CUANDO SE HAGA EL ENDPOINT GET BY ID INSTRUCTOR -->
+    <!--<script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                redirectToLogin('Token no encontrado.');
+                return;
+            }
+        
+            const { dni } = jwt_decode(token);
+        
+            // Hacer la solicitud al endpoint de la escuela
+            try {
+                const response = await fetch(`../../../backend/escuela/${dni}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener los datos de la escuela');
+                }
+        
+                const escuela = await response.json();
+        
+                // Si el instructor tiene una escuela registrada, rellenar los campos del formulario
+                if (escuela) {
+                    document.getElementById('titulo').value = escuela.nombre;
+                    document.getElementById('descripcion').value = escuela.email;
+                    document.getElementById('telefono').value = escuela.telefono;
+                    document.getElementById('enlaceInstagram').value = escuela.enlace;
+        
+                    // Mostrar el logo de la escuela si existe
+                    const logoPath = escuela.logo ? `../../../backend/logos/${escuela.logo}` : '../../../backend/default/logo.png';
+                    document.getElementById('imagePreview').src = logoPath;
+                }
+            } catch (error) {
+                console.error('Error al cargar los datos de la escuela:', error);
+            }
+        });
+        
+        // Función para mostrar una vista previa de la imagen cargada
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        </script>-->
+        <script>
+            // Función para cargar provincias desde el backend
+            async function cargarProvincias() {
+                try {
+                    const response = await fetch('http://localhost:3000/georef');
+                    if (!response.ok) throw new Error('Error al obtener las provincias');
+            
+                    const provincias = await response.json();
+                    const selectProvincia = document.getElementById('provincia');
+                    selectProvincia.innerHTML = '<option value="">Seleccione una provincia</option>';
+            
+                    provincias.forEach(provincia => {
+                        const option = document.createElement('option');
+                        option.value = provincia.id;
+                        option.textContent = provincia.nombre;
+                        selectProvincia.appendChild(option);
+                    });
+            
+                    // Evento para cargar localidades cuando se selecciona una provincia
+                    selectProvincia.addEventListener('change', async (event) => {
+                        const provinciaId = event.target.value;
+                        if (provinciaId) await cargarLocalidades(provinciaId);
+                    });
+            
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            // Función para cargar localidades de una provincia
+            async function cargarLocalidades(provinciaId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/georef/${provinciaId}`);
+                    if (!response.ok) throw new Error('Error al obtener las localidades');
+            
+                    const localidades = await response.json();
+                    const selectLocalidad = document.getElementById('localidad');
+                    selectLocalidad.innerHTML = '<option value="">Seleccione una localidad</option>';
+            
+                    localidades.forEach(localidad => {
+                        const option = document.createElement('option');
+                        option.value = localidad.id;
+                        option.textContent = localidad.nombre;
+                        selectLocalidad.appendChild(option);
+                    });
+            
+                    // Inicializar Select2
+                    $('#localidad').select2({
+                        placeholder: 'Seleccione una localidad',
+                        allowClear: true
+                    });
+            
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            // Manejar el evento de clic en el botón para agregar sede
+            const createSedeForm = document.getElementById('create-sede-form');
+            const addSedeButton = document.getElementById('add-sede-button');
+            const sedesList = document.getElementById('sedes-list');
+            
+            addSedeButton.addEventListener('click', async () => {
+                const direccion = createSedeForm.direccion.value;
+                const descripcion = createSedeForm.descripcion.value;
+                const provinciaId = createSedeForm.provincia.value;
+                const localidadId = createSedeForm.localidad.value;
+            
+                if (!direccion || !descripcion || !provinciaId || !localidadId) {
+                    alert('Por favor, completa todos los campos.');
+                    return;
+                }
+            
+                const sedeData = {
+                    id_escuela: 1,
+                    direccion: direccion,
+                    descripcion: descripcion,
+                    localidad: { id: localidadId, nombre: "" },
+                    provincia: { id: provinciaId, nombre: "" },
+                };
+            
+                try {
+                    const response = await fetch('http://localhost:3000/sedes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(sedeData),
+                    });
+            
+                    if (response.ok) {
+                        const newSede = await response.json();
+                        // Aquí puedes agregar el nuevo elemento a la lista de sedes
+                        const sedeElement = document.createElement('div');
+                        sedeElement.textContent = `Sede añadida: ${newSede.descripcion}`;
+                        sedesList.appendChild(sedeElement);
+                    } else {
+                        alert('Error al agregar la sede: ' + response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Se produjo un error al enviar los datos: ' + error.message);
+                }
+            });
+            
+            // Cargar provincias al iniciar la página
+            document.addEventListener('DOMContentLoaded', cargarProvincias);
+            </script>
 </body>
 </html>
 

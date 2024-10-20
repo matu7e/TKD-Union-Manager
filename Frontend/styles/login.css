@@ -55,13 +55,14 @@ h2 {
     margin-bottom: 30px; /* Reducido para pantallas más pequeñas */
 }
 
-input {
+input, select{
     width: calc(100% - 30px); /* Ajustado para pantallas más pequeñas */
     padding: 15px;
     margin: 10px 0; /* Reducido para pantallas más pequeñas */
     border: none;
     border-radius: 5px;
 }
+
 
 .btn-login, .btn-register {
     width: 100%;

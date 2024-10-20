@@ -9,14 +9,19 @@ const cancelConfirmButton = document.getElementById('cancelConfirmButton');
 const btnGuardar = document.getElementById('btnGuardar');
 const confirmActionButton = document.getElementById('confirmActionButton');
 
-// Función para abrir el modal
+// Función para abrir el modal y bloquear el scroll
 function openModal(modal) {
     modal.style.display = 'block';
+    document.body.classList.add('no-scroll'); // Bloquear el scroll
 }
 
-// Función para cerrar el modal
+// Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
 function closeModal(modal) {
     modal.style.display = 'none';
+    // Si no hay ningún modal abierto, quitar la clase que bloquea el scroll
+    if (newPublicationModal.style.display === 'none' && confirmModal.style.display === 'none') {
+        document.body.classList.remove('no-scroll'); // Restaurar el scroll
+    }
 }
 
 // Función para limpiar los campos del formulario

@@ -46,8 +46,8 @@
                 <form class="form login-form" id="loginForm" method="POST" action="">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
                     <div class="form-group">
-                        <label for="loginUsername">Dni:</label>
-                        <input type="text" id="loginUsername" name="username" placeholder="Usuario" required>
+                        <label for="loginUsername">N° Documento:</label>
+                        <input type="text" id="loginUsername" name="Número de Documento" placeholder="Número de Documento" required>
                     </div>
                     <div class="form-group">
                         <label for="loginPassword">Contraseña:</label>
@@ -63,9 +63,20 @@
                 <div class="form register-form" id="step1Form" style="display: none;">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
                     <div class="form-group">
-                        <label for="dni">DNI:</label>
-                        <input type="text" id="dni" placeholder="DNI" pattern="\d{8}" required>
-                        <span class="error" id="dniError">El DNI debe tener 8 dígitos</span>
+                        <label for="tipoDocumento">Tipo de Documento:</label>
+                        <select id="tipoDocumento" required>
+                            <option value="" disabled selected>Seleccionar tipo de documento</option>
+                            <option value="DNI">DNI</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="CUIL">CUIL</option>
+                            <option value="Cedula">Cédula de Identidad</option>
+                        </select>
+                        <span class="error" id="tipoDocumentoError">Debe seleccionar un tipo de documento</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">N° Documento:</label>
+                        <input type="text" id="dni" placeholder="Número de Documento" pattern="\d{8}" required>
+                        <span class="error" id="dniError">El número de documento es inválido</span>
                     </div>
                     <div class="form-group">
                         <label for="registerPassword">Contraseña:</label>
@@ -121,21 +132,44 @@
                     <!-- Nuevo campo de Grupo Sanguíneo -->
                     <div class="form-group">
                         <label for="bloodGroup">Grupo Sanguíneo:</label>
-                        <input type="text" id="bloodGroup" placeholder="Grupo Sanguíneo" pattern="^(A|B|AB|O)[+-]$" required>
-                        <span class="error" id="bloodGroupError">El grupo sanguíneo debe ser A+, A-, B+, B-, AB+, AB-, O+, o O-</span>
+                        <select id="bloodGroup" required>
+                            <option value="" disabled selected>Seleccionar grupo sanguíneo</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                        <span class="error" id="bloodGroupError">Debe seleccionar un grupo sanguíneo</span>
                     </div>
+                    
                     <div class="buttons-container">
                         <button type="button" class="btn-prev" id="backToStep1">Anterior</button>
                         <button type="button" class="btn-next" id="nextToStep3">Siguiente</button>
                     </div>
                 </div>
-                <!-- Paso 3: Datos del Tutor o Representante -->
-                <div class="form register-form" id="step3Form" style="display: none;">
-                    <img src="../assets/log1.png" alt="Logo" class="logo">
+                    <!-- Paso 3: Datos del Tutor o Representante -->
+                    <div class="form register-form" id="step3Form" style="display: none;">
+                        <img src="../assets/log1.png" alt="Logo" class="logo">
+                        <!-- Nuevo select para Tipo de Documento -->
                     <div class="form-group">
-                        <label for="tutorDNI">DNI del Tutor:</label>
-                        <input type="text" id="tutorDNI" placeholder="DNI del Tutor" pattern="\d{8}" title="El DNI debe tener 8 dígitos" required>
-                        <span class="error" id="tutorDNIError">El DNI debe tener 8 dígitos</span>
+                        <label for="tipoDocumento">Tipo de Documento:</label>
+                        <select id="tipoDocumento" required>
+                            <option value="" disabled selected>Seleccionar tipo de documento</option>
+                            <option value="DNI">DNI</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="CUIL">CUIL</option>
+                            <option value="Cedula">Cédula de Identidad</option>
+                        </select>
+                        <span class="error" id="tipoDocumentoError">Debe seleccionar un tipo de documento</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorDNI">N° Documento:</label>
+                        <input type="text" id="tutorDNI" placeholder="Número de Documento" pattern="\d{8}" title="El número de documento es inválido" required>
+                        <span class="error" id="tutorDNIError">El número de documento es inválido</span>
                     </div>
                     <div class="form-group">
                         <label for="tutorPhone">Teléfono del Tutor:</label>
