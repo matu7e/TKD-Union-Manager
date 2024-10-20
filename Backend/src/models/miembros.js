@@ -148,12 +148,93 @@ async function getLogin(dni) {
 
   async function cargaFichaMedica(dni, ruta) {
     try{
-      console.log("Dni a ingresar: ", dni);
-      console.log("Ruta del pdf: ", ruta)
       await sql.query`UPDATE Miembros SET ficha_medica = ${ruta} WHERE dni_miembro = ${dni}`;
       console.log('Ficha medica cargada con exito')
     } catch(err){
       console.error('Error al cargar la ficha medica: ', err)
     }
   }
-module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni, getLogin,cargaImagen, cargaFichaMedica };
+
+
+  async function buscarMiembros({ id_cinto, apellido, id_escuela, nombre }) {
+    let query = `SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
+      m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
+      m.ficha_medica,
+      r.descripcion AS rol,
+      c.descripcion AS cinto,
+      e.nombre AS escuela,
+      m.dni_tutor,
+      m.relacion_tutor
+    FROM 
+    Miembros m
+    LEFT JOIN 
+    Roles r ON m.id_rol = r.id_rol
+    LEFT JOIN 
+    Cintos c ON m.id_cinto = c.id_cinto
+    LEFT JOIN
+    Escuelas e ON m.id_escuela = e.id_escuela WHERE 1=1`; // Usamos 1=1 para facilitar agregar condiciones
+    const request = new sql.Request();
+
+    // Agregamos los parámetros a la consulta solo si no son null
+    if (id_cinto) {
+        query += ` AND id_cinto = @id_cinto`;
+        request.input('id_cinto', sql.Int, id_cinto); // Asegúrate de usar el tipo correcto
+    }
+
+    if (apellido) {
+        query += ` AND apellido LIKE '%' + @apellido + '%'`; // Usamos LIKE para búsqueda parcial
+        request.input('apellido', sql.VarChar, apellido);
+    }
+
+    if (id_escuela) {
+        query += ` AND id_escuela = @id_escuela`;
+        request.input('id_escuela', sql.Int, id_escuela);
+    }
+
+    if (nombre) {
+      query += ` AND nombre LIKE '%' + @nombre + '%'`;
+      request.input('nombre', sql.VarChar, nombre); // Asegúrate de usar el tipo correcto
+  }
+
+    try {
+        const result = await request.query(query);
+        return result.recordset; // Devolvemos los resultados de la consulta
+    } catch (err) {
+        console.error("Error al buscar Miembros: ", err);
+        throw new Error("Error en la búsqueda de miembros");
+    }
+}
+
+async function getByEscuela(id_escuela) {
+  try {
+      const result = await sql.query`SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
+      m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
+      m.ficha_medica,
+      r.descripcion AS rol,
+      c.descripcion AS cinto,
+      e.nombre AS escuela,
+      m.dni_tutor,
+      m.relacion_tutor
+    FROM 
+    Miembros m
+    LEFT JOIN 
+    Roles r ON m.id_rol = r.id_rol
+    LEFT JOIN 
+    Cintos c ON m.id_cinto = c.id_cinto
+    LEFT JOIN
+    Escuelas e ON m.id_escuela = e.id_escuela
+    WHERE m.id_escuela = ${id_escuela}`;
+
+      // Verificar si la consulta devolvió algún resultado
+      if (!result || result.recordset.length === 0) {
+          console.log('No existen miembros en esa escuela');
+          return null;
+      }
+      return result.recordset[0];  // Retornar el primer resultado
+  } catch (err) {
+      console.error('Hubo un error al obtener los miembros:', err);
+      throw err;
+  }
+}
+
+module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni, getLogin,cargaImagen, cargaFichaMedica, buscarMiembros, getByEscuela };

@@ -7,9 +7,12 @@ router.post('/', miembrosController.registrarMiembro);
 router.get('/', miembrosController.obtenerTodos);
 router.put('/:dni/asignarEscuela/:id_escuela', miembrosController.asignarEscuela);
 router.post('/login', miembrosController.loginMiembro);
-router.get('/:dni', miembrosController.obtenerByDni);
 router.put('/:dni', miembrosController.actualizarMiembro);
 router.post('/:dni_miembro/cargaImagen', upload.single('imagen'), miembrosController.cargarImagen);
 router.post('/:dni_miembro/cargaFichaMedica', upload.single('ficha_medica'), miembrosController.cargarFichaMedica);
+
+router.get('/buscar', miembrosController.buscarMiembros);
+router.get('/:dni', miembrosController.obtenerByDni);
+
 
 module.exports = router;

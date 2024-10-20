@@ -1,4 +1,6 @@
 const Escuela = require('../models/escuelas');
+const fs = require('fs');
+const path = require('path');
 
 async function crearEscuela(req, res) {
   const escuelaData = req.body;
@@ -60,10 +62,37 @@ async function getByLocalidad(req, res) {
     }
 }
 
+async function cargarLogo(req, res) {
+  const id_escuela = req.params.id_escuela;
+  const logo = req.file;
+
+  if (!logo) {
+      return res.status(400).send('No se ha proporcionado una imagen valida');
+    }
+
+  try{
+      // 1. Obtener la ruta de la ficha anterior del miembro
+      const escuela = await Escuela.getEscuelaById(id_escuela);
+      const logoAntiguo = escuela.logo_escuela;
+
+      // 2. Eliminar la ficha anterior si existe
+      if (logoAntiguo && fs.existsSync(logoAntiguo)) {
+          fs.unlinkSync(path.resolve(logoAntiguo));
+      }
+      
+      const ruta_logo = logo.path;
+      await Escuela.cargaLogo(id_escuela, ruta_logo);
+      res.status(200).send('Logo cargado con exito');
+  } catch(err) {
+      res.status(500).send('Problemas con la carga de logo');
+  }
+}
+
   module.exports = {
     getByLocalidad,
     crearEscuela,
     update,
     remove,
-    getAll
+    getAll,
+    cargarLogo
   };

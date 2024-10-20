@@ -13,7 +13,6 @@ async function obtenerTodos(req, res) {
     } catch (err){
         res.status(500).send('Error al obtener miembros');
     }
-    
 }
 
 async function obtenerByDni(req, res) {
@@ -132,6 +131,15 @@ async function cargarFichaMedica(req, res) {
       }
 
     try{
+        // 1. Obtener la ruta de la ficha anterior del miembro
+        const miembro = await Miembro.getBydni(dni_miembro);
+        const fichaAntigua = miembro.ficha_medica;
+
+        // 2. Eliminar la ficha anterior si existe
+        if (fichaAntigua && fs.existsSync(fichaAntigua)) {
+            fs.unlinkSync(path.resolve(fichaAntigua));
+        }
+        
         const ruta_ficha = ficha_medica.path;
         await Miembro.cargaFichaMedica(dni_miembro, ruta_ficha);
         res.status(200).send('Ficha medica cargada con exito');
@@ -140,4 +148,28 @@ async function cargarFichaMedica(req, res) {
     }
 }
 
-module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro, cargarFichaMedica, cargarImagen}
+async function buscarMiembros(req, res) {
+    const { dni, id_cinto, apellido, id_escuela, nombre } = req.query; // O req.body si prefieres usar POST
+
+    try {
+        const miembros = await Miembro.buscarMiembros({
+            dni: dni ? parseInt(dni) : null,
+            id_cinto: id_cinto ? parseInt(id_cinto) : null, 
+            apellido: apellido || null,
+            id_escuela: id_escuela ? parseInt(id_escuela) : null,
+            nombre: nombre || null,
+        });
+
+        if (miembros.length === 0) {
+            return res.status(404).send("No se encontraron miembros con los filtros proporcionados.");
+        }
+
+        return res.status(200).json(miembros);
+    } catch (err) {
+        console.error("Error en la búsqueda de miembros: ", err);
+        return res.status(500).send("Hubo un problema al buscar los miembros.");
+    }
+}
+
+
+module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro, cargarFichaMedica, cargarImagen, buscarMiembros}
