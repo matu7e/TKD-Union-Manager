@@ -156,7 +156,7 @@ async function getLogin(dni) {
   }
 
 
-  async function buscarMiembros({ id_cinto, apellido, id_escuela, nombre }) {
+  async function buscarMiembros({ dni_miembro, id_cinto, apellido, id_escuela, nombre }) {
     let query = `SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
       m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
       m.ficha_medica,
@@ -176,6 +176,10 @@ async function getLogin(dni) {
     const request = new sql.Request();
 
     // Agregamos los parámetros a la consulta solo si no son null
+    if (dni_miembro) {
+      query += ` AND dni_miembro = @dni_miembro`;
+      request.input('dni_miembro', sql.Int, dni_miembro); // Asegúrate de usar el tipo correcto
+  }
     if (id_cinto) {
         query += ` AND id_cinto = @id_cinto`;
         request.input('id_cinto', sql.Int, id_cinto); // Asegúrate de usar el tipo correcto
