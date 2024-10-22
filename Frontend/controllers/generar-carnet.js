@@ -1,15 +1,4 @@
-// GET Miembro
-async function fetchUserData(dni, token) {
-    const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
 
-    if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
-    return response.json();
-}
 
 // Función para generar el PDF
 async function generatePDF(dni, token) {

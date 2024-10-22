@@ -89,12 +89,12 @@ function validateForm(event) {
 // Actualiza los datos del alumno
 async function updateAlumno(dni) {
     const data = {
-        Email: document.getElementById('email').value,
-        Direccion: document.getElementById('address').value,
+        email: document.getElementById('email').value,
+        direccion: document.getElementById('address').value,
         dni_tutor: document.getElementById('tutorDNI').value,
         id_escuela: document.getElementById('escuela').value,
         id_cinto: document.getElementById('cinto').value,
-        Telefono: document.getElementById('phone').value
+        telefono: document.getElementById('phone').value
     };
 
     try {

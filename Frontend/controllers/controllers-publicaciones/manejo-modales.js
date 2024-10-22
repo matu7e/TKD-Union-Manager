@@ -18,11 +18,17 @@ function openModal(modal) {
 // Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
 function closeModal(modal) {
     modal.style.display = 'none';
+
+    // Verificar si hay algún modal abierto
+    const modals = [newPublicationModal, confirmModal]; // Agrega aquí más modales si es necesario
+    const isAnyModalOpen = modals.some(m => m.style.display === 'block');
+
     // Si no hay ningún modal abierto, quitar la clase que bloquea el scroll
-    if (newPublicationModal.style.display === 'none' && confirmModal.style.display === 'none') {
+    if (!isAnyModalOpen) {
         document.body.classList.remove('no-scroll'); // Restaurar el scroll
     }
 }
+
 
 // Función para limpiar los campos del formulario
 function resetForm() {

@@ -54,6 +54,8 @@ async function fetchUserData(dni, token) {
     return response.json();
 }
 
+
+
 // Manejo de datos de usuario
 function handleUserData(data, token, rol) {
     const loader = document.getElementById('loader');
@@ -210,7 +212,7 @@ function construirMenu(rol) {
     navbarMenu.innerHTML += logoU; // Agregar logo al menú
 
     navbarMenu.innerHTML += `
-        <li><a href="publicaicones.html">Publicaciones</a></li>
+        <li><a href="publicaciones.html">Publicaciones</a></li>
     `;
 
     if (rol === 'Instructor') {
