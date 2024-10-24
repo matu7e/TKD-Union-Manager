@@ -156,7 +156,7 @@ async function getLogin(dni) {
   }
 
 
-  async function buscarMiembros({ dni_miembro, id_cinto, apellido, id_escuela, nombre }) {
+  async function buscarMiembros({ dni_miembro, id_cinto, apellido, id_escuela, nombre, estado }) {
     let query = `SELECT m.dni_miembro, m.nombre, m.apellido, m.telefono, m.email, 
       m.fecha_nacimiento, m.grupo_sanguineo, m.direccion, m.imagen, m.fecha_alta, m.activo,
       m.ficha_medica,
@@ -199,6 +199,10 @@ async function getLogin(dni) {
       query += ` AND m.nombre LIKE '%' + @nombre + '%'`;
       request.input('nombre', sql.VarChar, nombre); // Asegúrate de usar el tipo correcto
   }
+  if (estado) {
+    query += ` AND m.activo = @estado`;
+    request.input('estado', sql.Int, estado); // Asegúrate de usar el tipo correcto
+}
 
     try {
         const result = await request.query(query);

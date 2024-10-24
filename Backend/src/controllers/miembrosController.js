@@ -149,7 +149,7 @@ async function cargarFichaMedica(req, res) {
 }
 
 async function buscarMiembros(req, res) {
-    const { dni_miembro, id_cinto, apellido, id_escuela, nombre } = req.query; // O req.body si prefieres usar POST
+    const { dni_miembro, id_cinto, apellido, id_escuela, nombre, estado } = req.query; // O req.body si prefieres usar POST
 
     try {
         const miembros = await Miembro.buscarMiembros({
@@ -158,6 +158,7 @@ async function buscarMiembros(req, res) {
             apellido: apellido || null,
             id_escuela: id_escuela ? parseInt(id_escuela) : null,
             nombre: nombre || null,
+            estado: estado ? parseInt(estado) : null
         });
 
         if (miembros.length === 0) {
