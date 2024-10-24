@@ -88,11 +88,29 @@ async function cargarLogo(req, res) {
   }
 }
 
+async function getByInstructor(req, res) {
+  const { id_instructor } = req.params; // Tomamos el id_instructor desde los parámetros de la ruta
+
+  try {
+      const escuelas = await Escuela.getByInstructor(id_instructor);
+
+      if (escuelas.length === 0) {
+          return res.status(404).send("No se encontraron escuelas para ese instructor.");
+      }
+
+      return res.status(200).json(escuelas);
+  } catch (err) {
+      console.error("Error al obtener escuelas por instructor: ", err);
+      return res.status(500).send("Hubo un problema al obtener las escuelas.");
+  }
+}
+
   module.exports = {
     getByLocalidad,
     crearEscuela,
     update,
     remove,
     getAll,
-    cargarLogo
+    cargarLogo,
+    getByInstructor
   };

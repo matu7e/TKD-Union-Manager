@@ -4,7 +4,7 @@ const { sql } = require('../config/bdHelper');
 async function getAllEscuelas() {
   try {
     const result = await sql.query`
-      SELECT e.id_escuela, e.nombre, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
+      SELECT e.id_escuela, e.nombre, e.dni_instructor, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
       FROM Escuelas e
       LEFT JOIN Miembros m ON e.dni_instructor = m.dni_miembro
     `;
@@ -86,11 +86,32 @@ async function cargaLogo(id_escuela, ruta) {
   }
 }
 
+async function getByInstructor(id_instructor) {
+  try {
+      const request = new sql.Request();
+      const query = `
+          SELECT e.id_escuela, e.nombre, e.dni_instructor, m.nombre AS nombre_instructor, m.apellido AS apellido_instructor, e.email_escuela, e.telefono_escuela, e.enlace, e.logo_escuela, e.fecha_de_alta
+          FROM Escuelas e
+          LEFT JOIN Miembros m ON e.dni_instructor = m.dni_miembro
+          WHERE e.dni_instructor = @id_instructor
+      `;
+
+      request.input('id_instructor', sql.Int, id_instructor);
+
+      const result = await request.query(query);
+      return result.recordset; // Devuelve las escuelas que coinciden con el id_instructor
+  } catch (err) {
+      console.error("Error al obtener escuelas por instructor: ", err);
+      throw new Error("Error al buscar escuelas por instructor.");
+  }
+}
+
 module.exports = {
   getAllEscuelas,
   createEscuela,
   updateEscuela,
   deleteEscuela,
   getEscuelaById,
-  cargaLogo
+  cargaLogo,
+  getByInstructor
 };

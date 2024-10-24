@@ -199,9 +199,9 @@ async function getLogin(dni) {
       query += ` AND m.nombre LIKE '%' + @nombre + '%'`;
       request.input('nombre', sql.VarChar, nombre); // Asegúrate de usar el tipo correcto
   }
-  if (estado) {
+  if (estado !== null) {
     query += ` AND m.activo = @estado`;
-    request.input('estado', sql.Int, estado); // Asegúrate de usar el tipo correcto
+    request.input('estado', sql.Bit, estado); // El tipo de dato BIT
 }
 
     try {
@@ -245,4 +245,36 @@ async function getByEscuela(id_escuela) {
   }
 }
 
-module.exports = { crearMiembro, getMiembros, updateMember, eliminarMiembro, asignarEscuela, getBydni, getLogin,cargaImagen, cargaFichaMedica, buscarMiembros, getByEscuela };
+async function subirPrivilegios(id_miembro) {
+  try {
+      const request = new sql.Request();
+      const query = `
+          UPDATE Miembros
+          SET id_rol = @id_rol
+          WHERE dni_miembro = @id_miembro
+      `;
+
+      request.input('id_miembro', sql.Int, id_miembro);
+      request.input('id_rol', sql.Int, 2); // El valor 2 para el nuevo rol
+
+      const result = await request.query(query);
+      return result.rowsAffected[0]; // Devuelve la cantidad de filas afectadas
+  } catch (err) {
+      console.error("Error al actualizar los privilegios: ", err);
+      throw new Error("Error al subir privilegios del miembro.");
+  }
+}
+
+module.exports = { crearMiembro, 
+  getMiembros, 
+  updateMember, 
+  eliminarMiembro, 
+  asignarEscuela, 
+  getBydni, 
+  getLogin,
+  cargaImagen, 
+  cargaFichaMedica, 
+  buscarMiembros, 
+  getByEscuela,
+  subirPrivilegios
+};

@@ -149,7 +149,7 @@ async function cargarFichaMedica(req, res) {
 }
 
 async function buscarMiembros(req, res) {
-    const { dni_miembro, id_cinto, apellido, id_escuela, nombre, estado } = req.query; // O req.body si prefieres usar POST
+    const { dni_miembro, id_cinto, apellido, id_escuela, nombre, estado } = req.query;
 
     try {
         const miembros = await Miembro.buscarMiembros({
@@ -158,7 +158,7 @@ async function buscarMiembros(req, res) {
             apellido: apellido || null,
             id_escuela: id_escuela ? parseInt(id_escuela) : null,
             nombre: nombre || null,
-            estado: estado ? parseInt(estado) : null
+            estado: estado !== undefined ? parseInt(estado) : null // Verifica si estado está definido
         });
 
         if (miembros.length === 0) {
@@ -172,5 +172,21 @@ async function buscarMiembros(req, res) {
     }
 }
 
+async function subirPrivilegios(req, res) {
+    const { dni_miembro } = req.params; // Tomamos el dni_miembro desde los parámetros de la ruta
 
-module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro, cargarFichaMedica, cargarImagen, buscarMiembros}
+    try {
+        const resultado = await Miembro.subirPrivilegios(dni_miembro);
+
+        if (resultado === 0) {
+            return res.status(404).send("No se encontró el miembro con ese ID.");
+        }
+
+        return res.status(200).send("Privilegios actualizados correctamente.");
+    } catch (err) {
+        console.error("Error al subir privilegios: ", err);
+        return res.status(500).send("Hubo un problema al actualizar los privilegios del miembro.");
+    }
+}
+
+module.exports = { obtenerTodos, registrarMiembro, asignarEscuela, loginMiembro, obtenerByDni, actualizarMiembro, cargarFichaMedica, cargarImagen, buscarMiembros, subirPrivilegios}

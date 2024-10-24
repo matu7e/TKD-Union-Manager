@@ -13,6 +13,7 @@ router.post('/:dni_miembro/cargaFichaMedica', upload.single('ficha_medica'), mie
 
 router.get('/buscar', miembrosController.buscarMiembros);
 router.get('/:dni', miembrosController.obtenerByDni);
+router.put('/subirPrivilegios/:dni_miembro', miembrosController.subirPrivilegios);
 
 
 module.exports = router;
