@@ -199,7 +199,7 @@ async function getLogin(dni) {
       query += ` AND m.nombre LIKE '%' + @nombre + '%'`;
       request.input('nombre', sql.VarChar, nombre); // Asegúrate de usar el tipo correcto
   }
-  if (estado !== undefined && estado !== null) {
+  if (estado == 1 || estado == 0) {
     query += ` AND m.activo = @estado`;
     request.input('estado', sql.Bit, estado); // El tipo de dato BIT
 }
