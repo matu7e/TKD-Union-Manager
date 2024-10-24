@@ -177,21 +177,21 @@ async function getLogin(dni) {
 
     // Agregamos los parámetros a la consulta solo si no son null
     if (dni_miembro) {
-      query += ` AND dni_miembro = @dni_miembro`;
+      query += ` AND m.dni_miembro = @dni_miembro`;
       request.input('dni_miembro', sql.Int, dni_miembro); // Asegúrate de usar el tipo correcto
   }
     if (id_cinto) {
-        query += ` AND id_cinto = @id_cinto`;
+        query += ` AND m.id_cinto = @id_cinto`;
         request.input('id_cinto', sql.Int, id_cinto); // Asegúrate de usar el tipo correcto
     }
 
     if (apellido) {
-        query += ` AND apellido LIKE '%' + @apellido + '%'`; // Usamos LIKE para búsqueda parcial
+        query += ` AND m.apellido LIKE '%' + @apellido + '%'`; // Usamos LIKE para búsqueda parcial
         request.input('apellido', sql.VarChar, apellido);
     }
 
     if (id_escuela) {
-        query += ` AND id_escuela = @id_escuela`;
+        query += ` AND m.id_escuela = @id_escuela`;
         request.input('id_escuela', sql.Int, id_escuela);
     }
 
