@@ -196,7 +196,7 @@ async function getLogin(dni) {
     }
 
     if (nombre) {
-      query += ` AND nombre LIKE '%' + @nombre + '%'`;
+      query += ` AND m.nombre LIKE '%' + @nombre + '%'`;
       request.input('nombre', sql.VarChar, nombre); // Asegúrate de usar el tipo correcto
   }
 
