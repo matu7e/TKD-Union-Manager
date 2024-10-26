@@ -105,6 +105,30 @@ async function getByInstructor(req, res) {
   }
 }
 
+async function buscarEscuelas(req, res) {
+  const { id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor } = req.query;
+
+  try {
+      const escuelas = await Escuela.buscarEscuelas({
+          id_provincia: id_provincia ? parseInt(id_provincia) : null,
+          id_localidad: id_localidad ? parseInt(id_localidad) : null,
+          nombre_escuela: nombre_escuela || null,
+          nombre_instructor: nombre_instructor || null,
+          apellido_instructor: apellido_instructor || null,
+      });
+
+      if (escuelas.length === 0) {
+          return res.status(404).send("No se encontraron escuelas con los filtros proporcionados.");
+      }
+
+      return res.status(200).json(escuelas);
+  } catch (err) {
+      console.error("Error en la búsqueda de escuelas: ", err);
+      return res.status(500).send("Hubo un problema al buscar las escuelas.");
+  }
+}
+
+
   module.exports = {
     getByLocalidad,
     crearEscuela,
@@ -112,5 +136,6 @@ async function getByInstructor(req, res) {
     remove,
     getAll,
     cargarLogo,
-    getByInstructor
+    getByInstructor,
+    buscarEscuelas
   };

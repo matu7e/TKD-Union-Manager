@@ -19,7 +19,6 @@ async function getByID(id) {
 // Crear una nueva localidad
 async function createLocalidad(localidad) {
   const { id, nombre, provincia } = localidad;
-  console.log("Entro al Localidades Models");
   try {
       await sql.query`
       SET IDENTITY_INSERT Localidades ON;

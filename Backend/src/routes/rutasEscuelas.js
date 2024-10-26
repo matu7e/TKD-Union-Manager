@@ -7,8 +7,10 @@ router.get('/', escuelasController.getAll)
 router.post('/', escuelasController.crearEscuela);
 router.put('/:id_escuela', escuelasController.update);
 router.delete('/:id_escuela', escuelasController.remove);
-router.get('/:id_localidad', escuelasController.getByLocalidad);
 router.post('/:id_escuela/cargaLogo', upload.single('logo'), escuelasController.cargarLogo);
 router.get('/instructor/:id_instructor', escuelasController.getByInstructor);
+router.get('/buscar', escuelasController.buscarEscuelas);
+router.get('/:id_localidad', escuelasController.getByLocalidad);
+
 
 module.exports = router;

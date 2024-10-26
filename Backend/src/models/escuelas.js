@@ -106,6 +106,57 @@ async function getByInstructor(id_instructor) {
   }
 }
 
+async function buscarEscuelas({ id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor }) {
+  let query = `
+      SELECT e.id_escuela, e.nombre AS nombre_escuela, e.dni_instructor,
+             m.nombre AS nombre_instructor, m.apellido AS apellido_instructor,
+             s.direccion AS sede_direccion, l.nombre AS localidad,
+             p.nombre AS provincia
+      FROM Escuelas e
+      LEFT JOIN Miembros m ON e.dni_instructor = m.dni_miembro
+      LEFT JOIN Sedes s ON e.id_escuela = s.id_escuela
+      LEFT JOIN Localidades l ON s.localidadID = l.id_localidad
+      LEFT JOIN Provincias p ON l.id_provincia = p.id_provincia
+      WHERE 1=1
+  `;
+  
+  const request = new sql.Request();
+
+  // Filtros condicionales
+  if (id_provincia) {
+      query += ` AND l.id_provincia = @id_provincia`;
+      request.input('id_provincia', sql.Int, id_provincia);
+  }
+  
+  if (id_localidad) {
+      query += ` AND s.localidadID = @id_localidad`;
+      request.input('id_localidad', sql.Int, id_localidad);
+  }
+
+  if (nombre_escuela) {
+      query += ` AND e.nombre LIKE '%' + @nombre_escuela + '%'`;
+      request.input('nombre_escuela', sql.VarChar, nombre_escuela);
+  }
+
+  if (nombre_instructor) {
+      query += ` AND m.nombre LIKE '%' + @nombre_instructor + '%'`;
+      request.input('nombre_instructor', sql.VarChar, nombre_instructor);
+  }
+
+  if (apellido_instructor) {
+      query += ` AND m.apellido LIKE '%' + @apellido_instructor + '%'`;
+      request.input('apellido_instructor', sql.VarChar, apellido_instructor);
+  }
+
+  try {
+      const result = await request.query(query);
+      return result.recordset;
+  } catch (err) {
+      console.error("Error al buscar Escuelas: ", err);
+      throw new Error("Error en la búsqueda de escuelas");
+  }
+}
+
 module.exports = {
   getAllEscuelas,
   createEscuela,
@@ -113,5 +164,6 @@ module.exports = {
   deleteEscuela,
   getEscuelaById,
   cargaLogo,
-  getByInstructor
+  getByInstructor,
+  buscarEscuelas
 };
