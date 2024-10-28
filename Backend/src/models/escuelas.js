@@ -22,6 +22,7 @@ async function createEscuela(escuela) {
   try {
     const result = await sql.query`
       INSERT INTO Escuelas (nombre, dni_instructor, email_escuela, telefono_escuela, enlace, logo_escuela, fecha_de_alta)
+      OUTPUT INSERTED.id_escuela
       VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${enlace}, ${logo}, ${fecha})
     `;
     console.log('Escuela creada correctamente.');
