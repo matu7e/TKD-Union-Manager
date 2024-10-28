@@ -25,6 +25,8 @@ async function createEscuela(escuela) {
       VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${enlace}, ${logo}, ${fecha})
     `;
     console.log('Escuela creada correctamente.');
+    const id_escuela = result.recordset[0].id_escuela; // Capturamos el ID insertado
+    return id_escuela;
   } catch (err) {
     console.error('Error al crear escuela:', err);
     throw err;

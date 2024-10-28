@@ -6,8 +6,8 @@ async function crearEscuela(req, res) {
   const escuelaData = req.body;
 
   try {
-    await Escuela.createEscuela(escuelaData);
-    res.status(201).send('Escuela creada con éxito');
+    const id_escuela = await Escuela.createEscuela(escuelaData);
+    res.status(201).json({ message: 'Escuela creada con éxito', id_escuela });
   } catch (err) {
     console.error('Error al crear escuela:', err);
     res.status(500).send('Error al crear escuela');
