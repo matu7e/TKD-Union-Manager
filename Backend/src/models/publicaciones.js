@@ -1,12 +1,13 @@
 const { sql } = require('../config/bdHelper');
 
 async function createPublicacion(publicacion) {
-    const { titulo, descripcion, enlace, id_escuela } = publicacion;
+    const { titulo, descripcion, enlace} = publicacion;
+    const fecha = new Date();
 
     try {
         await sql.query`
-            INSERT INTO Publicaciones (titulo, descripcion, enlace, id_escuela)
-            VALUES (${titulo}, ${descripcion}, ${enlace}, ${id_escuela})
+            INSERT INTO Publicaciones (titulo, descripcion, enlace, fecha_publicacion)
+            VALUES (${titulo}, ${descripcion}, ${enlace}, ${fecha})
         `;
     } catch (err) {
         throw new Error('Error al crear la publicación');
@@ -15,9 +16,8 @@ async function createPublicacion(publicacion) {
 
 async function getAllPublicaciones() {
     try {
-        const result = await sql.query`SELECT p.titulo, p.descripcion, p.imagen, p.enlace, e.nombre AS escuela 
-        FROM Publicaciones p 
-        JOIN LEFT Escuelas e ON p.id_escuela = e.id_escuela`;
+        const result = await sql.query`SELECT p.id_publicacion, p.titulo, p.descripcion, p.imagen, p.enlace
+        FROM Publicaciones p` 
         return result.recordset;
     } catch (err) {
         throw new Error('Error al obtener las publicaciones');
@@ -27,9 +27,8 @@ async function getAllPublicaciones() {
 async function getPublicacionById(id_publicacion) {
     try {
         const result = await sql.query`
-            SELECT p.titulo, p.descripcion, p.imagen, p.enlace, e.nombre AS escuela 
+            SELECT *
         FROM Publicaciones p 
-        JOIN LEFT Escuelas e ON p.id_escuela = e.id_escuela 
         WHERE id_publicacion = ${id_publicacion}
         `;
         return result.recordset[0];
@@ -39,12 +38,12 @@ async function getPublicacionById(id_publicacion) {
 }
 
 async function updatePublicacion(id_publicacion, publicacion) {
-    const { titulo, descripcion, imagen, enlace, id_escuela } = publicacion;
+    const { titulo, descripcion, imagen, enlace} = publicacion;
 
     try {
         await sql.query`
             UPDATE Publicaciones
-            SET titulo = ${titulo}, descripcion = ${descripcion}, imagen = ${imagen}, enlace = ${enlace}, id_escuela = ${id_escuela}
+            SET titulo = ${titulo}, descripcion = ${descripcion}, imagen = ${imagen}, enlace = ${enlace}}
             WHERE id_publicacion = ${id_publicacion}
         `;
     } catch (err) {
