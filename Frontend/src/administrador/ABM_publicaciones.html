@@ -38,7 +38,6 @@
         <nav class="navbar-menu" id="navbar-menu">
             <ul>
                 <img src="../../assets/log1.png" alt="Logo" class="navbar-logo-U">
-                <li><a href="ABM_portal_publico.html">Portal Publico</a></li>
                 <li><a id="actual" href="ABM_publicaciones.html">Publicaciones</a></li>
                 <li><a href="ABM_alumnos.html">Miembros</a></li>
                 <li><a href="ABM_sedes.html">Sedes</a></li>
@@ -47,13 +46,17 @@
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
     </header>
-    
+    <!-- Loader -->
+    <!-- <div id="loader" class="loader-container">
+        <div class="loader"></div>
+    </div> -->
     <main class="container">
+        
         <h2>PUBLICACIONES</h2>
         <button class="new-publication" id="openModalButton">Nueva Publicación</button>
-
+    
         <section class="search-filters">
-            <form action="#" method="GET">
+            <form action="#" method="GET" id="searchForm">
                 <div class="filter-row">
                     <div class="filter-group">
                         <label for="fechaDesde">Fecha Desde</label>
@@ -65,7 +68,7 @@
                     </div>
                     <div class="filter-group">
                         <label for="titulo">Título</label>
-                        <input type="text" id="titulo" name="titulo" />
+                        <input type="text" id="Filtro_titulo" name="titulo" />
                     </div>
                 </div>
             
@@ -74,7 +77,7 @@
                 </div>
             </form>
         </section>
-
+    
         <!-- Modal personalizado -->
         <div id="newPublicationModal" class="custom-modal">
             <div class="modal-content-custom">
@@ -90,12 +93,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="descripcion" name="descripcion" required style="height: 150px;"></textarea>
+                            <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="enlace" class="form-label">Enlace</label>
-                            <input type="url" class="form-control" id="enlace" name="enlace" required>
-                        </div>
+                            <input type="text" class="form-control" id="enlace" name="enlace" required>
+                        </div>                        
                         <div class="mb-3">
                             <label for="imagen" class="form-label">Imagen</label>
                             <div class="contenedor-img">
@@ -103,7 +106,6 @@
                                 <img id="imagePreview" src="" alt="Vista previa" class="vista-previa">
                             </div>
                         </div>
-                        
                     </form>
                 </div>
                 <div class="modal-footer-custom">
@@ -113,80 +115,52 @@
             </div>
         </div>
     
-        
-            <!-- Modal de Confirmación -->
-            <div id="confirmModal" class="confirmacion-modal">
-                <div class="modal-content-confirmacion">
-                    <div class="modal-header-confirmacion">
-                        <h5 class="modal-title">Confirmación</h5>
-                        <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
-                    </div>
-                    <div class="confirmacion-modal-body">
-                        <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
-                    </div>
-                    <div class="modal-footer-confirmacion">
-                        <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
-                        <button type="button" class="btn btn-confirmar" id="confirmActionButton "onclick="submitForm()">Confirmar</button>
-                    </div>
+        <!-- Modal de Confirmación -->
+        <div id="confirmModal" class="confirmacion-modal">
+            <div class="modal-content-confirmacion">
+                <div class="modal-header-confirmacion">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
+                </div>
+                <div class="confirmacion-modal-body">
+                    <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+                </div>
+                <div class="modal-footer-confirmacion">
+                    <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
+                    <button type="button" class="btn btn-confirmar" id="confirmActionButton" onclick="submitForm()">Confirmar</button>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
+        </div>
+    
         <section>
-                <div class="table-container">
-                    <table id="miTabla">
-                        <thead>
-                            <tr>
-                                <th>Titulo</th>
-                                <th>Descripción</th>
-                                <th>Enlace</th>
-                                <th>Imagen</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Filas generadas dinámicamente con JavaScript -->
-                        </tbody>
-                    </table>
-                    <div class="pagination">
-                        <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
-                        <div>
-                            Página:
-                            <select id="pageSelect">
-                                <option value="1">1</option>
-                                <!-- Páginas generadas dinámicamente -->
-                            </select>
-                            de <span id="totalPaginas">1</span>
-                        </div>
-                        <div class="export-btn"></div>
+            <div class="table-container">
+                <table id="miTabla">
+                    <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Descripción</th>
+                            <th>Enlace</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Filas generadas dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
+                    <div>
+                        Página:
+                        <select id="pageSelect">
+                            <option value="1">1</option>
+                            <!-- Páginas generadas dinámicamente -->
+                        </select>
+                        de <span id="totalPaginas">1</span>
                     </div>
+                    <div class="export-btn"></div>
                 </div>
+            </div>
         </section>
     </main>
 
@@ -216,16 +190,9 @@
         </div>
     </footer>
 
-    <script src="../../controllers/validate-form-miembro.js"></script>
-    <script src="../../controllers/public/menu.js"></script>
-    <script>
-        
     
-    </script>
-    <!--<script src="../../controllers/controllers-publicaciones/ABM_publicacione.js"></script>-->
-    <script src="../../controllers/controllers-publicaciones/manejo-modales.js"></script>
-    <script>
-        
-    </script>
+    <script src="../../controllers/public/menu.js"></script>
+    <script src="../../controllers/controllers-publicaciones/ABM_publicacione.js"></script>
+    
 </body>
 </html>

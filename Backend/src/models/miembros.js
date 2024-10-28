@@ -80,7 +80,7 @@ async function updateMember(dni, miembro) {
 // Eliminar un miembro
 async function eliminarMiembro(id) {
     try {
-      await sql.query`UPDATE Miembros SET activo = 0 WHERE DNI = ${id}`;
+      await sql.query`UPDATE Miembros SET activo = 0 WHERE dni_miembro = ${id}`;
       console.log('Miembro eliminado correctamente.');
     } catch (err) {
       console.error('Error al eliminar miembro:', err);

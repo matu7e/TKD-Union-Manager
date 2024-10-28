@@ -1,180 +1,142 @@
+// Obtener los elementos de los modales y botones
+const newPublicationModal = document.getElementById('newPublicationModal');
+const confirmModal = document.getElementById('confirmModal');
+const openModalButton = document.getElementById('openModalButton');
+const closeModalButton = document.getElementById('closeModalButton');
+const closeModalButtonFooter = document.getElementById('closeModalButtonFooter');
+const closeConfirmModalButton = document.getElementById('closeConfirmModal');
+const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+const btnGuardar = document.getElementById('btnGuardar');
+const confirmActionButton = document.getElementById('confirmActionButton');
 
+// Función para abrir el modal y bloquear el scroll
+function openModal(modal) {
+    modal.style.display = 'block';
+    document.body.classList.add('no-scroll'); // Bloquear el scroll
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('newPublicationModal');
-    const confirmModal = document.getElementById('confirmModal');
-    const confirmActionButton = document.getElementById('confirmActionButton');
-    const closeConfirmModal = document.getElementById('closeConfirmModal');
-    const cancelConfirmButton = document.getElementById('cancelConfirmButton');
-    const publicationForm = document.getElementById('publicationForm');
-    const loader = document.getElementById('loader'); // Loader para la carga
+// Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
+function closeModal(modal) {
+    modal.style.display = 'none';
 
-    let currentPublicationId = null;
-    let isEditMode = false;
+    // Verificar si hay algún modal abierto
+    const modals = [newPublicationModal, confirmModal]; // Agrega aquí más modales si es necesario
+    const isAnyModalOpen = modals.some(m => m.style.display === 'block');
 
-
-    function submitForm() {
-        const url = isEditMode ? `http://localhost:3000/api/publicaciones/${currentPublicationId}` : 'http://localhost:3000/api/publicaciones';
-        const method = isEditMode ? 'PUT' : 'POST';
-
-        loader.style.display = 'block'; // Muestra el loader
-
-        fetch(url, {
-            method: method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                titulo: document.getElementById('titulo').value,
-                descripcion: document.getElementById('descripcion').value,
-                enlace: document.getElementById('enlace').value,
-            })
-        })
-            .then(response => {
-                loader.style.display = 'none'; // Oculta el loader
-                if (response.ok) {
-                    alert('Publicación guardada exitosamente.');
-                    modal.classList.remove('show');
-                    document.body.classList.remove('modal-open');
-                    loadPublications(); // Recargar publicaciones
-                } else {
-                    alert('Hubo un error al guardar la publicación.');
-                }
-            })
-            .catch(error => {
-                loader.style.display = 'none'; // Ocultar loader en caso de error
-                console.error('Error al guardar la publicación:', error);
-            });
+    // Si no hay ningún modal abierto, quitar la clase que bloquea el scroll
+    if (!isAnyModalOpen) {
+        document.body.classList.remove('no-scroll'); // Restaurar el scroll
     }
+}
 
-    function loadPublications() {
-        const fechaDesde = document.getElementById("fechaDesde").value;
-        const fechaHasta = document.getElementById("fechaHasta").value;
-        const titulo = document.getElementById("titulo").value;
+// Función para limpiar los campos del formulario
+function resetForm() {
+    const form = document.getElementById('publicationForm');
+    form.reset();
+    document.getElementById('imagePreview').src = ''; // Limpiar vista previa de la imagen
+}
 
-        // Construir la URL para la consulta de publicaciones
-        let url = "http://localhost:3000/api/publicaciones?";
-        if (fechaDesde) url += `fechaDesde=${fechaDesde}&`;
-        if (fechaHasta) url += `fechaHasta=${fechaHasta}&`;
-        if (titulo) url += `titulo=${titulo}&`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById("tableBody");
-                tableBody.innerHTML = ""; // Limpiar el contenido previo
-                data.publicaciones.forEach(publicacion => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${publicacion.titulo}</td>
-                        <td>${publicacion.descripcion}</td>
-                        <td><a href="${publicacion.enlace}" target="_blank">Ver Enlace</a></td>
-                        <td><img src="${publicacion.urlImagen}" alt="Imagen de la publicación" class="img-table"></td>
-                        <td>
-                            <button class="btn btn-edit" onclick="openEditModal(${publicacion.id})">Editar</button>
-                            <button class="btn btn-delete" onclick="confirmDelete(${publicacion.id})">Eliminar</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-                document.getElementById("totalRegistros").innerText = data.total;
-                document.getElementById("totalPaginas").innerText = data.totalPaginas;
-                updatePagination(data.totalPaginas); // Actualizar la paginación
-            })
-            .catch(error => {
-                console.error("Error al cargar las publicaciones:", error);
-            });
-    }
-
-    // Función para actualizar la paginación
-    function updatePagination(totalPaginas) {
-        const pageSelect = document.getElementById("pageSelect");
-        pageSelect.innerHTML = ""; // Limpiar las opciones anteriores
-        for (let i = 1; i <= totalPaginas; i++) {
-            const option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            pageSelect.appendChild(option);
-        }
-    }
-
-    // Función para abrir el modal con datos precargados
-    window.openEditModal = function (id) {
-        fetch(`http://localhost:3000/api/publicaciones/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                // Precarga los datos en el formulario
-                document.getElementById('titulo').value = data.titulo;
-                document.getElementById('descripcion').value = data.descripcion;
-                document.getElementById('enlace').value = data.enlace;
-                document.querySelector('.btn-guardar').innerText = 'Guardar'; // Cambia el texto del botón a "Guardar"
-                currentPublicationId = id; // Establece el ID actual
-                isEditMode = true; // Modo edición activado
-                modal.classList.add('show'); // Muestra el modal
-                document.body.classList.add('modal-open');
-            })
-            .catch(error => console.error('Error al obtener los datos:', error));
-    };
-
-    // Función para confirmar la eliminación
-    window.confirmDelete = function (id) {
-        currentPublicationId = id; // Establecer ID de publicación a eliminar
-        isEditMode = false; // Desactiva el modo edición
-        document.getElementById('confirmMessage').innerText = '¿Estás seguro que deseas eliminar esta publicación?'; // Mensaje de confirmación
-        confirmModal.classList.add('show');
-        document.body.classList.add('modal-open');
-    };
-
-    // Función para realizar el fetch de eliminación
-    function deletePublication(id) {
-        loader.style.display = 'block'; // Muestra el loader
-
-        fetch(`http://localhost:3000/api/publicaciones/${id}`, { method: 'DELETE' })
-            .then(response => {
-                loader.style.display = 'none'; // Oculta el loader
-                if (response.ok) {
-                    alert('Publicación eliminada exitosamente.');
-                    loadPublications(); // Recargar publicaciones
-                } else {
-                    alert('Hubo un error al eliminar la publicación.');
-                }
-                closeConfirmModal();
-            })
-            .catch(error => {
-                loader.style.display = 'none'; // Ocultar loader en caso de error
-                console.error('Error al eliminar la publicación:', error);
-            });
-    }
-
-    // Evento para confirmar acciones en el modal de confirmación
-    confirmActionButton.addEventListener('click', () => {
-        if (!isEditMode) {
-            deletePublication(currentPublicationId); // Confirmación de eliminación
-        }
-        closeConfirmModal();
-    });
-
-    // Evento para cerrar el modal de confirmación
-    closeConfirmModal.addEventListener('click', closeConfirmModal);
-    cancelConfirmButton.addEventListener('click', closeConfirmModal);
-
-    // Función para cerrar el modal de confirmación
-    function closeConfirmModal() {
-        confirmModal.classList.remove('show');
-        document.body.classList.remove('modal-open');
-    }
-
-    // Evento para manejar el envío del formulario
-    document.getElementById('btnPublicar').addEventListener('click', () => {
-        document.getElementById('confirmMessage').innerText = '¿Estás seguro que deseas publicar?';
-        confirmModal.classList.add('show');
-        document.body.classList.add('modal-open');
-    });
-
-    // Evento para confirmar la acción de publicación
-    confirmActionButton.addEventListener('click', () => {
-        submitForm(); // Llama a la función para guardar la publicación
-        closeConfirmModal();
-    });
-
-    // Cargar las publicaciones al iniciar
-    loadPublications();
+openModalButton.addEventListener('click', () => {
+    resetForm(); // Limpiar los campos antes de abrir el modal
+    openModal(newPublicationModal);
 });
+
+
+
+
+// Eventos para cerrar el modal de nueva publicación
+closeModalButton.addEventListener('click', () => closeModal(newPublicationModal));
+closeModalButtonFooter.addEventListener('click', () => closeModal(newPublicationModal));
+// Eventos para cerrar el modal de confirmación
+closeConfirmModalButton.addEventListener('click', () => closeModal(confirmModal));
+cancelConfirmButton.addEventListener('click', () => closeModal(confirmModal));
+
+// Evento para guardar y abrir el modal de confirmación
+btnGuardar.addEventListener('click', (event) => {
+    event.preventDefault(); // Evitar el envío del formulario
+
+    const titulo = document.getElementById('titulo').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const enlace = document.getElementById('enlace').value.trim();
+
+    console.log('Título:', titulo); // Verificar valor
+    console.log('Descripción:', descripcion);
+    console.log('Enlace:', enlace);
+
+    if (!titulo || !descripcion || !enlace) {
+        alert('Por favor, complete todos los campos.');
+        return; // No continuar si hay campos vacíos
+    }
+
+    openModal(confirmModal);
+});
+
+
+
+// Función para crear la publicación
+function createPublication() {
+    const titulo = document.getElementById('titulo').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const enlace = document.getElementById('enlace').value;
+
+    // Verifica los valores capturados
+    console.log('Título:', titulo);
+    console.log('Descripción:', descripcion);
+    console.log('Enlace:', enlace);
+
+    const url = 'http://localhost:3000/publicaciones'; // Asegúrate de que esta es la URL correcta
+    const method = 'POST';
+
+    fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            titulo: titulo,
+            descripcion: descripcion,
+            enlace: enlace,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la creación de la publicación');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Publicación creada:', data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        closeModal(confirmModal); // Cierra el modal de confirmación
+        closeModal(newPublicationModal); // Cierra el modal de nueva publicación
+    });
+}
+
+// Evento para confirmar la acción
+confirmActionButton.addEventListener('click', createPublication);
+
+// Cerrar modales si se hace clic fuera de ellos
+window.addEventListener('click', (event) => {
+    if (event.target === newPublicationModal) {
+        closeModal(newPublicationModal);
+    } else if (event.target === confirmModal) {
+        closeModal(confirmModal);
+    }
+});
+
+// Función para previsualizar la imagen seleccionada
+function previewImage(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.src = '';
+    }
+}

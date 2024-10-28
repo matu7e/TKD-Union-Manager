@@ -251,35 +251,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
     
                 if (!miembroResponse.ok) {
-                    throw new Error('Error al enviar los datos a /miembros');
-                }
-                alert(tutorData);
-                // Enviar datos a /tutores
-                const tutorResponse = await fetch('http://localhost:3000/tutores', {
-                    method: 'POST',
-                    headers: {  
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(tutorData)
-                    
-                });
-                alert(tutorData);
-                if (!tutorResponse.ok) {
-                    throw new Error('Error al enviar los datos a /tutores');
-                }
+                    const miembroResponseText = await miembroResponse.text();
+                    if (miembroResponseText.includes('El miembro con este DNI ya existe')) {
+                        showAlert('aviso', 'El miembro con este DNI ya existe');
+                    } else {
+                        throw new Error('Error al enviar los datos a /miembros');
+                    }
+                } else {
+                    // Si el miembro se creó con éxito, ahora enviar datos a /tutores
+                    const tutorResponse = await fetch('http://localhost:3000/tutores', {
+                        method: 'POST',
+                        headers: {  
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tutorData)
+                    });
     
-                alert('Formulario enviado con éxito');
-                // Limpia los datos del formulario
-                document.querySelectorAll('input').forEach(input => input.value = '');
-                // Recarga la página para mostrar el formulario de inicio de sesión por defecto
-                setTimeout(() => location.reload(), 500);
+                    if (!tutorResponse.ok) {
+                        const tutorResponseText = await tutorResponse.text();
+                        if (tutorResponseText.includes('El tutor con este DNI ya existe')) {
+                            // El tutor ya existe, continuar sin hacer nada
+                            console.log('El tutor con este DNI ya existe, continuando...');
+                        } else {
+                            throw new Error('Error al enviar los datos a /tutores');
+                        }
+                    }
     
+                    // Limpia los datos del formulario
+                    document.querySelectorAll('input').forEach(input => input.value = '');
+                    // Redirige al login
+                    showAlert('success', 'Miembro registrado con éxito');
+                    setTimeout(() => location.reload(), 500);
+                }
             } catch (error) {
                 console.error('Error en la solicitud:', error);
-                alert('Hubo un error al enviar el formulario');
+                showAlert('error', 'Hubo un error al enviar el formulario');
             }
         }
     });
+    
     
 
     showRegister.addEventListener('click', (e) => {

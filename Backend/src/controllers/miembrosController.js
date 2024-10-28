@@ -194,7 +194,7 @@ async function eliminarMiembro(req, res) {
 
     try {
         // Verificamos si el miembro existe
-        const miembro = await Miembro.getByDni(dni_miembro);
+        const miembro = await Miembro.getBydni(dni_miembro);
 
         if (!miembro) {
             return res.status(404).send(`No se encontró un miembro con el DNI ${dni_miembro}`);
@@ -203,9 +203,7 @@ async function eliminarMiembro(req, res) {
         // Si existe, procedemos a eliminar
         const resultado = await Miembro.eliminarMiembro(dni_miembro);
 
-        if (resultado.rowsAffected[0] === 0) {
-            return res.status(404).send(`No se pudo eliminar el miembro con DNI ${dni_miembro}`);
-        }
+        
 
         res.status(200).send(`Miembro con DNI ${dni_miembro} eliminado correctamente`);
     } catch (err) {

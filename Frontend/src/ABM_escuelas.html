@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/modal_conf.css">
     <link rel="stylesheet" href="../styles/ABM_publicaciones.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,13 +31,6 @@
     object-fit: cover; /* Recorta la imagen para que encaje en el contenedor */
     border: 2px solid #ccc; /* Bordes opcionales para la imagen */
 }
-
-
-
-
-
-
-
 
 .container {
     text-align: center;
@@ -124,131 +118,7 @@ h3{
 }
 
 
-/* Estilos personalizados del modal */
-        .confirmacion-modal {
-            background-color: rgba(0, 0, 0, 0.6);
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            align-content: center;
-            margin: auto;
-            
-        }
 
-        .confirmacion-modal.show {
-            display: flex;
-        }
-
-        .modal-content-confirmacion {
-            background-color: #323232;
-            padding: 60px;
-            border-radius: 8px;
-            width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            animation: modalShow 0.3s ease;
-            align-content: center;
-            margin: auto;
-        }
-        .form-control{
-            width: 100%;
-            padding: 16px;
-            background-color: #D2D2D2;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .modal-header-confirmacion {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-header-confirmacion h5 {
-            margin: 0;
-            color: #D2D2D2;
-            margin-bottom: 60px;
-            font-size: 35px;
-        }
-
-        .btn-close-confirmacion {
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-footer-confirmacion {
-            text-align: center;
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .modal-footer-confirmacion button {
-            margin-left: 10px;
-        }
-        .btn-cancelar{
-            background-color: #63666B;;
-            
-        }
-        .btn-confirmar{
-            
-            background-color: #f36b2b;
-            
-        
-        }
-        .btn{
-            color: #D2D2D2;
-            padding: 15px 50px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-            display: block;
-        }
-        .btn-cancelar:hover{
-            background-color: #63666B;
-            color: #323232;
-            transform: scale(1.05); /* Efecto de aumento en el hover */
-            
-        }
-        .btn-confirmar:hover {
-            color: #D2D2D2;
-            background-color: #f36b2b;
-            transform: scale(1.05); /* Efecto de aumento en el hover */
-        }
-        body.modal-open {
-            overflow: hidden;
-        }
-        .vista-previa{
-            display: block;
-            width: 150px;
-            height: 140px;
-            margin-top: 10px;
-            margin: auto;
-        }
-        .contenedor-img{
-            background-color: #D2D2D2;
-        }
 
 </style>
 <body>
@@ -271,7 +141,19 @@ h3{
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
     </header>       
-
+    <!-- Loader -->
+    <!-- <div id="loader" class="loader-container">
+        <div class="loader"></div>
+    </div> -->
+    <div class="alert-container">
+        <div id="alert-aviso" class="alert alert-aviso">            
+        </div>
+        <div id="alert-success" class="alert alert-success">            
+        </div>
+        <div id="alert-error" class="alert alert-danger">
+        </div>
+    </div>
+    
     <main class="container">
         <h2>Escuela</h2>
         <button class="new-publication" id="openModalButton">Mi Escuela</button>

@@ -36,7 +36,8 @@ document.getElementById('upload-ficha-button').addEventListener('click', async (
 
     const file = fileInputDoc.files[0];
     if (!file) {
-        alert('Por favor, selecciona un archivo para cargar.');
+        showAlert('aviso', 'Por favor, selecciona un archivo para cargar.');
+
         return;
     }
 

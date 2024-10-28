@@ -13,7 +13,50 @@
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/menu.css">
     
+    
 </head>
+<style>
+     /* Contenedor de alertas */
+ .alert-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre las alertas */
+  z-index: 1000; /* Para asegurarse de que esté encima de otros elementos */
+  
+}
+
+/* Estilos para las alertas */
+.alert {
+  padding: 15px;
+  width: 450px;
+  border-right: 4px;
+  color: #fff;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.alert-aviso{
+  background-color: #f36b2b;
+  display: none;
+  color: #000;
+  
+}
+.alert-danger {
+  background-color: #bd2d2a;
+  display: none;
+}
+
+.alert-success {
+  background-color: #2c9900;
+  display: none;
+}       
+      
+.disabled {
+  opacity: 0.6;
+}
+
+</style>
 <body>
     <header class="navbar">
         <div class="navbar-left">
@@ -35,7 +78,15 @@
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
     </header>
-
+    <div class="alert-container">
+        <div id="alert-aviso" class="alert alert-aviso">            
+        </div>
+        <div id="alert-success" class="alert alert-success">            
+        </div>
+        <div id="alert-error" class="alert alert-danger">
+        </div>
+    </div>
+    
     <main  class="main-content">
         <div class="container">
             <h1>Unión Mediterránea</h1>
@@ -238,10 +289,10 @@
         <script>
             function handleLoginSubmit(event) {
                 event.preventDefault();
-
+        
                 const dni = document.getElementById('loginUsername').value;
                 const password = document.getElementById('loginPassword').value;
-
+        
                 fetch('http://localhost:3000/miembros/login', {
                     method: 'POST',
                     headers: {
@@ -255,35 +306,37 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Respuesta del backend:', data);
-
+        
                     if (data.token) {
                         localStorage.setItem('authToken', data.token);
-
+        
                         const decodedToken = jwt_decode(data.token);
                         const userStatus = decodedToken.estado;
-
+        
                         if (userStatus === false) {
                             window.location.href = 'https://www.mercadopago.com.ar/...'; // Redirige a la página de cobros
                         } else if (userStatus === true) {
+                            showAlert('success', '¡Inicio de sesión exitoso!'); // Mensaje de éxito
                             window.location.href = 'mi-perfil.html'; // Redirige a la página de perfil
                         } else {
-                            alert('Estado de usuario no reconocido');
+                            showAlert('aviso', 'Estado de usuario no reconocido');
                         }
                     } else {
-                        alert('Credenciales incorrectas');
+                        showAlert('error', 'Credenciales incorrectas');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Hubo un problema al iniciar sesión');
+                    showAlert('error', 'Hubo un problema al iniciar sesión');
                 });
             }
-
+        
             // Enlaza la función al evento submit del formulario
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
             });
         </script>
+        
     </body>
     </html>
     

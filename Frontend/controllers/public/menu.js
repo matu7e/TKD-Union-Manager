@@ -15,3 +15,14 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
 });
+
+function showAlert(type, message) {
+    const alertElement = document.getElementById(`alert-${type}`);
+    alertElement.textContent = message; // Establece el mensaje
+    alertElement.style.display = 'block'; // Muestra el aviso
+
+    // Oculta el aviso después de 3 segundos
+    setTimeout(() => {
+        alertElement.style.display = 'none';
+    }, 3000);
+}
