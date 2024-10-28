@@ -20,7 +20,7 @@ async function createEscuela(escuela) {
   const { nombre, dni_instructor, email, telefono, enlace, logo} = escuela;
   const fecha = new Date();
   try {
-    await sql.query`
+    const result = await sql.query`
       INSERT INTO Escuelas (nombre, dni_instructor, email_escuela, telefono_escuela, enlace, logo_escuela, fecha_de_alta)
       VALUES (${nombre}, ${dni_instructor}, ${email}, ${telefono}, ${enlace}, ${logo}, ${fecha})
     `;
