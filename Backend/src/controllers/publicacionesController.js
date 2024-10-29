@@ -8,8 +8,8 @@ async function crearPublicacion(req, res) {
     const publicacionData = req.body; // Recibe el cuerpo de la solicitud con la información de la publicación
 
     try {
-        await Publicacion.createPublicacion(publicacionData);
-        res.status(201).send('Publicación creada con éxito');
+        const id_pub = await Publicacion.createPublicacion(publicacionData);
+        res.status(201).json({ message: 'Publicacion creada con éxito', id_pub });
     } catch (err) {
         console.error('Error al crear la publicación:', err);
         res.status(500).send('Error al crear la publicación');

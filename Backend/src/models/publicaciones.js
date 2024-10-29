@@ -5,10 +5,14 @@ async function createPublicacion(publicacion) {
     const fecha = new Date();
 
     try {
-        await sql.query`
+        const result = await sql.query`
             INSERT INTO Publicaciones (titulo, descripcion, enlace, fecha_publicacion)
+            OUTPUT INSERTED.id_escuela
             VALUES (${titulo}, ${descripcion}, ${enlace}, ${fecha})
         `;
+    console.log('Publicacion creada correctamente.');
+    const id_pub = result.recordset[0].id_publicacion; // Capturamos el ID insertado
+    return id_pub;
     } catch (err) {
         throw new Error('Error al crear la publicación');
     }
