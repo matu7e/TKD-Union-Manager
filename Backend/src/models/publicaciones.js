@@ -67,7 +67,7 @@ async function deletePublicacion(id_publicacion) {
 
 async function cargaImagen(id, ruta) {
     try{
-      await sql.query`UPDATE Publicaciones SET imagen = ${ruta} WHERE id_publicaicon = ${id}`;
+      await sql.query`UPDATE Publicaciones SET imagen = ${ruta} WHERE id_publicacion = ${id}`;
       console.log('Ruta de imagen cargada correctamente')
     } catch(err){
       console.error('Error al cargar la ruta: ', err)
