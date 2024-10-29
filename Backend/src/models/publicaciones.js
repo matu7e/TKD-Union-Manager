@@ -7,7 +7,7 @@ async function createPublicacion(publicacion) {
     try {
         const result = await sql.query`
             INSERT INTO Publicaciones (titulo, descripcion, enlace, fecha_publicacion)
-            OUTPUT INSERTED.id_escuela
+            OUTPUT INSERTED.id_publicacion
             VALUES (${titulo}, ${descripcion}, ${enlace}, ${fecha})
         `;
     console.log('Publicacion creada correctamente.');
