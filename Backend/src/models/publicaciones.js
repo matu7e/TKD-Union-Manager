@@ -16,8 +16,8 @@ async function createPublicacion(publicacion) {
 
 async function getAllPublicaciones() {
     try {
-        const result = await sql.query`SELECT p.id_publicacion, p.titulo, p.descripcion, p.imagen, p.enlace
-        FROM Publicaciones p` 
+        const result = await sql.query`SELECT *
+        FROM Publicaciones` 
         return result.recordset;
     } catch (err) {
         throw new Error('Error al obtener las publicaciones');
