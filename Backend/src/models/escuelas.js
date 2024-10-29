@@ -36,12 +36,12 @@ async function createEscuela(escuela) {
 
 // Actualizar una escuela por su ID
 async function updateEscuela(id_escuela, escuela) {
-  const { dni_instructor, email, telefono, enlace, logo} = escuela;
+  const { dni_instructor, email, telefono, enlace, nombre} = escuela;
   try {
     await sql.query`
       UPDATE Escuelas
       SET dni_instructor = ${dni_instructor}, email_escuela = ${email}, telefono_escuela = ${telefono},
-          enlace = ${enlace}, logo_escuela = ${logo}
+          enlace = ${enlace}, nombre = ${nombre}
       WHERE id_escuela = ${id_escuela}
     `;
     console.log('Escuela actualizada correctamente.');
