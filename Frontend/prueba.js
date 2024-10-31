@@ -35,11 +35,6 @@ function openModal(modal) {
     modal.style.display = 'block';
     document.body.classList.add('no-scroll'); // Bloquear el scroll
 }
-// Cambiar de página
-document.getElementById('pageSelect').addEventListener('change', (event) => {
-    currentPage = parseInt(event.target.value);
-    mostrarPagina(currentPage);
-});
 
 // Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
 function closeModal(modal) {
@@ -54,36 +49,6 @@ function closeModal(modal) {
         document.body.classList.remove('no-scroll'); // Restaurar el scroll
     }
 }
-
-// Función para previsualizar la imagen seleccionada
-function previewImage(event) {
-    const imagePreview = document.getElementById('imagePreview');
-    const file = event.target.files[0];
-
-    console.log("Previsualizando imagen:", file);
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            imagePreview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    } else {
-        imagePreview.src = '';
-    }
-}
-
-// Cerrar modales si se hace clic fuera de ellos
-window.addEventListener('click', (event) => {
-    if (event.target === newPublicationModal) {
-        console.log("Clic fuera del modal de nueva publicación");
-        closeModal(newPublicationModal);
-    } else if (event.target === confirmModal) {
-        console.log("Clic fuera del modal de confirmación");
-        closeModal(confirmModal);
-    }
-});
-
 
 // Función para limpiar los campos del formulario
 function resetForm() {
@@ -132,7 +97,7 @@ function createPublication() {
     const enlace = document.getElementById('enlace').value;
 
     console.log("Iniciando creación de publicación:", { titulo, descripcion, enlace });
-    
+    showLoader(); // Mostrar loader al iniciar la creación
 
     const url = 'http://localhost:3000/publicaciones';
     const method = 'POST';
@@ -172,19 +137,18 @@ function createPublication() {
 
 // Función para cargar la imagen de la publicación
 function uploadImage(id_pub) {
-    hideLoader(); // Ocultar loader si no hay imagen
     const imageInput = document.getElementById('imagen');
     const imageFile = imageInput.files[0];
 
     console.log("Intentando cargar imagen para publicación:", id_pub);
-    
+    showLoader(); // Mostrar loader al iniciar la carga de imagen
 
     if (!imageFile) {
         console.log('No se seleccionó una imagen para subir');
         hideLoader(); // Ocultar loader si no hay imagen
         return;
     }
-    
+
     const formData = new FormData();
     formData.append('imagen', imageFile);
 
@@ -206,7 +170,9 @@ function uploadImage(id_pub) {
     .catch(error => {
         console.error('Error al cargar la imagen:', error);
     })
-    
+    .finally(() => {
+        hideLoader(); // Ocultar loader al finalizar
+    });
 }
 
 // Evento para confirmar la acción
@@ -320,29 +286,6 @@ function confirmarEliminacion(id) {
     openModal(confirmModal);
 }
 
-
-// Evento para cerrar el modal
-document.getElementById('closeImagePreview').addEventListener('click', function() {
-    document.getElementById('imagePreviewModal').style.display = 'none';
-});
-
-// Cerrar el modal al hacer clic fuera de la imagen
-document.getElementById('imagePreviewModal').addEventListener('click', function(event) {
-    if (event.target === this) {
-        this.style.display = 'none';
-    }
-});
-function verImagen(rutaImagen) {
-    // Concatenar el prefijo a la ruta de la imagen
-    const imageUrl = `../../../Backend/${rutaImagen}`;
-    // Asignar la ruta de la imagen al src del elemento de vista previa
-    document.getElementById('previewImage').src = imageUrl;
-    // Mostrar el modal con la imagen
-    document.getElementById('imagePreviewModal').style.display = 'flex';
-}
-
-
-
 function eliminarPublicacion(id) {
     showLoader(); // Mostrar loader al iniciar la eliminación
     fetch(`http://localhost:3000/publicaciones/${id}`, { method: 'DELETE' })
@@ -364,37 +307,21 @@ function eliminarPublicacion(id) {
 }
 
 
-// Función para actualizar el paginador
+// Lógica de paginación
 function actualizarPaginador() {
     const totalPaginas = Math.ceil(publicaciones.length / registrosPorPagina);
-    document.getElementById('totalPaginas').textContent = totalPaginas;
+    const paginador = document.getElementById('paginador');
+    paginador.innerHTML = '';
 
-    const pageSelect = document.getElementById('pageSelect');
-    pageSelect.innerHTML = '';
     for (let i = 1; i <= totalPaginas; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        pageSelect.appendChild(option);
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.onclick = () => {
+            currentPage = i;
+            mostrarPagina(currentPage);
+        };
+        paginador.appendChild(pageButton);
     }
-}
-// Función para cerrar el modal de imagen
-document.getElementById('closeImagePreview').addEventListener('click', () => {
-    document.getElementById('imagePreviewModal').style.display = 'none';
-});
-
-// Función para cerrar el modal al hacer clic fuera de la imagen
-window.addEventListener('click', (event) => {
-    const imageModal = document.getElementById('imagePreviewModal');
-    if (event.target === imageModal) {
-        imageModal.style.display = 'none';
-    }
-});
-
-// Función para mostrar el total de registros
-function mostrarTotalRegistros() {
-    const totalRegistros = publicaciones.length;
-    document.getElementById('totalRegistros').textContent = `Total de Registros: ${totalRegistros}`;
 }
 
 

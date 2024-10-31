@@ -1,19 +1,19 @@
-body {
-  margin: 0;
-  font-family: "Libre Baskerville", serif !important;
-  background-color: #D2D2D2;
-  color: #323232;
-  
-}
-.no-scroll {
-  overflow: hidden;
+  body {
+    margin: 0;
+    font-family: "Libre Baskerville", serif !important;
+    background-color: #D2D2D2;
+    color: #323232;
+    
   }
-:root {
-  --gris: #63666B;
-  --negroOscuro: #323232;
-  --blanco: #D2D2D2;
-  --naranja: #f36b2b;
-}
+  .no-scroll {
+    overflow: hidden;
+    }
+  :root {
+    --gris: #63666B;
+    --negroOscuro: #323232;
+    --blanco: #D2D2D2;
+    --naranja: #f36b2b;
+  }
 
 /* Estilos para el carrousel */
 .title-carrousel {

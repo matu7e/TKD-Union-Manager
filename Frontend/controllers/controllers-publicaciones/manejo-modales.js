@@ -29,8 +29,7 @@ function closeModal(modal) {
     }
 }
 
-
-// Función para limpiar los campos del formulario
+// Función para limpiar los campos del formulario (mantener pero no usar al abrir modal)
 function resetForm() {
     const form = document.getElementById('publicationForm');
     form.reset();
@@ -39,8 +38,7 @@ function resetForm() {
 
 // Evento para abrir el modal de nueva publicación
 openModalButton.addEventListener('click', () => {
-    resetForm(); // Limpiar los campos antes de abrir el modal
-    openModal(newPublicationModal);
+    openModal(newPublicationModal); // Solo abrir el modal, no limpiar el formulario
 });
 
 // Eventos para cerrar el modal de nueva publicación

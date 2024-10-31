@@ -169,7 +169,7 @@ h3{
                     <form id="publicationForm">
                         <!-- Campo para el logo de la escuela con vista previa -->
                         <div class="mb-3 img-circular-container">
-                            <img id="imagePreview" src="../../../backend/default/logo.png" alt="Vista previa" class="img-circular">
+                            <img id="imagePreview" src="../../Backend/uploads/default/logo.png" alt="Vista previa" class="img-circular">
                         </div>
     
                         <!-- Campo para el nombre de la escuela -->
@@ -305,136 +305,198 @@ h3{
     <script src="../controllers/public/menu.js"></script>
     
     <script>
-        function submitForm() {
-    // Obtener el token del almacenamiento local
+        let idEscuela = null; // Variable para almacenar el ID de la escuela si existe
+
+function submitForm() {
     const token = localStorage.getItem('authToken');
     if (!token) {
         redirectToLogin('Token no encontrado.');
         return;
     }
 
-    // Decodificar el token para obtener el DNI y otros datos
-    const { dni, estado: userStatus, rol } = jwt_decode(token);
+    const { dni } = jwt_decode(token);
 
-    // Obtener los valores del formulario
     const nombre = document.getElementById('titulo').value;
     const email = document.getElementById('descripcion').value;
     const telefono = document.getElementById('telefono').value;
     const enlace = document.getElementById('enlaceInstagram').value;
 
-    // Validar que todos los campos estén llenos
     if (!nombre || !email || !telefono || !enlace) {
         alert('Por favor, complete todos los campos del formulario.');
         return;
     }
 
-    // Crear el objeto que se enviará en el cuerpo del POST
+    // Data para enviar en el POST/PUT
     const data = {
-        nombre: nombre,
-        dni_instructor: dni, // El DNI que proviene del token decodificado
-        email: email,
-        telefono: telefono,
-        enlace: enlace,
-        logo: null // Se deja null por defecto, la imagen se envía por otro endpoint
+        nombre,
+        dni_instructor: dni,
+        email,
+        telefono,
+        enlace,
     };
 
-    // Función para hacer el POST a la API
     async function fetchUserData() {
         try {
-            // Imprimir datos antes de enviar
-            console.log('Datos a enviar:', data);
-
-            const response = await fetch(`http://localhost:3000/escuelas`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Asegúrate de que el token es correcto
-                },
-                body: JSON.stringify(data) // Convertir el objeto a JSON
-            });
-
-            // Obtener la respuesta como texto
-            const responseText = await response.text();
-            console.log('Respuesta del servidor:', responseText); // Imprimir la respuesta en texto
-
-            if (!response.ok) {
-                // Si la respuesta no es ok, lanzar un error
-                throw new Error('Error en la red: ' + response.statusText + ' - ' + responseText);
+            let response;
+            if (idEscuela) {
+                console.log('Actualizando escuela existente con ID:', idEscuela);
+                response = await fetch(`http://localhost:3000/escuelas/${idEscuela}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+            } else {
+                console.log('Creando nueva escuela...');
+                response = await fetch(`http://localhost:3000/escuelas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
             }
 
-            // Aquí puedes manejar la respuesta, como cerrar el modal o mostrar un mensaje de éxito
-            if (responseText.includes('Escuela creada con éxito')) {
-                console.log('Éxito:', responseText);
-                alert(responseText); // Mostrar el mensaje de éxito
+            const responseData = await response.text(); // Obtiene la respuesta como texto
+            console.log('Respuesta del servidor:', responseData); // Log de la respuesta
+
+            if (!response.ok) {
+                alert('Error al realizar la acción: ' + responseData);
+                return; // Salir de la función en caso de error
+            }
+
+            // Intentar analizar la respuesta como JSON
+            let jsonData = null;
+            try {
+                jsonData = JSON.parse(responseData);
+            } catch (e) {
+                console.warn('La respuesta no es un JSON válido, manejando como texto:', responseData);
+            }
+
+            // Manejo de la respuesta
+            if (jsonData && jsonData.message) {
+                alert(jsonData.message);
+                idEscuela = idEscuela || jsonData.id_escuela; // Asigna el ID de la escuela
+
+                // Manejar la carga del logo
+                const logoInput = document.getElementById('imagen');
+                if (logoInput.files.length > 0) {
+                    const logoFormData = new FormData();
+                    logoFormData.append('logo', logoInput.files[0]);
+
+                    console.log('Preparando carga del logo para la escuela ID:', idEscuela); // Log del ID de la escuela
+                    const logoResponse = await fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
+                        method: 'POST', // Se mantiene el POST para la carga del logo
+                        body: logoFormData,
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                            // No se establece Content-Type aquí
+                        }
+                    });
+
+                    if (logoResponse.ok) {
+                        alert('Logo cargado con éxito');
+                    } else {
+                        const logoResponseText = await logoResponse.text();
+                        alert('Error al cargar el logo: ' + logoResponseText);
+                    }
+                } else {
+                    alert('No se ha seleccionado un logo para cargar.');
+                }
+
+                modal.style.display = 'none'; // Cerrar el modal al finalizar
+            } else if (jsonData && jsonData.error) {
+                alert('Error: ' + jsonData.error);
             } else {
-                alert('Respuesta no esperada: ' + responseText);
+                alert('Operación realizada: ' + responseData);
             }
 
         } catch (error) {
-            console.error('Error en la petición:', error); // Mostrar el error en la consola
+            console.error('Error en la petición:', error);
             alert('Se produjo un error al enviar los datos: ' + error.message);
         }
     }
 
-    // Llamar a la función fetch para realizar el POST
     fetchUserData();
 }
 
-// Evento para confirmar la acción
-confirmActionButton.addEventListener('click', submitForm);
+
 
     
-    </script>
-    <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
-
-
-
-    <!-- FALTA PROBAR CUANDO SE HAGA EL ENDPOINT GET BY ID INSTRUCTOR -->
-    <!--<script>
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('authToken');
             if (!token) {
                 redirectToLogin('Token no encontrado.');
                 return;
             }
-        
-            const { dni } = jwt_decode(token);
-        
-            // Hacer la solicitud al endpoint de la escuela
-            try {
-                const response = await fetch(`../../../backend/escuela/${dni}`);
-                if (!response.ok) {
-                    throw new Error('No se pudo obtener los datos de la escuela');
+    
+            const { dni: idInstructor } = jwt_decode(token);
+    
+            async function cargarDatosEscuela() {
+                try {
+                    console.log('Iniciando GET para cargar datos de la escuela...');
+                    const response = await fetch(`http://localhost:3000/escuelas/instructor/${idInstructor}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+    
+                    const responseText = await response.text(); // Cambia a text en lugar de json
+                    console.log('Respuesta completa del GET:', responseText);
+    
+                    if (!response.ok) {
+                        if (responseText.includes("No se encontraron escuelas para ese instructor.")) {
+                            console.log('No se encontró ninguna escuela para el instructor.');
+                            return;
+                        }
+                        throw new Error('Error al cargar los datos de la escuela: ' + response.statusText);
+                    }
+    
+                    const data = JSON.parse(responseText);
+                    
+                    if (Array.isArray(data) && data.length > 0) {
+                        const escuela = data[0];
+                        idEscuela = escuela.id_escuela; // Asigna el ID de la escuela
+                        console.log('ID de la escuela encontrado:', idEscuela);
+    
+                        // Actualiza los campos del formulario si la escuela ya existe
+                        document.getElementById('titulo').value = escuela.nombre || '';
+                        document.getElementById('descripcion').value = escuela.email_escuela || '';
+                        document.getElementById('telefono').value = escuela.telefono_escuela || '';
+                        document.getElementById('enlaceInstagram').value = escuela.enlace || '';
+                        document.getElementById('imagePreview').src = '../../Backend/' + (escuela.logo_escuela || 'uploads/default/logo.png');
+                    } else {
+                        console.log('No se encontró ningún registro en el array de respuesta.');
+                    }
+                
+                } catch (error) {
+                    console.error('Error al cargar datos de la escuela:', error);
+                    alert('Se produjo un error al cargar los datos: ' + error.message);
                 }
-        
-                const escuela = await response.json();
-        
-                // Si el instructor tiene una escuela registrada, rellenar los campos del formulario
-                if (escuela) {
-                    document.getElementById('titulo').value = escuela.nombre;
-                    document.getElementById('descripcion').value = escuela.email;
-                    document.getElementById('telefono').value = escuela.telefono;
-                    document.getElementById('enlaceInstagram').value = escuela.enlace;
-        
-                    // Mostrar el logo de la escuela si existe
-                    const logoPath = escuela.logo ? `../../../backend/logos/${escuela.logo}` : '../../../backend/default/logo.png';
-                    document.getElementById('imagePreview').src = logoPath;
-                }
-            } catch (error) {
-                console.error('Error al cargar los datos de la escuela:', error);
             }
+    
+            cargarDatosEscuela();
         });
+    
+        document.getElementById('confirmActionButton').addEventListener('click', submitForm);
+    </script>
+    
+    
+    
+    
+    <script>
         
-        // Función para mostrar una vista previa de la imagen cargada
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = reader.result;
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-        </script>-->
+    </script>
+    
+    
+    <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
+
+    
+
         <script>
             // Función para cargar provincias desde el backend
             async function cargarProvincias() {

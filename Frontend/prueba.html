@@ -811,3 +811,206 @@ document.getElementById('limpiar-filtros').addEventListener('click', limpiarFilt
 
 // Asignar evento al botón de exportar a Excel
 document.getElementById('exportar-excel').addEventListener('click', exportToExcel);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Variables para la paginación
+let publicaciones = [];
+let currentPage = 1;
+const registrosPorPagina = 15;
+const publicacionesUrl = 'http://localhost:3000/publicaciones'; // URL de tus publicaciones
+
+// Obtener elementos de modales y botones
+const newPublicationModal = document.getElementById('newPublicationModal');
+const confirmModal = document.getElementById('confirmModal');
+const openModalButton = document.getElementById('openModalButton');
+const closeModalButton = document.getElementById('closeModalButton');
+const closeModalButtonFooter = document.getElementById('closeModalButtonFooter');
+const closeConfirmModalButton = document.getElementById('closeConfirmModal');
+const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+const confirmActionButton = document.getElementById('confirmActionButton');
+
+// Estado de acción actual para el modal de confirmación
+let currentAction = null;
+let currentId = null;
+
+// Función para abrir el modal y bloquear el scroll
+function openModal(modal) {
+    modal.style.display = 'block';
+    document.body.classList.add('no-scroll');
+}
+
+// Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
+function closeModal(modal) {
+    modal.style.display = 'none';
+    const isAnyModalOpen = [newPublicationModal, confirmModal].some(m => m.style.display === 'block');
+    if (!isAnyModalOpen) document.body.classList.remove('no-scroll');
+}
+
+// Función para cargar todas las publicaciones al iniciar
+function cargarPublicaciones() {
+    fetch(publicacionesUrl)
+        .then(response => response.json())
+        .then(data => {
+            publicaciones = data;
+            mostrarPagina(currentPage);
+            actualizarPaginador();
+            mostrarTotalRegistros();
+        })
+        .catch(error => console.error('Error al cargar las publicaciones:', error));
+}
+
+function mostrarPagina(pagina) {
+    const tableBody = document.querySelector('#miTabla tbody');
+    tableBody.innerHTML = '';
+    
+    const start = (pagina - 1) * registrosPorPagina;
+    const end = start + registrosPorPagina;
+    const publicacionesPagina = publicaciones.slice(start, end);
+
+    publicacionesPagina.forEach(publicacion => {
+        // Valores por defecto si algún campo es nulo o indefinido
+        const titulo = publicacion.titulo || '-';
+        const descripcion = publicacion.descripcion || '-';
+        const enlace = publicacion.enlace ? `<a href="${publicacion.enlace}" target="_blank">Enlace</a>` : '-';
+        const fechaPublicacion = publicacion.fecha_publicacion 
+            ? new Date(publicacion.fecha_publicacion).toLocaleDateString("es-ES") 
+            : '-';
+        
+        // Verificar si existe una imagen, si no, desactivar el botón de vista previa
+        const iconoVerImagen = publicacion.imagen 
+            ? `<i class="fa-solid fa-eye icon-view" title="Ver imagen" onclick="verImagen('${publicacion.imagen}')"></i>`
+            : '<i class="fa-solid fa-eye icon-view-disabled" title="Imagen no disponible"></i>';
+
+        // Crear la fila con los datos
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${titulo}</td>
+            <td>${descripcion}</td>
+            <td>${enlace}</td>
+            <td>${fechaPublicacion}</td>
+            <td>
+                ${iconoVerImagen}
+                <i class="fa-solid fa-trash icon-delete" title="Eliminar publicación" onclick="confirmarEliminacion(${publicacion.id})"></i>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+
+// Función para ver la imagen en un modal
+function verImagen(imagenPath) {
+    const imageModal = document.getElementById('imagePreviewModal');
+    const previewImage = document.getElementById('previewImage');
+    
+    // Limpiar el imagenPath para eliminar caracteres extraños
+    const cleanedPath = imagenPath.replace(/{/g, '').replace(/}/g, ''); // Quitar '{' y '}'
+    
+    // Ajustar la ruta de la imagen
+    previewImage.src = `../../../Backend/${cleanedPath}`;
+    imageModal.style.display = 'block';
+}
+
+
+// Función para cerrar el modal de imagen
+document.getElementById('closeImagePreview').addEventListener('click', () => {
+    document.getElementById('imagePreviewModal').style.display = 'none';
+});
+
+// Función para cerrar el modal al hacer clic fuera de la imagen
+window.addEventListener('click', (event) => {
+    const imageModal = document.getElementById('imagePreviewModal');
+    if (event.target === imageModal) {
+        imageModal.style.display = 'none';
+    }
+});
+
+// Función para mostrar el total de registros
+function mostrarTotalRegistros() {
+    const totalRegistros = publicaciones.length;
+    document.getElementById('totalRegistros').textContent = `Total de Registros: ${totalRegistros}`;
+}
+
+// Función para actualizar el paginador
+function actualizarPaginador() {
+    const totalPaginas = Math.ceil(publicaciones.length / registrosPorPagina);
+    document.getElementById('totalPaginas').textContent = totalPaginas;
+
+    const pageSelect = document.getElementById('pageSelect');
+    pageSelect.innerHTML = '';
+    for (let i = 1; i <= totalPaginas; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        pageSelect.appendChild(option);
+    }
+}
+
+// Cambiar de página
+document.getElementById('pageSelect').addEventListener('change', (event) => {
+    currentPage = parseInt(event.target.value);
+    mostrarPagina(currentPage);
+});
+
+// Función para mostrar el modal de confirmación de eliminación
+function confirmarEliminacion(id) {
+    currentAction = 'eliminar';
+    currentId = id;
+    openModal(confirmModal);
+}
+
+// Evento de confirmación en el modal
+confirmActionButton.addEventListener('click', () => {
+    if (currentAction === 'eliminar') eliminarPublicacion(currentId);
+    closeModal(confirmModal);
+});
+
+// Función para eliminar publicación
+function eliminarPublicacion(id) {
+    fetch(`${publicacionesUrl}/${id}`, { method: 'DELETE' })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al eliminar la publicación.');
+            showAlert('success', 'Publicación eliminada con éxito.');
+            cargarPublicaciones(); // Actualizar la lista después de eliminar
+        })
+        .catch(error => console.error('Error al eliminar la publicación:', error));
+}
+
+// Función para mostrar alertas
+function showAlert(type, message) {
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    alert.textContent = message;
+    document.body.appendChild(alert);
+    setTimeout(() => document.body.removeChild(alert), 3000);
+}
+
+// Cargar publicaciones al inicio
+document.addEventListener('DOMContentLoaded', cargarPublicaciones);
+
+// Cerrar modales con botones
+closeModalButton.addEventListener('click', () => closeModal(newPublicationModal));
+closeModalButtonFooter.addEventListener('click', () => closeModal(newPublicationModal));
+closeConfirmModalButton.addEventListener('click', () => closeModal(confirmModal));
+cancelConfirmButton.addEventListener('click', () => closeModal(confirmModal));
