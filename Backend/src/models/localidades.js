@@ -21,7 +21,6 @@ async function createLocalidad(localidad) {
   const { id, nombre, provincia } = localidad;
   try {
       await sql.query`
-      SET IDENTITY_INSERT Localidades ON;
       INSERT INTO Localidades (id_localidad, id_provincia, nombre)
       VALUES (${id}, ${provincia}, ${nombre})
     `;
