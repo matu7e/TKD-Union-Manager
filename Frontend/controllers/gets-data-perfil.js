@@ -217,8 +217,9 @@ function construirMenu(rol) {
 
     if (rol === 'Instructor') {
         navbarMenu.innerHTML += `
-            <li><a href="ABM_escuelas.html">Mi Escuela</a></li>
             <li><a href="ABM_alumnos.html">Mis Alumnos</a></li>
+            <li><a href="ABM_escuelas.html">Mi Escuela</a></li>
+            
         `;
     }
     navbarMenu.innerHTML += `

@@ -305,6 +305,15 @@ h3{
     <script src="../controllers/public/menu.js"></script>
     
     <script>
+
+
+
+        //-------------------------------------------------------------------------------------------
+        //CUANDO SE HACE PUT NO SE ACTUALIZA EL LOGO CREO QUE ES POR COMO RECIVE EL IDESCUEAL EL FECH  
+        //-------------------------------------------------------------------------------------------
+
+
+
         let idEscuela = null; // Variable para almacenar el ID de la escuela si existe
 
 function submitForm() {
@@ -488,9 +497,7 @@ function submitForm() {
     
     
     
-    <script>
-        
-    </script>
+   
     
     
     <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
@@ -554,55 +561,75 @@ function submitForm() {
                 }
             }
             
-            // Manejar el evento de clic en el botón para agregar sede
-            const createSedeForm = document.getElementById('create-sede-form');
-            const addSedeButton = document.getElementById('add-sede-button');
-            const sedesList = document.getElementById('sedes-list');
             
-            addSedeButton.addEventListener('click', async () => {
-                const direccion = createSedeForm.direccion.value;
-                const descripcion = createSedeForm.descripcion.value;
-                const provinciaId = createSedeForm.provincia.value;
-                const localidadId = createSedeForm.localidad.value;
-            
-                if (!direccion || !descripcion || !provinciaId || !localidadId) {
-                    alert('Por favor, completa todos los campos.');
-                    return;
-                }
-            
-                const sedeData = {
-                    id_escuela: 1,
-                    direccion: direccion,
-                    descripcion: descripcion,
-                    localidad: { id: localidadId, nombre: "" },
-                    provincia: { id: provinciaId, nombre: "" },
-                };
-            
-                try {
-                    const response = await fetch('http://localhost:3000/sedes', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(sedeData),
-                    });
-            
-                    if (response.ok) {
-                        const newSede = await response.json();
-                        // Aquí puedes agregar el nuevo elemento a la lista de sedes
-                        const sedeElement = document.createElement('div');
-                        sedeElement.textContent = `Sede añadida: ${newSede.descripcion}`;
-                        sedesList.appendChild(sedeElement);
-                    } else {
-                        alert('Error al agregar la sede: ' + response.statusText);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Se produjo un error al enviar los datos: ' + error.message);
-                }
-            });
             
             // Cargar provincias al iniciar la página
             document.addEventListener('DOMContentLoaded', cargarProvincias);
             </script>
+
+<script>
+    // Función para añadir una sede
+    document.getElementById('add-sede-button').addEventListener('click', function() {
+        // Validar que idEscuela no sea null
+        if (idEscuela !== null) {
+            // Obtener valores del formulario
+            const direccion = document.getElementById('direccion').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const provinciaId = document.getElementById('provincia').value; // Asumiendo que el id de la provincia está en el valor del select
+            const localidadId = document.getElementById('localidad').value; // Asumiendo que el id de la localidad está en el valor del select
+
+            // Validar que los campos no estén vacíos
+            if (direccion && descripcion && provinciaId && localidadId) {
+                // Crear un objeto sede
+                const nuevaSede = {
+                    id_escuela: idEscuela,
+                    direccion: direccion,
+                    localidad: {
+                        id: localidadId,
+                        nombre: document.getElementById('localidad').options[document.getElementById('localidad').selectedIndex].text,
+                        provincia: provinciaId, // Cambiamos aquí para que sea solo el ID de la provincia
+                    },
+                };
+
+                // Aquí podrías hacer la llamada POST a tu API para crear la sede, por ejemplo usando fetch:
+                fetch('http://localhost:3000/sedes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(nuevaSede),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al crear la sede');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Añadir la sede a la lista de sedes en el DOM
+                    const sedesList = document.getElementById('sedes-list');
+                    const sedeElement = document.createElement('div');
+                    sedeElement.textContent = `Sede creada: ${direccion}, ${descripcion}, ${data.localidad.nombre}, ${data.localidad.provincia}`;
+                    sedesList.appendChild(sedeElement);
+
+                    // Limpiar los campos del formulario
+                    document.getElementById('direccion').value = '';
+                    document.getElementById('descripcion').value = '';
+                    document.getElementById('provincia').selectedIndex = 0; // Reiniciar el select
+                    document.getElementById('localidad').selectedIndex = 0; // Reiniciar el select
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('No se pudo crear la sede. Intenta nuevamente.');
+                });
+            } else {
+                alert('Por favor completa todos los campos.');
+            }
+        } else {
+            alert('El ID de la escuela no puede ser nulo.');
+        }
+    });
+</script>
 </body>
 </html>
 

@@ -171,7 +171,7 @@ select option {
                 </div>
 
                 <div class="filter-row right-align">
-                    <button type="submit" class="search-button btn btn-primary">Buscar</button>
+                    <button type="submit" class="search-button btn btn-secondary">Buscar</button>
                     <button type="button" class="clear-button btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
                 </div>
             </form>
@@ -208,7 +208,7 @@ select option {
                         </select>
                         de <span id="totalPaginas"></span>
                     </div>
-                    <button class="export-btn btn btn-success" onclick="exportToExcel()">Exportar</button>
+                    <button class="export-btn btn btn-secondary" onclick="exportToExcel()">Exportar</button>
                 </div>
             </div>
         </section>
@@ -293,29 +293,31 @@ select option {
     document.getElementById('cancelConfirmButton').addEventListener('click', cerrarModal);
 
     function agregarPrivilegios(dni) {
-        fetch(`http://localhost:3000/miembros/subirprivilegios/${dni}`, { method: 'PUT' })
-            .then(response => {
-                if (!response.ok) throw new Error('Error al agregar privilegios.');
-                showAlert('success', 'Instructor asignado con éxito.');
-            })
-            .catch(error => console.error('Error:', error));
+    fetch(`http://localhost:3000/miembros/subirprivilegios/${dni}`, { method: 'PUT' })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al agregar privilegios.');
+            showAlert('success', 'Instructor asignado con éxito.');
+            cargarMiembros(); // Recargar la grilla
+        })
+        .catch(error => console.error('Error:', error));
     }
 
     function registrarBaja(dni) {
-    fetch(`http://localhost:3000/miembros/${dni}`, { method: 'DELETE' })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { 
-                    throw new Error(text); 
-                });
-            }
-            showAlert('success', 'Baja registrada con éxito.');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('error', `Error al registrar baja: ${error.message}`);
-        });
-}
+        fetch(`http://localhost:3000/miembros/${dni}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { 
+                        throw new Error(text); 
+                    });
+                }
+                showAlert('success', 'Baja registrada con éxito.');
+                cargarMiembros(); // Recargar la grilla
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('error', `Error al registrar baja: ${error.message}`);
+            });
+    }
 
     function agregarMiembro(dni) {
         mostrarModalConfirmacion('¿Estás seguro de agregar privilegios a este miembro?', 'agregar', dni);

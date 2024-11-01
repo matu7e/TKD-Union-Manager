@@ -117,7 +117,7 @@ btnGuardar.addEventListener('click', (event) => {
     console.log('Enlace:', enlace);
 
     if (!titulo) {
-        alert('Por favor, complete todos los campos.');
+        showAlert('aviso', 'Por favor, complete todos los campos.');
         return;
     }
 
@@ -132,7 +132,6 @@ function createPublication() {
     const enlace = document.getElementById('enlace').value;
 
     console.log("Iniciando creación de publicación:", { titulo, descripcion, enlace });
-    
 
     const url = 'http://localhost:3000/publicaciones';
     const method = 'POST';
@@ -156,12 +155,13 @@ function createPublication() {
         console.log('Publicación creada con éxito:', data);
         const id_pub = data.id_pub;
 
-        // Actualizar la lista de publicaciones sin recargar la página
         cargarPublicaciones(); // Cargar las publicaciones después de la creación
         uploadImage(id_pub); // Cargar la imagen después de crear la publicación
+        showAlert('success', 'Publicación creada con éxito.');
     })
     .catch(error => {
         console.error('Error al crear publicación:', error);
+        showAlert('error', 'Error al crear la publicación.');
     })
     .finally(() => {
         hideLoader(); // Ocultar loader al finalizar
@@ -177,14 +177,14 @@ function uploadImage(id_pub) {
     const imageFile = imageInput.files[0];
 
     console.log("Intentando cargar imagen para publicación:", id_pub);
-    
 
     if (!imageFile) {
         console.log('No se seleccionó una imagen para subir');
-        hideLoader(); // Ocultar loader si no hay imagen
+        hideLoader();
+        showAlert('aviso', 'No se seleccionó una imagen para subir.');
         return;
     }
-    
+
     const formData = new FormData();
     formData.append('imagen', imageFile);
 
@@ -202,11 +202,12 @@ function uploadImage(id_pub) {
     })
     .then(data => {
         console.log('Imagen cargada con éxito:', data);
+        showAlert('success', 'Imagen cargada con éxito.');
     })
     .catch(error => {
         console.error('Error al cargar la imagen:', error);
-    })
-    
+        showAlert('error', 'Error al cargar la imagen.');
+    });
 }
 
 // Evento para confirmar la acción
@@ -350,19 +351,18 @@ function eliminarPublicacion(id) {
             if (!response.ok) {
                 throw new Error('Error al eliminar publicación');
             }
-            return response.text(); // Cambiar a response.text() en lugar de response.json()
-        })
-        .then(data => {
-            console.log('Publicación eliminada con éxito:', data);
-            cargarPublicaciones(); // Recargar publicaciones después de la eliminación
+            showAlert('success', 'Publicación eliminada con éxito.');
+            return cargarPublicaciones(); // Recargar publicaciones después de eliminar
         })
         .catch(error => {
-            console.error('Error al eliminar publicación:', error);
-            alert('No se pudo eliminar la publicación. Intente nuevamente.'); // Mostrar alerta en caso de error
+            console.error('Error al eliminar la publicación:', error);
+            showAlert('error', 'Error al eliminar la publicación.');
         })
-        .finally(() => hideLoader()); // Ocultar loader al finalizar
+        .finally(() => {
+            hideLoader();
+            closeModal(confirmModal);
+        });
 }
-
 
 // Función para actualizar el paginador
 function actualizarPaginador() {
