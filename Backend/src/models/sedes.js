@@ -2,7 +2,7 @@ const { sql } = require('../config/bdHelper');
 
 async function getAllSedes() {
     try {
-        const result = await sql.query`SELECT s.direccion, l.nombre AS localidad, e.nombre AS escuela, e.id_escuela
+        const result = await sql.query`SELECT s.id_sede, s.direccion, l.nombre AS localidad, e.nombre AS escuela, e.id_escuela
         FROM Sedes s 
         LEFT JOIN Escuelas e ON s.id_escuela = e.id_escuela 
         LEFT JOIN Localidades l ON s.localidadID = l.id_localidad`;
