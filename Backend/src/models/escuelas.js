@@ -109,9 +109,9 @@ async function getByInstructor(id_instructor) {
   }
 }
 
-async function buscarEscuelas({ id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor }) {
+async function buscarEscuelas({ id_escuela, id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor }) {
   let query = `
-      SELECT e.id_escuela, e.nombre AS nombre_escuela, e.dni_instructor,
+      SELECT e.id_escuela, e.nombre AS nombre_escuela, e.enlace, e.telefono_escuela AS telefono, e.logo_escuela, 
              m.nombre AS nombre_instructor, m.apellido AS apellido_instructor,
              s.direccion AS sede_direccion, l.nombre AS localidad,
              p.nombre AS provincia
@@ -133,7 +133,7 @@ async function buscarEscuelas({ id_provincia, id_localidad, nombre_escuela, nomb
   
   if (id_localidad) {
       query += ` AND s.localidadID = @id_localidad`;
-      request.input('id_localidad', sql.Int, id_localidad);
+      request.input('id_localidad', sql.BigInt, id_localidad);
   }
 
   if (nombre_escuela) {
@@ -150,6 +150,11 @@ async function buscarEscuelas({ id_provincia, id_localidad, nombre_escuela, nomb
       query += ` AND m.apellido LIKE '%' + @apellido_instructor + '%'`;
       request.input('apellido_instructor', sql.VarChar, apellido_instructor);
   }
+
+  if (id_escuela) {
+    query += ` AND e.id_escuela = @id_escuela`;
+    request.input('id_escuela', sql.Int, id_escuela);
+}
 
   try {
       const result = await request.query(query);
