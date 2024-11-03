@@ -108,7 +108,7 @@ select option {
                 <li><a id="actual" href="ABM_alumnos.html">Mis alumnos</a></li>
                 <li><a href="ABM_escuelas.html">Mi escuela</a></li>
                 <li><a href="mi-perfil.html">Mi perfil</a></li>
-                <li><a href="../login.html" class="login-btn">Cerrar Sesión</a></li>
+                <li><a href="login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
@@ -261,12 +261,13 @@ select option {
     <script src="../controllers/public/menu.js"></script>
     <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+        
     <script>
 
 document.addEventListener('DOMContentLoaded', function() {
                     console.log('DOM completamente cargado y parseado');
                     const loader = document.getElementById('loader');
-                    loader.style.display = 'block'; // Mostrar el loader
+                    loader.style.display = 'block'; // Mostrar el loader 
             
                     const token = localStorage.getItem('authToken');
                     if (!token) {
@@ -583,10 +584,7 @@ document.addEventListener('DOMContentLoaded', function() {
        
     </script>
 
-    <script>
-
-
-
+<script>
     // Función para exportar a Excel solo los resultados actuales de la grilla
     function exportToExcel() {
         const wb = XLSX.utils.book_new(); // Crear un nuevo libro de Excel
@@ -613,19 +611,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Utilizar los miembros actuales filtrados en la variable 'miembros'
         miembros.forEach(miembro => {
             const rowData = [
-            miembro.dni_miembro,
-                    miembro.nombre,
-                    miembro.apellido,
-                    miembro.telefono,
-                    miembro.direccion,
-                    miembro.email,
-                    new Date(miembro.fecha_nacimiento).toLocaleDateString(), // Formato de fecha
-                    calcularEdad(miembro.fecha_nacimiento), // Calcula la edad
-                    miembro.grupo_sanguineo,
-                    miembro.cinto || 'Sin cinto',
-                    miembro.escuela || 'Sin escuela',
-                    miembro.activo ? 'Activo' : 'Inactivo',
-                    miembro.rol
+                miembro.dni_miembro,
+                miembro.nombre,
+                miembro.apellido,
+                miembro.telefono,
+                miembro.direccion,
+                miembro.email,
+                new Date(miembro.fecha_nacimiento).toLocaleDateString(), // Formato de fecha
+                calcularEdad(miembro.fecha_nacimiento), // Calcula la edad
+                miembro.grupo_sanguineo,
+                miembro.cinto || 'Sin cinto',
+                miembro.escuela || 'Sin escuela',
+                miembro.activo ? 'Activo' : 'Inactivo',
+                miembro.rol
             ];
             ws_data.push(rowData); // Agregar cada fila con datos del miembro
         });
@@ -633,10 +631,52 @@ document.addEventListener('DOMContentLoaded', function() {
         const ws = XLSX.utils.aoa_to_sheet(ws_data); // Crear hoja con los datos
         XLSX.utils.book_append_sheet(wb, ws, 'Resultados'); // Agregar hoja al libro
 
-        // Descargar el archivo Excel
-        XLSX.writeFile(wb, 'resultados_busqueda.xlsx');
+        // Crear nombre de archivo con la fecha actual en formato dd-mm-aa
+        const fechaActual = new Date();
+        const dia = String(fechaActual.getDate()).padStart(2, '0');
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11
+        const anio = String(fechaActual.getFullYear()).slice(-2); // Solo los últimos dos dígitos del año
+        const nombreArchivo = `Reporte-alumnos-${dia}-${mes}-${anio}.xlsx`;
+
+        // Descargar el archivo Excel con el nuevo nombre
+        XLSX.writeFile(wb, nombreArchivo);
     }
+
+    // Función para verificar el token y el rol del usuario
+    function verificarTokenYRol() {
+            const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
+
+            if (!token) {
+                // Si no hay token, redirigir al home
+                window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                return;
+            }
+
+            // Decodificar el JWT
+            const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
+
+            // Verificar si el usuario tiene el rol de administrador
+            if (usuario.rol !== 'Instructor') {
+                // Si no es administrador, redirigir al home
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+            } else if (!usuario.estado) {
+                // Si el usuario no está activo, redirigir a Mercado Pago
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', verificarTokenYRol);
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+                    localStorage.removeItem('authToken'); // Elimina el token del local storage
+                    window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                }
 </script>
+
 
 </body>
 </html>

@@ -380,9 +380,10 @@
             
                 // Función para cerrar sesión
                 function cerrarSesion() {
-                    localStorage.removeItem('authToken');
-                    window.location.href = '../src/login.html';
+                    localStorage.removeItem('authToken'); // Elimina el token del local storage
+                    window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio de sesión
                 }
+
             
                 // Redirecciones y configuración
                 function redirectToLogin(message) {
@@ -534,6 +535,35 @@
                         window.scrollTo(0, 0); // Desplazar hacia arriba
                     }
                 });
+
+                // Función para verificar el token y el rol del usuario
+    // Función para verificar el token y el rol del usuario
+    function verificarTokenYRol() {
+                    const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
+
+                    if (!token) {
+                        // Si no hay token, redirigir al home
+                        window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                        return;
+                    }
+
+                    // Decodificar el JWT
+                    const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
+
+                    // Verificar si el usuario tiene el rol de Instructor o Alumno
+                    if (usuario.rol !== 'Instructor' && usuario.rol !== 'Alumno') {
+                        // Si no es Instructor ni Alumno, redirigir al home
+                        localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                        window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                    } else if (!usuario.estado) {
+                        // Si el usuario no está activo, redirigir a Mercado Pago
+                        localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                        window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+                    }
+                }
+
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', verificarTokenYRol);
             </script>
             
             

@@ -96,7 +96,15 @@ body {
   text-align: center;
   font-size: 14px;
   color: #323232;
+
+  
+ 
 }
+.footer-bottom p {
+  margin-top: 0 !important;
+  margin: 10px!important;
+}
+
 
 /* Responsividad */
 @media (max-width: 768px) {
