@@ -187,7 +187,7 @@ select option {
                             <th>Telefono</th>
                             <th>Edad</th>
                             <th>Factor</th>
-                            <th>Cinturon</th>
+                            <th>Cinto</th>
                             <th>Escuela</th>
                             <th>Rol</th>
                             <th>Estado</th> 
@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function mostrarMensajeNoResultados() {
             const tableBody = document.querySelector('#miTabla tbody');
             tableBody.innerHTML = '<tr><td colspan="10" class="text-center">No se encontraron resultados.</td></tr>';
-            document.getElementById('totalRegistros').textContent = 'Total de Registros: 0';
+            document.getElementById('totalRegistros').textContent = 'Total de registros: 0';
             document.getElementById('totalPaginas').textContent = 0; // Actualiza las páginas
         }
 
@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Función para mostrar el total de registros
         function mostrarTotalRegistros() {
             const totalRegistros = miembros.length;
-            document.getElementById('totalRegistros').textContent = `Total de Registros: ${totalRegistros}`;
+            document.getElementById('totalRegistros').textContent = `Total de registros: ${totalRegistros}`;
         }
 
         // Función para actualizar el paginador
@@ -625,6 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const ws = XLSX.utils.aoa_to_sheet(ws_data); // Crear hoja con los datos
         XLSX.utils.book_append_sheet(wb, ws, 'Resultados'); // Agregar hoja al libro
+
 
         // Crear nombre de archivo con la fecha actual en formato dd-mm-aa
         const fechaActual = new Date();

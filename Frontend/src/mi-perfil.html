@@ -58,7 +58,7 @@
                     <ul>
                         <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U"> <!-- Reemplaza con la ruta de tu logo -->
                         <li><a href="publicaciones.html">Publicaciones</a></li>
-                        <li><a id="actual" href="mi-perfil.html">mi perfil</a></li>
+                        <li><a id="actual" href="mi-perfil.html">Mi perfil</a></li>
                         <li><a href="#" id="logoutButton" class="login-btn">Cerrar sesión</a></li>
 
                         
@@ -77,21 +77,21 @@
                         <div class="avatar-container">
                             <img alt="Avatar del usuario" class="avatar">
                         </div>
-                        <button class="btn-generate-card" id="generarCarnetBtn">Generar Carnet Digital</button>
+                        <button class="btn-generate-card" id="generarCarnetBtn">Generar carnet digital</button>
                     </section>
             
                     <!-- Segunda sección: Botones de descarga y carga de documentos -->
                     <section class="downloads">
                         <div class="download-section">
-                            <a class="btn-download" id="download-ficha" href="#" download>Descargar Ficha Médica</a>
+                            <a class="btn-download" id="download-ficha" href="#" download>Descargar ficha médica</a>
                             <a class="btn-download" href="../../Backend/uploads/plantilla-ficha-medica.pdf" download>Descargar Plantilla</a>
                         </div>  
                         <div class="upload-section">
                             <label for="file-upload" class="drop-area" id="drop-area">
-                                Seleccionar un archivo PDF
+                                Seleccionar archivo PDF
                                 <input type="file" id="file-upload" class="file-input" multiple style="display: none;">
                             </label>
-                            <button id="upload-ficha-button" type="button" class="btn-upload">Importar Ficha Médica</button>
+                            <button id="upload-ficha-button" type="button" class="btn-upload">Importar ficha médica</button>
                             
                         </div>
                     </section>
@@ -104,10 +104,10 @@
 
                             <!-- Sección: Datos Personales -->
                             <div class="personal-info section-prin">
-                                <h2>Datos Personales</h2>
+                                <h2>Datos personales</h2>
                                 <div class="section-grid">
                                     <div class="form-group">
-                                        <label for="firstName">Nombre:</label>
+                                        <label for="firstName">*Nombre:</label>
                                         <input type="text" class="disabled" id="firstName" name="firstName" placeholder="Nombre" pattern="[A-Za-z]{4,16}" required>
                                         <span class="error" id="firstNameError">El nombre debe tener entre 4 y 16 letras</span>
                                     </div>
@@ -117,17 +117,17 @@
                                         <span class="error" id="lastNameError">El apellido debe tener entre 4 y 16 letras</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="dni">Número de Documento</label>
+                                        <label for="dni">*Número de documento</label>
                                         <input type="text" class="disabled" id="dni" name="dni" placeholder="DNI" pattern="\d{8}" required>
                                         <span class="error" id="dniError">El DNI debe tener 8 dígitos</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="dob">Fecha de Nacimiento:</label>
+                                        <label for="dob">*Fecha de nacimiento:</label>
                                         <input type="date" class="disabled" id="dob" name="dob" required>
                                         <span class="error" id="dobError">La fecha de nacimiento es obligatoria</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="bloodGroup">Grupo Sanguíneo:</label>
+                                        <label for="bloodGroup">*Grupo sanguíneo:</label>
                                         <input type="text" class="disabled" id="bloodGroup" name="bloodGroup" placeholder="Grupo Sanguíneo" pattern="^(A|B|AB|O)[+-]$" required>
                                         <span class="error" id="bloodGroupError">El grupo sanguíneo debe ser A+, A-, B+, B-, AB+, AB-, O+, o O-</span>
                                     </div>
@@ -141,17 +141,17 @@
                                         
                                     </div>
                                     <div class="form-group">
-                                        <label for="phone">Teléfono:</label>
+                                        <label for="phone">*Teléfono:</label>
                                         <input type="text" id="phone" name="phone" placeholder="Teléfono" pattern="\d{10}" required>
                                         <span class="error" id="phoneError">El teléfono debe tener 10 dígitos</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="email">Email:</label>
+                                        <label for="email">*Email:</label>
                                         <input type="email" id="email" name="email" placeholder="Email" required>
                                         <span class="error" id="emailError">Por favor, introduce un email válido</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="address">Dirección:</label>
+                                        <label for="address">*Dirección:</label>
                                         <input type="text" id="address" name="address" placeholder="Dirección" required>
                                         <span class="error" id="addressError">La dirección es obligatoria</span>
                                     </div>
@@ -163,7 +163,7 @@
                                 <h2>Datos Académicos</h2>
                                 <div class="section-grid">
                                     <div class="form-group">
-                                        <label for="escuela">Escuela</label>
+                                        <label for="escuela">*Escuela</label>
                                         <select id="escuela" name="escuela" required>
                                             <option value="">Selecciona su escuela</option>
                                         </select>
@@ -175,7 +175,7 @@
                                         </select>
                                     </div>-->
                                     <div class="form-group">
-                                        <label for="cinto">Cinto</label>
+                                        <label for="cinto">*Cinto</label>
                                         <select id="cinto" name="cinto" required>
                                             <option value="">Selecciona un cinto</option>
                                         </select>
@@ -186,30 +186,30 @@
 
                             <!-- Sección: Datos del Tutor o Encargado -->
                             <div class="tutor-info section-prin">
-                                <h2>Datos del Tutor o Encargado</h2>
+                                <h2>Datos de tutor o encargado</h2>
                                 <div class="section-grid">
                                     <div class="form-group">
-                                        <label for="tutorDNI">Número de Documento</label>
+                                        <label for="tutorDNI">*Número de documento</label>
                                         <input type="text" class="disabled" id="tutorDNI" name="tutorDNI" placeholder="DNI del Tutor" pattern="\d{8}" title="El DNI debe tener 8 dígitos" required>
                                         <span class="error" id="tutorDNIError">El DNI debe tener 8 dígitos</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tutorFirstName">Nombre:</label>
+                                        <label for="tutorFirstName">*Nombre:</label>
                                         <input type="text" class="disabled" id="tutorFirstName" name="tutorFirstName" placeholder="Nombre del Tutor" pattern="[A-Za-z]{4,16}" required>
                                         <span class="error" id="tutorFirstNameError">El nombre del tutor debe tener entre 4 y 16 letras</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tutorLastName">Apellido:</label>
+                                        <label for="tutorLastName">*Apellido:</label>
                                         <input type="text" class="disabled" id="tutorLastName" name="tutorLastName" placeholder="Apellido del Tutor" pattern="[A-Za-z]{4,16}" required>
                                         <span class="error" id="tutorLastNameError">El apellido del tutor debe tener entre 4 y 16 letras</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="relationship">Relación:</label>
+                                        <label for="relationship">*Relación:</label>
                                         <input type="text" class="disabled" id="relationship" name="relationship" placeholder="Relación" pattern="[A-Za-z\s]{4,16}" required>
                                         <span class="error" id="relationshipError">La relación debe tener entre 4 y 16 letras</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tutorPhone">Teléfono:</label>
+                                        <label for="tutorPhone">*Teléfono:</label>
                                         <input type="text" id="tutorPhone" name="tutorPhone" placeholder="Teléfono del Tutor" pattern="\d{10}" title="El teléfono debe tener 10 dígitos" required>
                                         <span class="error" id="tutorPhoneError">El teléfono debe tener 10 dígitos</span>
                                     </div>

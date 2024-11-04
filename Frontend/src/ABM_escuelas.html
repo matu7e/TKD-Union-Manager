@@ -214,9 +214,10 @@ h3{
             <ul>
                 <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U">
                 <li><a href="publicaciones.html">Publicaciones</a></li>
-                <li><a href="ABM_alumnos.html">Mis Alumnos</a></li> 
-                <li><a id="actual" href="ABM_escuelas.html">Mi Escuela</a></li>
-                <li><a href="mi-perfil.html">Mi Perfil</a></li>
+
+                <li><a href="ABM_alumnos.html">Mis alumnos</a></li> 
+                <li><a id="actual" href="ABM_escuelas.html">Mi escuela</a></li>
+                <li><a href="mi-perfil.html">Mi perfil</a></li>
                 <li><a href="../src/login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
@@ -243,7 +244,7 @@ h3{
         <div id="newPublicationModal" class="custom-modal">
             <div class="modal-content-custom">
                 <div class="modal-header-custom">
-                    <h5 class="modal-title">Crear Nueva Escuela</h5>
+                    <h5 class="modal-title">Crear nueva escuela</h5>
                     <button class="btn-close-custom" id="closeModalButton">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -255,13 +256,13 @@ h3{
     
                         <!-- Campo para el nombre de la escuela -->
                         <div class="mb-3">
-                            <label for="titulo" class="form-label">Nombre de la Escuela</label>
+                            <label for="titulo" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="titulo" name="titulo" required>
                         </div>
     
                         <!-- Campo para el logo de la escuela -->
                         <div class="mb-3">
-                            <label for="imagen" class="form-label">Cargar Logo de la Escuela</label>
+                            <label for="imagen" class="form-label">Logo de la escuela</label>
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" onchange="previewImage(event)">
                         </div>
     
@@ -279,7 +280,7 @@ h3{
     
                         <!-- Campo para el enlace de Instagram -->
                         <div class="mb-3">
-                            <label for="enlaceInstagram" class="form-label">Enlace de Instagram</label>
+                            <label for="enlaceInstagram" class="form-label">Instagram</label>
                             <input type="text" class="form-control" id="enlaceInstagram" name="enlaceInstagram" required>
                         </div>
                     </form>
@@ -315,14 +316,22 @@ h3{
             <form action="#" method="POST" id="create-sede-form" novalidate>
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="direccion">Dirección *</label>
+
+                        <label for="direccion">Dirección*</label>
                         <input type="text" id="direccion" name="direccion" placeholder="Ingresa la dirección" required />
+                    </div>
+        
+                    <div class="filter-group">
+                        <label for="descripcion">Descripción*</label>
+                        <input type="text" id="descripcion" name="descripcion" placeholder="Ingresa la descripción" required />
                     </div>
                 </div>
         
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="provincia">Provincia *</label>
+
+                        <label for="provincia">Provincia*</label>
+
                         <select id="provincia" name="provincia" required>
                             <option value="">Selecciona la provincia</option>
                             <!-- Opciones dinámicas de provincias -->
@@ -330,7 +339,8 @@ h3{
                     </div>
         
                     <div class="filter-group">
-                        <label for="localidad">Localidad *</label>
+                        <label for="localidad">Localidad*</label>
+
                         <select id="localidad" name="localidad" required>
                             <option value="">Selecciona la localidad</option>
                             <!-- Opciones dinámicas de localidades -->
