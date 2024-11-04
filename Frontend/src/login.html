@@ -305,8 +305,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Respuesta del backend:', data);
-        
                     if (data.token) {
                         localStorage.setItem('authToken', data.token);
         
@@ -317,7 +315,7 @@
                             window.location.href = 'https://www.mercadopago.com.ar/...'; // Redirige a la página de cobros
                         } else if (userStatus === true) {
                             showAlert('success', '¡Inicio de sesión exitoso!'); // Mensaje de éxito
-                            window.location.href = 'mi-perfil.html'; // Redirige a la página de perfil
+                            window.location.href = 'getway.html'; // Redirige a la página de perfil
                         } else {
                             showAlert('aviso', 'Estado de usuario no reconocido');
                         }
@@ -328,6 +326,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                     showAlert('error', 'Hubo un problema al iniciar sesión');
+                    
                 });
             }
         

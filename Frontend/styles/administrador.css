@@ -140,7 +140,7 @@ select {
 }
 .clear-button:hover {
     background-color: #f36a2bc2;
-} 
+} input
 
 /* Nueva clase para alinear el botón a la derecha */
 .filter-row.right-align {

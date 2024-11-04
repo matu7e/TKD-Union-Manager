@@ -6,14 +6,93 @@
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Unión Mediterránea - Taekwondo IFT</title>
-    <link rel="shortcut icon" href="../../assets/union.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../styles/style.css">
     <link rel="stylesheet" href="../../styles/footer.css">
     <link rel="stylesheet" href="../../styles/menu.css">
     <link rel="stylesheet" href="../../styles/administrador.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>Unión Mediterránea - Taekwondo IFT</title>
+    <link rel="shortcut icon" href="../../assets/union.ico" type="image/x-icon">
 </head>
+
+<style>
+    /* Estilo para la tabla */
+    .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.table th, .table td {
+text-align: left;
+padding: 12px;
+border-bottom: 1px solid #ddd;
+}
+
+.table th {
+background-color: #323232;
+color: white;
+}
+
+.table td{
+    text-align: center;
+}
+.table-striped tbody tr:nth-child(even) {
+background-color: #63666B !important; /* Color de fondo alterno */
+}
+
+.table tbody tr:hover {
+background-color: #e0e0e0; /* Color al pasar el ratón */
+}
+.icon-download {
+    color: rgba(0, 191, 255, 0.664);
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-download-disabled {
+    color: #63666B;
+    cursor: not-allowed; /* Cambia el cursor para indicar que no se puede hacer clic */
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-ban {
+    color: #f36b2b;
+    cursor: pointer;
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-add {
+    color: rgba(0, 128, 0, 0.664);
+    cursor: pointer;
+    font-size: 25px;
+    padding: 0 3px;
+}
+select {
+    width: 100%;
+  padding: 16px;
+  background-color: #d5d7d8;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+select:focus {
+    border-color: #f36b2b;
+}
+
+select option {
+    color: #63666B; /* Ajusta el color de las opciones dentro del select */
+}
+
+</style>
 <body>
     <header class="navbar">
         <div class="navbar-left">
@@ -26,73 +105,85 @@
             <ul>
                 <img src="../../assets/log1.png" alt="Logo" class="navbar-logo-U">
                 <li><a href="ABM_publicaciones.html">Publicaciones</a></li>
-                <li><a href="ABM_alumnos.html">Miembros</a></li>
+                <li><a  href="ABM_alumnos.html">Miembros</a></li>
                 <li><a id="actual" href="ABM_sedes.html">Escuelas</a></li>
-                <li><a href="../login.html" class="login-btn">Cerrar Sesión</a></li>
+                <li><a href="../login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
-    </header>       
+    </header>
     <!-- Loader -->
-    <!-- <div id="loader" class="loader-container">
+     <div id="loader" class="loader-container">
         <div class="loader"></div>
-    </div> -->
+    </div> 
+    <div class="alert-container">
+        <div id="alert-aviso" class="alert alert-aviso">            
+        </div>
+        <div id="alert-success" class="alert alert-success">            
+        </div>
+        <div id="alert-error" class="alert alert-danger">
+        </div>
+    </div>
     <main class="container">
-        <h2>ESCUELAS </h2>
-        <section class="search-filters">
+        <h2 class="my-4">ESCUELAS</h2>
+        
+        <section class="search-filters mb-4">
             <form action="#" method="GET">
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="nombre">Nombre Instructor</label>
-                        <input type="text" id="nombre" name="nombre" />
+                        <label for="nombre	">Nombre Instructor</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" />
                     </div>
                     <div class="filter-group">
                         <label for="apellido">Apellido Instructor</label>
-                        <input type="text" id="apellido" name="apellido" />
+                        <input type="text" id="apellido" name="apellido" class="form-control" />
                     </div>
                     <div class="filter-group">
                         <label for="escuela">Escuela</label>
-                        <select id="escuela" name="escuela">
-                            <option value="">Selecciona su escuela</option>
-                            <!-- Opciones dinámicas -->
-                        </select> 
-                    </div>
-                </div>
-
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="escuela">Provincia</label>
-                        <select id="escuela" name="escuela">
+                        <select id="escuela" name="escuela" >
                             <option value="">Selecciona su escuela</option>
                             <!-- Opciones dinámicas -->
                         </select>   
                     </div>
+                </div>
+
+                <div class="filter-row">
+                    
                     <div class="filter-group">
-                        <label for="cinto">Localidad</label>
-                        <select id="cinto" name="cinto">
-                            <option value="">Selecciona un cinto</option>
-                            <!-- Opciones dinámicas -->
+                        <label for="provincia">Provincia</label>
+                        <select id="provincia" name="provincia" >
+                            <option value="">Selecciona la provincia</option>
+                            <!-- Opciones dinámicas de provincias -->
+                        </select>
+                    </div>
+        
+                    <div class="filter-group">
+                        <label for="localidad">Localidad</label>
+                        <select id="localidad" name="localidad" >
+                            <option value="">Selecciona la localidad</option>
+                            <!-- Opciones dinámicas de localidades -->
                         </select>
                     </div>
                     
                 </div>
 
                 <div class="filter-row right-align">
-                    <button type="submit" class="search-button">Buscar</button>
+                    <button type="submit" class="search-button btn btn-secondary">Buscar</button>
+                    <button type="button" class="clear-button btn btn-secondary" onclick="limpiarFiltros()">Limpiar Filtros</button>
                 </div>
             </form>
         </section>
         <section>
             <div class="table-container">
-                <table id="miTabla">
+                <table id="miTabla" class="table table-striped table-responsive">
                     <thead>
                         <tr>
-                            <th>Nombre</th><!-- nombre de la escuela -->
-                            <th>Nom. Instructor</th><!-- nombre del instructor -->
-                            <th>Ape. Instructor</th><!-- nombre del instructor -->
-                            <th>Direccion</th><!-- direccion de la sede -->
-                            <th>localidad</th><!-- localidad de la sede -->
-                            <th>Acciones</th><!--  -->  
+                            <th>Escuela</th>
+                            <th>Intructor</th>
+                            <th>Provincia</th>
+                            <th>Localidad</th>
+                            <th>direccion</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -107,13 +198,14 @@
                             <option value="1">1</option>
                             <!-- Páginas generadas dinámicamente -->
                         </select>
-                        de <span id="totalPaginas">1</span>
+                        de <span id="totalPaginas"></span>
                     </div>
-                    <button class="export-btn" onclick="exportToExcel()">Exportar</button>
+                    <button class="export-btn btn btn-secondary" onclick="exportToExcel()">Exportar</button>
                 </div>
             </div>
         </section>
     </main>
+    
 
     <footer>
         <div class="footer">
@@ -140,32 +232,229 @@
             <p>UNION MEDITERRANEA DE TAEKWONDO 2024</p>
         </div>
     </footer>
-
-    <script src="../../controllers/validate-form-miembro.js"></script>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="../../controllers/public/menu.js"></script>
+    <script src="../../controllers/controllers-publicaciones/manejo-modales.js"></script>
     <script>
-        // Función para cargar cintos al select
+        const buscarUrl = 'http://localhost:3000/escuelas/buscar';
+    
         document.addEventListener('DOMContentLoaded', () => {
-            const cintoSelect = document.getElementById('cinto');
-            fetch('http://localhost:3000/cintos')
-                .then(response => response.json())
+            // Mostrar loader al cargar la página
+            mostrarLoader();
+    
+            // Asignar el evento de búsqueda al formulario
+            document.querySelector('.search-filters form').addEventListener('submit', buscarescuelas);
+    
+            // Llamada inicial para cargar las escuelas
+            cargarEscuelas();
+    
+            // Cargar provincias y configurar eventos
+            cargarProvincias();
+        });
+    
+        let escuelas = [];
+        let currentPage = 1;
+        const registrosPorPagina = 15;
+    
+        function mostrarLoader() {
+            document.getElementById('loader').style.display = 'flex'; // Mostrar el loader
+        }
+    
+        function ocultarLoader() {
+            document.getElementById('loader').style.display = 'none'; // Ocultar el loader
+        }
+    
+        function buscarescuelas(e) {
+            e.preventDefault(); // Evita la recarga de la página
+            const nombre_instructor = document.getElementById('nombre').value;
+            const apellido_instructor = document.getElementById('apellido').value;
+            const id_localidad = document.getElementById('localidad').value;
+            const id_provincia = document.getElementById('provincia').value;
+            const id_escuela = document.getElementById('escuela').value;
+    
+            const queryParams = new URLSearchParams({
+                nombre_instructor,
+                apellido_instructor,
+                id_localidad,
+                id_provincia,
+                id_escuela,
+            });
+    
+            
+            fetch(`${buscarUrl}?${queryParams.toString()}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se encontraron escuelas con los filtros proporcionados.');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    data.forEach(cinto => {
-                        const option = document.createElement('option');
-                        option.value = cinto.id_cinto;
-                        option.textContent = cinto.descripcion;
-                        cintoSelect.appendChild(option);
-                    });
+                    escuelas = data;
+                    
+                    if (escuelas.length === 0) {
+                        mostrarMensajeNoResultados();
+                    } else {
+                        mostrarPagina(currentPage);
+                        actualizarPaginador();
+                        mostrarTotalRegistros();
+                    }
                 })
                 .catch(error => {
-                    console.error('Error al cargar los cintos:', error);
+                    console.error('Error en la búsqueda de escuelas:', error);
+                    
+                    mostrarMensajeNoResultados();
                 });
+        }
+    
+        // Función para mostrar mensaje cuando no se encuentran resultados
+        function mostrarMensajeNoResultados() {
+            const tableBody = document.querySelector('#miTabla tbody');
+            tableBody.innerHTML = '<tr><td colspan="10" class="text-center">No se encontraron resultados.</td></tr>';
+            document.getElementById('totalRegistros').textContent = 'Total de Registros: 0';
+            document.getElementById('totalPaginas').textContent = 0; // Actualiza las páginas
+        }
+    
+        // Función para mostrar los resultados en la tabla
+        function mostrarPagina(pagina) {
+            const tableBody = document.querySelector('#miTabla tbody');
+            tableBody.innerHTML = '';
+    
+            const start = (pagina - 1) * registrosPorPagina;
+            const end = start + registrosPorPagina;
+            const escuelasPagina = escuelas.slice(start, end);
+    
+            escuelasPagina.forEach((escuela) => {
+                const row = document.createElement('tr');
+    
+                row.innerHTML = `
+                    <td>${escuela.nombre_escuela}</td>
+                    <td>${escuela.nombre_instructor} ${escuela.apellido_instructor}</td>
+                    <td>${escuela.provincia}</td>
+                    <td>${escuela.localidad}</td>
+                    <td>${escuela.sede_direccion}</td>
+                `;
+    
+                tableBody.appendChild(row);
+            });
+        }
+    
+        // Función para actualizar el paginador
+        function actualizarPaginador() {
+            const totalPaginas = Math.ceil(escuelas.length / registrosPorPagina);
+            document.getElementById('totalPaginas').textContent = totalPaginas;
+    
+            const pageSelect = document.getElementById('pageSelect');
+            pageSelect.innerHTML = '';
+    
+            for (let i = 1; i <= totalPaginas; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                pageSelect.appendChild(option);
+            }
+        }
+    
+        // Cambiar de página
+        document.getElementById('pageSelect').addEventListener('change', (event) => {
+            currentPage = parseInt(event.target.value);
+            mostrarPagina(currentPage);
         });
-
-        // Función para cargar escuelas al select
+    
+        // Mostrar total de registros
+        function mostrarTotalRegistros() {
+            document.getElementById('totalRegistros').textContent = `Total de Registros: ${escuelas.length}`;
+        }
+    
+        // Cargar los escuelas al inicio
+        function cargarEscuelas() {
+            
+            fetch(buscarUrl)
+                .then(response => response.json())
+                .then(data => {
+                    escuelas = data;
+                    ocultarLoader(); // Ocultar loader después de cargar
+                    mostrarPagina(currentPage);
+                    actualizarPaginador();
+                    mostrarTotalRegistros();
+                })
+                .catch(error => {
+                    console.error('Error al cargar los escuelas:', error);
+                    
+                });
+        }
+    
+        // Función para limpiar los filtros
+        function limpiarFiltros() {
+            document.getElementById('nombre').value = '';
+            document.getElementById('apellido').value = '';
+            document.getElementById('provincia').value = '';
+            document.getElementById('localidad').value = '';
+            document.getElementById('escuela').value = '';
+            cargarEscuelas(); // Cargar todos los registros sin filtros
+        }
+    
+        // Cargar provincias desde el backend
+        async function cargarProvincias() {
+            try {
+                const response = await fetch('http://localhost:3000/georef');
+                if (!response.ok) throw new Error('Error al obtener las provincias');
+    
+                const provincias = await response.json();
+                const selectProvincia = document.getElementById('provincia');
+                selectProvincia.innerHTML = '<option value="">Seleccione una provincia</option>';
+    
+                provincias.forEach(provincia => {
+                    const option = document.createElement('option');
+                    option.value = provincia.id;
+                    option.textContent = provincia.nombre;
+                    selectProvincia.appendChild(option);
+                });
+    
+                // Evento para cargar localidades cuando se selecciona una provincia
+                selectProvincia.addEventListener('change', async (event) => {
+                    const provinciaId = event.target.value;
+                    if (provinciaId) await cargarLocalidades(provinciaId);
+                });
+    
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    
+        // Cargar localidades de una provincia
+        async function cargarLocalidades(provinciaId) {
+            try {
+                const response = await fetch(`http://localhost:3000/georef/${provinciaId}`);
+                if (!response.ok) throw new Error('Error al obtener las localidades');
+    
+                const localidades = await response.json();
+                const selectLocalidad = document.getElementById('localidad');
+                selectLocalidad.innerHTML = '<option value="">Seleccione una localidad</option>';
+    
+                localidades.forEach(localidad => {
+                    const option = document.createElement('option');
+                    option.value = localidad.id;
+                    option.textContent = localidad.nombre;
+                    selectLocalidad.appendChild(option);
+                });
+    
+                // Inicializar Select2 si estás usando esta biblioteca
+                $('#localidad').select2({
+                    placeholder: 'Seleccione una localidad',
+                    allowClear: true
+                });
+    
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    
+        // Cargar las escuelas al select
         document.addEventListener('DOMContentLoaded', () => {
             const escuelaSelect = document.getElementById('escuela');
-            fetch('http://localhost:3000/escuela')
+            fetch('http://localhost:3000/escuelas')
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(escuela => {
@@ -176,96 +465,111 @@
                     });
                 })
                 .catch(error => {
-                    console.error('Error al cargar las Escuelas:', error);
+                    console.error('Error al cargar las escuelas:', error);
                 });
         });
+    
+        // Función para verificar el token y el rol del usuario
+        function verificarTokenYRol() {
+            const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
 
-        // URL para obtener los datos del backend
-        const url = 'http://localhost:5000/prueba'; 
-        
-        let currentPage = 1;
-        let totalPages = 1;
+            if (!token) {
+                // Si no hay token, redirigir al home
+                window.location.href = '../login.html'; // Cambia esto a la URL de tu página de inicio
+                return;
+            }
 
-        function fetchTableData(page) {
-            fetch(`${url}?page=${page}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Verificar la estructura de los datos
-                    console.log('Datos recibidos:', data);
+            // Decodificar el JWT
+            const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
 
-                    // Verificar si los datos recibidos son un objeto
-                    if (!Array.isArray(data)) {
-                        console.error('Los datos recibidos no son una lista:', data);
-                        return;
-                    }
-
-                    const tableBody = document.querySelector('#miTabla tbody');
-                    tableBody.innerHTML = ''; // Limpiar el tbody antes de agregar nuevas filas
-
-                    data.forEach(item => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${item.personalData.firstName}</td>
-                            <td>${item.personalData.lastName}</td>
-                            <td>${item.personalData.dni}</td>
-                            <td>${new Date().getFullYear() - new Date(item.personalData.dob).getFullYear()}</td>
-                            <td>${item.academicData.escuela || ''}</td>
-                            <td>${item.academicData.cinto || ''}</td>
-                            <td><button class="btn btn-primary">Acción</button></td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-
-                    // Actualizar el total de registros y páginas
-                    document.getElementById('totalRegistros').textContent = data.length;
-                    document.getElementById('totalPaginas').textContent = totalPages;
-                    
-                    // Actualizar el select de páginas
-                    const pageSelect = document.getElementById('pageSelect');
-                    pageSelect.innerHTML = '';
-                    for (let i = 1; i <= totalPages; i++) {
-                        const option = document.createElement('option');
-                        option.value = i;
-                        option.textContent = i;
-                        pageSelect.appendChild(option);
-                    }
-                    pageSelect.value = currentPage;
-                })
-                .catch(error => {
-                    console.error('Error al cargar los datos:', error);
-                });
+            // Verificar si el usuario tiene el rol de administrador
+            if (usuario.rol !== 'Administrador') {
+                // Si no es administrador, redirigir al home
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = '../login.html'; // Cambia esto a la URL de tu página de inicio
+            } else if (!usuario.estado) {
+                // Si el usuario no está activo, redirigir a Mercado Pago
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+            }
         }
 
-        document.getElementById('pageSelect').addEventListener('change', (event) => {
-            currentPage = parseInt(event.target.value);
-            fetchTableData(currentPage);
-        });
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', verificarTokenYRol);
+        // Función para cerrar sesión
+        function cerrarSesion() {
+                    localStorage.removeItem('authToken'); // Elimina el token del local storage
+                    window.location.href = '../login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                }
 
-        fetchTableData(currentPage);
 
-        // Función para exportar a Excel
-        function exportToExcel() {
-            const wb = XLSX.utils.book_new();
-            const ws_data = [];
-
-            // Obtener los encabezados de la tabla
-            const headers = [];
-            document.querySelectorAll('#miTabla thead th').forEach(th => headers.push(th.textContent));
-            ws_data.push(headers);
-
-            // Obtener los datos de las filas
-            document.querySelectorAll('#miTabla tbody tr').forEach(row => {
-                const rowData = [];
-                row.querySelectorAll('td').forEach(cell => rowData.push(cell.textContent));
-                ws_data.push(rowData);
-            });
-
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
-            XLSX.utils.book_append_sheet(wb, ws, 'Alumnos');
-
-            // Generar el archivo Excel y descargarlo
-            XLSX.writeFile(wb, 'alumnos.xlsx');
-        }
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // Función para exportar a Excel solo los resultados actuales de la grilla
+    function exportToExcel() {
+        const wb = XLSX.utils.book_new(); // Crear un nuevo libro de Excel
+        const ws_data = [];
+
+        // Definir los encabezados manualmente
+        const headers = [
+            'Escuela',
+            'Nombre instructor',
+            'Apellido instructor',
+            'Provincia',
+            'Localidad',
+            'Dirección de la Sede'
+        ];
+        ws_data.push(headers); // Agregar encabezados a la hoja
+
+        // Utilizar los datos actuales filtrados en la variable 'escuelas'
+        escuelas.forEach(escuela => {
+            const rowData = [
+                escuela.nombre_escuela,
+                escuela.nombre_instructor,
+                escuela.apellido_instructor,
+                escuela.provincia,
+                escuela.localidad,
+                escuela.sede_direccion
+            ];
+            ws_data.push(rowData); // Agregar cada fila con datos de la escuela
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(ws_data); // Crear hoja con los datos
+        XLSX.utils.book_append_sheet(wb, ws, 'Resultados'); // Agregar hoja al libro
+
+        // Crear nombre de archivo con la fecha actual en formato dd-mm-aa
+        const fechaActual = new Date();
+        const dia = String(fechaActual.getDate()).padStart(2, '0');
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11
+        const anio = String(fechaActual.getFullYear()).slice(-2); // Solo los últimos dos dígitos del año
+        const nombreArchivo = `Reporte-escuelas-${dia}-${mes}-${anio}.xlsx`;
+
+        // Descargar el archivo Excel con el nuevo nombre
+        XLSX.writeFile(wb, nombreArchivo);
+    }
+</script>
+
 </body>
 </html>
+
+

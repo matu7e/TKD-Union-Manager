@@ -13,11 +13,87 @@
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/modal_conf.css">
     <link rel="stylesheet" href="../styles/ABM_publicaciones.css">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
 </head>
 <style>
+        /* Estilo para la tabla */
+        .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.table th, .table td {
+text-align: left;
+padding: 12px;
+border-bottom: 1px solid #ddd;
+}
+
+.table th {
+background-color: #323232;
+color: white;
+text-align: center;
+}
+
+.table td{
+    text-align: center;
+}
+.table-striped tbody tr:nth-child(even) {
+background-color: #63666B !important; /* Color de fondo alterno */
+}
+
+.table tbody tr:hover {
+background-color: #e0e0e0; /* Color al pasar el ratón */
+}
+.icon-download {
+    color: rgba(0, 191, 255, 0.664);
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-download-disabled {
+    color: #63666B;
+    cursor: not-allowed; /* Cambia el cursor para indicar que no se puede hacer clic */
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-ban {
+    color: #f36b2b;
+    cursor: pointer;
+    font-size: 25px;
+    padding: 0 3px;
+}
+
+.icon-add {
+    color: rgba(0, 128, 0, 0.664);
+    cursor: pointer;
+    font-size: 25px;
+    padding: 0 3px;
+}
+select {
+    width: 100%;
+  padding: 16px;
+  background-color: #d5d7d8;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+select:focus {
+    border-color: #f36b2b;
+}
+
+select option {
+    color: #63666B; /* Ajusta el color de las opciones dentro del select */
+}   
 .img-circular-container {
     display: flex;
     justify-content: center; /* Centra la imagen horizontalmente */
@@ -116,7 +192,12 @@ h2, h3{
 h3{
     color: #D2D2D2;
 }
-
+.icon-delete {
+    color: #f36b2b;
+    cursor: pointer;
+    font-size: 25px;
+    padding: 0 3px;
+}
 
 
 
@@ -133,10 +214,11 @@ h3{
             <ul>
                 <img src="../assets/log1.png" alt="Logo" class="navbar-logo-U">
                 <li><a href="publicaciones.html">Publicaciones</a></li>
+
                 <li><a href="ABM_alumnos.html">Mis alumnos</a></li> 
                 <li><a id="actual" href="ABM_escuelas.html">Mi escuela</a></li>
                 <li><a href="mi-perfil.html">Mi perfil</a></li>
-                <li><a href="../src/login.html" class="login-btn">Cerrar Sesión</a></li>
+                <li><a href="../src/login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
         <i class="fas fa-bars hamburger" id="hamburger"></i>
@@ -234,6 +316,7 @@ h3{
             <form action="#" method="POST" id="create-sede-form" novalidate>
                 <div class="filter-row">
                     <div class="filter-group">
+
                         <label for="direccion">Dirección*</label>
                         <input type="text" id="direccion" name="direccion" placeholder="Ingresa la dirección" required />
                     </div>
@@ -246,7 +329,9 @@ h3{
         
                 <div class="filter-row">
                     <div class="filter-group">
+
                         <label for="provincia">Provincia*</label>
+
                         <select id="provincia" name="provincia" required>
                             <option value="">Selecciona la provincia</option>
                             <!-- Opciones dinámicas de provincias -->
@@ -255,6 +340,7 @@ h3{
         
                     <div class="filter-group">
                         <label for="localidad">Localidad*</label>
+
                         <select id="localidad" name="localidad" required>
                             <option value="">Selecciona la localidad</option>
                             <!-- Opciones dinámicas de localidades -->
@@ -266,8 +352,27 @@ h3{
                     <button type="button" id="add-sede-button" class="search-button">Añadir</button>
                 </div>
             </form>
+        </section>
         
-            <div id="sedes-list"></div>
+        <section>
+            <div class="table-container">
+                <table id="miTabla" class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Escuela</th>
+                            <th>Dirección</th>
+                            <th>Localidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sedes-body">
+                        <!-- Filas generadas dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
+                </div>
+            </div>
         </section>
         
 
@@ -303,20 +408,18 @@ h3{
     
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="../controllers/public/menu.js"></script>
+    <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
+    
     
     <script>
 
-
-
-        //-------------------------------------------------------------------------------------------
-        //CUANDO SE HACE PUT NO SE ACTUALIZA EL LOGO CREO QUE ES POR COMO RECIVE EL IDESCUEAL EL FECH  
-        //-------------------------------------------------------------------------------------------
-
-
-
+        // Variables globales para manejar la acción actual y el ID actual
+        let currentAction = null;
+        let currentId = null;
         let idEscuela = null; // Variable para almacenar el ID de la escuela si existe
+        
 
-function submitForm() {
+        function submitForm() {
     const token = localStorage.getItem('authToken');
     if (!token) {
         redirectToLogin('Token no encontrado.');
@@ -331,7 +434,7 @@ function submitForm() {
     const enlace = document.getElementById('enlaceInstagram').value;
 
     if (!nombre || !email || !telefono || !enlace) {
-        alert('Por favor, complete todos los campos del formulario.');
+        showAlert('aviso', 'Debe completar los campos obligatorios(*).');
         return;
     }
 
@@ -344,92 +447,109 @@ function submitForm() {
         enlace,
     };
 
-    async function fetchUserData() {
-        try {
-            let response;
-            if (idEscuela) {
-                console.log('Actualizando escuela existente con ID:', idEscuela);
-                response = await fetch(`http://localhost:3000/escuelas/${idEscuela}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(data)
-                });
-            } else {
-                console.log('Creando nueva escuela...');
-                response = await fetch(`http://localhost:3000/escuelas`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(data)
-                });
-            }
-
-            const responseData = await response.text(); // Obtiene la respuesta como texto
-            console.log('Respuesta del servidor:', responseData); // Log de la respuesta
-
-            if (!response.ok) {
-                alert('Error al realizar la acción: ' + responseData);
-                return; // Salir de la función en caso de error
-            }
-
-            // Intentar analizar la respuesta como JSON
-            let jsonData = null;
-            try {
-                jsonData = JSON.parse(responseData);
-            } catch (e) {
-                console.warn('La respuesta no es un JSON válido, manejando como texto:', responseData);
-            }
-
-            // Manejo de la respuesta
-            if (jsonData && jsonData.message) {
-                alert(jsonData.message);
-                idEscuela = idEscuela || jsonData.id_escuela; // Asigna el ID de la escuela
-
-                // Manejar la carga del logo
-                const logoInput = document.getElementById('imagen');
-                if (logoInput.files.length > 0) {
-                    const logoFormData = new FormData();
-                    logoFormData.append('logo', logoInput.files[0]);
-
-                    console.log('Preparando carga del logo para la escuela ID:', idEscuela); // Log del ID de la escuela
-                    const logoResponse = await fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
-                        method: 'POST', // Se mantiene el POST para la carga del logo
-                        body: logoFormData,
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                            // No se establece Content-Type aquí
-                        }
-                    });
-
-                    if (logoResponse.ok) {
-                        alert('Logo cargado con éxito');
-                    } else {
-                        const logoResponseText = await logoResponse.text();
-                        alert('Error al cargar el logo: ' + logoResponseText);
-                    }
-                } else {
-                    alert('No se ha seleccionado un logo para cargar.');
-                }
-
-                modal.style.display = 'none'; // Cerrar el modal al finalizar
-            } else if (jsonData && jsonData.error) {
-                alert('Error: ' + jsonData.error);
-            } else {
-                alert('Operación realizada: ' + responseData);
-            }
-
-        } catch (error) {
-            console.error('Error en la petición:', error);
-            alert('Se produjo un error al enviar los datos: ' + error.message);
-        }
+    if (idEscuela) {
+        updateSchool(data, token);
+    } else {
+        createSchool(data, token);
     }
+}
 
-    fetchUserData();
+async function createSchool(data, token) {
+    try {
+        const response = await fetch(`http://localhost:3000/escuelas`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        const responseData = await response.text();
+
+        if (!response.ok) {
+            showAlert('error', 'Error al crear la escuela.');
+            return;
+        }else{
+            showAlert('success', 'Escuela creada con éxito.');
+        }
+
+        let jsonData = null;
+        try {
+            jsonData = JSON.parse(responseData);
+        } catch (e) {
+            console.warn('La respuesta no es un JSON válido, manejando como texto:', responseData);
+        }
+
+        if (jsonData && jsonData.message) {
+            idEscuela = jsonData.id_escuela; // Asigna el ID de la escuela
+            uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcional
+        } else {
+            showAlert('aviso', 'Operación realizada ' + responseData);
+            cargarSedes();
+        }
+
+    } catch (error) {
+        console.error('Error al crear la escuela:', error);
+    }
+}
+
+async function updateSchool(data, token) {
+    try {
+        const response = await fetch(`http://localhost:3000/escuelas/${idEscuela}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        const responseData = await response.text();
+
+        if (!response.ok) {
+            showAlert('error', 'Error al actualizar la escuela.');
+            return;
+        }else{
+            showAlert('success', 'Escuela actualizada con éxito.');
+        }
+        
+        // Después de mostrar el mensaje de éxito, carga el logo opcional.
+        uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcionalmente
+
+    } catch (error) {
+        console.error('Error al actualizar la escuela:', error);
+    }
+}
+
+async function uploadLogo(token, idEscuela) {
+    const logoInput = document.getElementById('imagen');
+    if (logoInput.files.length > 0) {
+        const logoFormData = new FormData();
+        logoFormData.append('logo', logoInput.files[0]);
+        try {
+            const logoResponse = await fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
+                method: 'POST',
+                body: logoFormData,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (logoResponse.ok) {
+                showAlert('success', 'Logo cargado con éxito.');
+            } else {
+                const logoResponseText = await logoResponse.text();
+                console.error('Error al cargar el logo: ' + logoResponseText);
+            }
+        } catch (error) {
+            console.error('Error al cargar el logo:', error);
+        }    
+    }
+      // Llama a cargar las sedes solo después de que el logo se haya manejado.
+      if (idEscuela) {
+        cargarSedes();
+    }
 }
 
 
@@ -446,7 +566,6 @@ function submitForm() {
     
             async function cargarDatosEscuela() {
                 try {
-                    console.log('Iniciando GET para cargar datos de la escuela...');
                     const response = await fetch(`http://localhost:3000/escuelas/instructor/${idInstructor}`, {
                         method: 'GET',
                         headers: {
@@ -455,11 +574,10 @@ function submitForm() {
                     });
     
                     const responseText = await response.text(); // Cambia a text en lugar de json
-                    console.log('Respuesta completa del GET:', responseText);
+                    
     
                     if (!response.ok) {
                         if (responseText.includes("No se encontraron escuelas para ese instructor.")) {
-                            console.log('No se encontró ninguna escuela para el instructor.');
                             return;
                         }
                         throw new Error('Error al cargar los datos de la escuela: ' + response.statusText);
@@ -470,24 +588,20 @@ function submitForm() {
                     if (Array.isArray(data) && data.length > 0) {
                         const escuela = data[0];
                         idEscuela = escuela.id_escuela; // Asigna el ID de la escuela
-                        console.log('ID de la escuela encontrado:', idEscuela);
-    
+                        cargarSedes();
                         // Actualiza los campos del formulario si la escuela ya existe
                         document.getElementById('titulo').value = escuela.nombre || '';
                         document.getElementById('descripcion').value = escuela.email_escuela || '';
                         document.getElementById('telefono').value = escuela.telefono_escuela || '';
                         document.getElementById('enlaceInstagram').value = escuela.enlace || '';
                         document.getElementById('imagePreview').src = '../../Backend/' + (escuela.logo_escuela || 'uploads/default/logo.png');
-                    } else {
-                        console.log('No se encontró ningún registro en el array de respuesta.');
                     }
                 
                 } catch (error) {
                     console.error('Error al cargar datos de la escuela:', error);
-                    alert('Se produjo un error al cargar los datos: ' + error.message);
                 }
             }
-    
+            
             cargarDatosEscuela();
         });
     
@@ -500,136 +614,289 @@ function submitForm() {
    
     
     
-    <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
+    
 
     
 
-        <script>
-            // Función para cargar provincias desde el backend
-            async function cargarProvincias() {
-                try {
-                    const response = await fetch('http://localhost:3000/georef');
-                    if (!response.ok) throw new Error('Error al obtener las provincias');
-            
-                    const provincias = await response.json();
-                    const selectProvincia = document.getElementById('provincia');
-                    selectProvincia.innerHTML = '<option value="">Seleccione una provincia</option>';
-            
-                    provincias.forEach(provincia => {
-                        const option = document.createElement('option');
-                        option.value = provincia.id;
-                        option.textContent = provincia.nombre;
-                        selectProvincia.appendChild(option);
-                    });
-            
-                    // Evento para cargar localidades cuando se selecciona una provincia
-                    selectProvincia.addEventListener('change', async (event) => {
-                        const provinciaId = event.target.value;
-                        if (provinciaId) await cargarLocalidades(provinciaId);
-                    });
-            
-                } catch (error) {
-                    console.error('Error:', error);
+        
+
+    <script>
+        document.getElementById('add-sede-button').addEventListener('click', function() {
+    if (idEscuela !== null) {
+        const direccion = document.getElementById('direccion').value;
+        const provinciaId = document.getElementById('provincia').value;
+        const localidadId = document.getElementById('localidad').value;
+
+        if (direccion && descripcion && provinciaId && localidadId) {
+            const nuevaSede = {
+                id_escuela: idEscuela,
+                direccion: direccion,
+                localidad: {
+                    id: localidadId,
+                    nombre: document.getElementById('localidad').options[document.getElementById('localidad').selectedIndex].text,
+                    provincia: provinciaId,
+                },
+            };
+
+            fetch('http://localhost:3000/sedes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(nuevaSede),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al crear la sede');
                 }
-            }
-            
-            // Función para cargar localidades de una provincia
-            async function cargarLocalidades(provinciaId) {
-                try {
-                    const response = await fetch(`http://localhost:3000/georef/${provinciaId}`);
-                    if (!response.ok) throw new Error('Error al obtener las localidades');
-            
-                    const localidades = await response.json();
-                    const selectLocalidad = document.getElementById('localidad');
-                    selectLocalidad.innerHTML = '<option value="">Seleccione una localidad</option>';
-            
-                    localidades.forEach(localidad => {
-                        const option = document.createElement('option');
-                        option.value = localidad.id;
-                        option.textContent = localidad.nombre;
-                        selectLocalidad.appendChild(option);
-                    });
-            
-                    // Inicializar Select2
-                    $('#localidad').select2({
-                        placeholder: 'Seleccione una localidad',
-                        allowClear: true
-                    });
-            
-                } catch (error) {
-                    console.error('Error:', error);
+                if (response.status === 201 || response.status === 200) {
+                    return response.json().catch(() => null);
                 }
-            }
-            
-            
-            
-            // Cargar provincias al iniciar la página
-            document.addEventListener('DOMContentLoaded', cargarProvincias);
-            </script>
-
-<script>
-    // Función para añadir una sede
-    document.getElementById('add-sede-button').addEventListener('click', function() {
-        // Validar que idEscuela no sea null
-        if (idEscuela !== null) {
-            // Obtener valores del formulario
-            const direccion = document.getElementById('direccion').value;
-            const descripcion = document.getElementById('descripcion').value;
-            const provinciaId = document.getElementById('provincia').value; // Asumiendo que el id de la provincia está en el valor del select
-            const localidadId = document.getElementById('localidad').value; // Asumiendo que el id de la localidad está en el valor del select
-
-            // Validar que los campos no estén vacíos
-            if (direccion && descripcion && provinciaId && localidadId) {
-                // Crear un objeto sede
-                const nuevaSede = {
-                    id_escuela: idEscuela,
-                    direccion: direccion,
-                    localidad: {
-                        id: localidadId,
-                        nombre: document.getElementById('localidad').options[document.getElementById('localidad').selectedIndex].text,
-                        provincia: provinciaId, // Cambiamos aquí para que sea solo el ID de la provincia
-                    },
-                };
-
-                // Aquí podrías hacer la llamada POST a tu API para crear la sede, por ejemplo usando fetch:
-                fetch('http://localhost:3000/sedes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(nuevaSede),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al crear la sede');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Añadir la sede a la lista de sedes en el DOM
-                    const sedesList = document.getElementById('sedes-list');
-                    const sedeElement = document.createElement('div');
-                    sedeElement.textContent = `Sede creada: ${direccion}, ${descripcion}, ${data.localidad.nombre}, ${data.localidad.provincia}`;
-                    sedesList.appendChild(sedeElement);
-
-                    // Limpiar los campos del formulario
-                    document.getElementById('direccion').value = '';
-                    document.getElementById('descripcion').value = '';
-                    document.getElementById('provincia').selectedIndex = 0; // Reiniciar el select
-                    document.getElementById('localidad').selectedIndex = 0; // Reiniciar el select
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('No se pudo crear la sede. Intenta nuevamente.');
-                });
-            } else {
-                alert('Por favor completa todos los campos.');
-            }
+                return null;
+            })
+            .then(data => {
+                showAlert('success', 'Sede creada con éxito.');
+                cargarSedes(); // Refrescar la lista de sedes en la tabla
+                location.reload();
+                // Limpiar los campos del formulario
+                document.getElementById('direccion').value = '';
+                document.getElementById('provincia').selectedIndex = 0;
+                document.getElementById('localidad').selectedIndex = 0;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('error', 'No se pudo crear la sede. Intenta nuevamente.');
+            });
         } else {
-            alert('El ID de la escuela no puede ser nulo.');
+            showAlert('aviso', 'Debe completar los campos obligatorios(*).');
         }
+    } else {
+        showAlert('error', 'Error intente de nuevo mas tarde.');
+    }
+});
+
+
+
+        
+
+        // Función para mostrar el modal de confirmación de eliminación
+        function confirmarEliminacion(id) {
+            currentAction = 'eliminar';
+            currentId = id;
+            openModal(confirmModal);
+        }
+        
+
+        
+
+        // Evento para confirmar la acción
+        document.getElementById('confirmActionButton').addEventListener('click', () => {
+            if (currentAction === 'eliminar') {
+                eliminarSede(currentId); // Llama a la función de eliminación con el ID actual
+            } else if (currentAction === 'actualizar') {
+                submitForm(); // Llama a la función de actualización si la acción es de actualización
+            }
+            currentAction = null; // Restablece la acción
+            currentId = null; // Restablece el ID
+        });
+
+        
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // Función para cargar las sedes dinámicamente desde el endpoint
+function cargarSedes() {
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:3000/sedes')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar las sedes');
+                }
+                return response.json();
+            })
+            .then(sedes => {
+                // Filtrar sedes para mostrar solo las que coinciden con idEscuela
+                const sedesFiltradas = sedes.filter(sede => sede.id_escuela === idEscuela);
+                
+                // Mostrar las sedes filtradas en la tabla
+                mostrarSedesEnTabla(sedesFiltradas);
+                mostrarTotalRegistros(sedesFiltradas.length);
+                resolve(); // Resolvemos la promesa al finalizar
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('error', 'No se pudieron cargar las sedes.');
+                reject(error); // Rechazamos la promesa en caso de error
+            });
     });
-</script>
+}
+
+// Función para mostrar las sedes en la tabla
+function mostrarSedesEnTabla(sedes) {
+    const tbody = document.getElementById('sedes-body');
+    tbody.innerHTML = ''; // Limpiar el contenido anterior
+
+    sedes.forEach(sede => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${sede.escuela}</td>
+            <td>${sede.direccion}</td>
+            <td>${sede.localidad}</td>
+            <td>
+                <i class="fa-solid fa-trash icon-delete" title="Eliminar publicación" onclick="confirmarEliminacion(${sede.id_sede})"></i>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+
+        
+
+        // Llamada inicial para cargar las sedes al cargar la página
+
+        // Función para eliminar la sede
+        async function eliminarSede(id) {
+            try {
+                const response = await fetch(`http://localhost:3000/sedes/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Error al eliminar la sede');
+
+                showAlert('success', 'Sede eliminada con éxito.');
+                cargarSedes(); // Recarga la lista de sedes
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'No se pudo eliminar la sede. Intenta nuevamente.');
+            }
+        }
+
+
+        
+    </script>
+
+
+    
+    <script>
+
+        // Función para mostrar el total de registros
+        function mostrarTotalRegistros(total) {
+            const totalRegistros = document.getElementById('totalRegistros');
+            totalRegistros.textContent = total;
+        }
+        // Función para cargar provincias desde el backend
+        async function cargarProvincias() {
+            try {
+                const response = await fetch('http://localhost:3000/georef');
+                if (!response.ok) throw new Error('Error al obtener las provincias');
+        
+                const provincias = await response.json();
+                const selectProvincia = document.getElementById('provincia');
+                selectProvincia.innerHTML = '<option value="">Seleccione una provincia</option>';
+        
+                provincias.forEach(provincia => {
+                    const option = document.createElement('option');
+                    option.value = provincia.id;
+                    option.textContent = provincia.nombre;
+                    selectProvincia.appendChild(option);
+                });
+        
+                // Evento para cargar localidades cuando se selecciona una provincia
+                selectProvincia.addEventListener('change', async (event) => {
+                    const provinciaId = event.target.value;
+                    if (provinciaId) await cargarLocalidades(provinciaId);
+                });
+        
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        // Función para cargar localidades de una provincia
+        async function cargarLocalidades(provinciaId) {
+            try {
+                const response = await fetch(`http://localhost:3000/georef/${provinciaId}`);
+                if (!response.ok) throw new Error('Error al obtener las localidades');
+        
+                const localidades = await response.json();
+                const selectLocalidad = document.getElementById('localidad');
+                selectLocalidad.innerHTML = '<option value="">Seleccione una localidad</option>';
+        
+                localidades.forEach(localidad => {
+                    const option = document.createElement('option');
+                    option.value = localidad.id;
+                    option.textContent = localidad.nombre;
+                    selectLocalidad.appendChild(option);
+                });
+        
+                // Inicializar Select2
+                $('#localidad').select2({
+                    placeholder: 'Seleccione una localidad',
+                    allowClear: true
+                });
+        
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        
+        
+        // Cargar provincias al iniciar la página
+        document.addEventListener('DOMContentLoaded', cargarProvincias);
+
+        // Función para verificar el token y el rol del usuario
+    function verificarTokenYRol() {
+            const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
+
+            if (!token) {
+                // Si no hay token, redirigir al home
+                window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                return;
+            }
+
+            // Decodificar el JWT
+            const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
+
+            // Verificar si el usuario tiene el rol de administrador
+            if (usuario.rol !== 'Instructor'  && usuario.rol !== 'Administrador') {
+
+                // Si no es administrador, redirigir al home
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+            } else if (!usuario.estado) {
+                // Si el usuario no está activo, redirigir a Mercado Pago
+                localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', verificarTokenYRol);
+        
+        
+        // Función para cerrar sesión
+        function cerrarSesion() {
+                    localStorage.removeItem('authToken'); // Elimina el token del local storage
+                    window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                }
+          
+    </script>
 </body>
 </html>
 

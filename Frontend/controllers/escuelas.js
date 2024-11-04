@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Escuela guardada:', data);
             
             // Obtener el ID de la escuela creada
             const idEscuela = data.id_escuela;
@@ -58,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Logo cargado:', data);
             modal.style.display = 'none'; // Cerrar el modal
         })
         .catch(error => {

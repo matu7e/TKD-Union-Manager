@@ -106,12 +106,13 @@ async function getByInstructor(req, res) {
 }
 
 async function buscarEscuelas(req, res) {
-  const { id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor } = req.query;
+  const { id_escuela, id_provincia, id_localidad, nombre_escuela, nombre_instructor, apellido_instructor } = req.query;
 
   try {
       const escuelas = await Escuela.buscarEscuelas({
+          id_escuela: id_escuela ? parseInt(id_escuela) : null,
           id_provincia: id_provincia ? parseInt(id_provincia) : null,
-          id_localidad: id_localidad ? parseInt(id_localidad) : null,
+          id_localidad: id_localidad ? BigInt(id_localidad) : null,
           nombre_escuela: nombre_escuela || null,
           nombre_instructor: nombre_instructor || null,
           apellido_instructor: apellido_instructor || null,

@@ -17,6 +17,132 @@
     <link rel="stylesheet" href="styles/footer.css">
     <title>Union Mediterranea</title>
 </head>
+<style>
+    .tarjeta-sede {
+        border-radius: 5px;
+        padding: 50px; /* Espaciado interno ajustado */
+        margin-bottom: 15px;
+        background-color: #323232;
+        margin: 60px;
+        display: flex;
+        margin-top: 100px;
+        align-items: center; /* Alinear verticalmente */
+        flex-direction: row; /* Alinear en fila */
+        justify-content: space-between; /* Espacio entre elementos */
+    }
+
+    .nom-escuela {
+        color: #f36b2b;
+        font-size: 30px;
+        text-transform: uppercase;
+    }
+
+    .mensaje-no-sedes {
+        color: #63666B;
+        font-size: 25px;
+        margin-top: 200px;
+        font-weight: bold;
+        text-align: center; /* Centrar el mensaje */
+    }
+
+    .logo2 {
+        border-radius: 50%; /* Hacer el logo circular */
+        width: 200px; /* Tamaño de la imagen */
+        height: 200px; /* Tamaño de la imagen */
+        object-fit: cover; /* Mantener la proporción */
+        margin-right: 20px; /* Espaciado a la derecha */
+    }
+    #tarjetas-sedes p {
+        text-transform: uppercase;
+    }
+
+    .datos {
+        flex: 1; /* Ocupa el espacio restante */
+        text-align: center; /* Centrar texto */
+        padding: 10px; /* Espaciado interno */
+        display: flex;
+        flex-direction: column; /* Para alinear datos en columna */
+        justify-content: center; /* Centrar verticalmente */
+    }
+
+    .botones {
+        display: flex;
+        flex-direction: column; /* Botones en columna */
+        align-items: center; /* Centrar botones */
+        width: 300px;
+    }
+
+    .boton {
+        
+        background-color: #00000093; /* Color de fondo para WhatsApp */
+        color: white; /* Color del texto */
+        padding: 26px 45px;
+        margin: 10px 0; /* Espaciado entre botones */
+        border: none;
+        border-radius: px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none; /* Sin subrayado */
+        width: 60%; /* Botones del mismo tamaño */
+        max-width: 250px; /* Máxima anchura de los botones */
+    }
+
+    .boton:hover{
+        background-color: #25d365a8; /* Color de fondo para WhatsApp */
+        transform: scale(1.05); /* Efecto de aumento en el hover */
+    }
+    .boton-conocer:hover {
+        background-color: #f36b2b; /* Color de fondo para el botón Conocer */
+        transform: scale(1.05); /* Efecto de aumento en el hover */
+    }
+    @media (max-width: 550px) {
+        .tarjeta-sede {
+            flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+            align-items: center; /* Centrar elementos */
+        }
+        .logo2 {
+            width: 150px; /* Ajustar margen del logo */
+            height: 150px;
+            
+        }
+        .boton{
+            background-color: #00000093;
+            color: white;
+            padding: 15px 45px;
+            margin: 10px 0;
+            border: none;
+            border-radius: px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            max-width: 250px;
+        }
+        .button-buscar-sedes{
+            margin-left: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        .nom-escuela {
+        
+        font-size: 15px;
+        
+        }
+    }
+    /* Estilo responsivo */
+    @media (max-width: 768px) {
+        .tarjeta-sede {
+            flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+            align-items: center; /* Centrar elementos */
+        }
+        .logo2 {
+            margin: 0; /* Ajustar margen del logo */
+        }
+        .botones{
+            width: 200px;
+        }
+    }
+    
+</style>
 <body>
     
     <header class="navbar">
@@ -113,16 +239,16 @@
             <div class="contador-container">
                 
                 <div class="contador">
-                    <h2><b>SEDES</b></h2>
+                    <h2><b class="b-contadores">SEDES</b></h2>
                     <p id="contador1">0</p>
                 </div>
                 
                 <div class="contador">
-                    <h2><b>MIEMBROS</b></h2>
+                    <h2><b class="b-contadores">MIEMBROS</b></h2>
                     <p id="contador2">0</p>
                 </div>
                 <div class="contador">
-                    <h2><b>AÑOS</b></h2>
+                    <h2><b class="b-contadores">AÑOS</b></h2>
                     <p id="contador3">0</p>
                 </div>
             </div>
@@ -165,28 +291,28 @@
 
 
 
-            <section class="sedes">
-                <div class="container-encabezado-sedes" style="margin-top: 80px">
-                    <h2 id="Sedes">Encuentra tu sede más cercana</h2>
-                    <form id="form-buscar" class="buscar-sedes-container">
-                        <div class="buscar-sedes-selector">
-                            <select id="buscar-input" class="custom-select">
-                                <option value="">Seleccione una provincia</option>
-                            </select>
-            
-                            <select id="buscar-localidad" class="custom-select">
-                                <option value="">Seleccione una localidad</option>
-                            </select>
-                        </div>
-                        <button type="button" class="button-buscar-sedes" onclick="buscarEscuelas()">Buscar</button>
-                    </form>
-                </div>
-            
-                <div class="container-sedes" style="margin-top: 80px">
-                    <!-- Contenedor para mostrar las tarjetas de las escuelas -->
-                    <div id="tarjetas-sedes" class="tarjetas-sedes"></div>
-                </div>
-            </section>
+        <section class="sedes">
+            <div class="container-encabezado-sedes" style="margin-top: 80px">
+                <h2 id="Sedes">Encuentra tu sede más cercana</h2>
+                <form id="form-buscar" class="buscar-sedes-container">
+                    <div class="buscar-sedes-selector">
+                        <select id="buscar-input" class="custom-select">
+                            <option value="">Seleccione una provincia</option>
+                        </select>
+        
+                        <select id="buscar-localidad" class="custom-select">
+                            <option value="">Seleccione una localidad</option>
+                            <!-- Aquí debes cargar las localidades dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="button" class="button-buscar-sedes" onclick="buscarEscuelas()">Buscar</button>
+                </form>
+            </div>
+        
+            <div class="container-sedes" style="margin-top: 80px">
+                <div id="tarjetas-sedes" class="tarjetas-sedes"></div>
+            </div>
+        </section>
           
           
 
@@ -382,5 +508,79 @@
     <script src="controllers/public/contadores.js"></script>
     <script src="controllers/public/galery.js"></script>
     <script src="controllers/public/cargarProvincias.js"></script>
+
+    <script>
+        async function buscarEscuelas() {
+            const provinciaSelect = document.getElementById('buscar-input');
+            const localidadSelect = document.getElementById('buscar-localidad');
+            const idLocalidad = localidadSelect.value;
+            const idProvincia = provinciaSelect.value; // Obtener el valor de la provincia
+    
+            try {
+                let response;
+    
+                // Si no se selecciona ni provincia ni localidad, buscar todas las escuelas
+                if (!idProvincia && !idLocalidad) {
+                    response = await fetch('http://localhost:3000/escuelas/Buscar'); // Endpoint para todas las escuelas
+                } else {
+                    // Si hay localidad o provincia seleccionada, buscar por esos parámetros
+                    response = await fetch(`http://localhost:3000/escuelas/Buscar?id_provincia=${idProvincia}&id_localidad=${idLocalidad}`);
+                }
+    
+                // Si la respuesta es correcta pero no hay contenido
+                if (response && response.ok) {
+                    const data = await response.json();
+                    mostrarTarjetas(data, idLocalidad);
+                } else {
+                    // Aquí asumimos que si la respuesta no es ok, no se encontraron escuelas
+                    mostrarTarjetas([], idLocalidad);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                mostrarTarjetas([]); // Mostrar un mensaje de error si hay un problema en la solicitud
+            }
+        }
+    
+        function mostrarTarjetas(escuelas, idLocalidad) {
+        const contenedorTarjetas = document.getElementById('tarjetas-sedes');
+        contenedorTarjetas.innerHTML = ''; // Limpiar tarjetas anteriores
+
+        // Verificar si hay escuelas y mostrar un mensaje si no hay resultados
+        if (escuelas.length === 0) {
+            const mensaje = idLocalidad ? 
+                'No se encontraron escuelas en esa región.' : 
+                'No se encontraron escuelas disponibles.';
+            contenedorTarjetas.innerHTML = `<p class="mensaje-no-sedes">${mensaje}</p>`;
+            return;
+        }
+
+        escuelas.forEach(escuela => {
+            const tarjeta = document.createElement('div');
+            tarjeta.classList.add('tarjeta-sede');
+            tarjeta.innerHTML = `
+                <img src="../Backend/${escuela.logo_escuela}" alt="${escuela.nombre_escuela} Logo" class="logo2" />
+                <div class="datos">
+                    <h2 class="nom-escuela">${escuela.nombre_escuela}</h2>
+                    <p>Dirección: ${escuela.sede_direccion}</p>
+                    <p>Localidad: ${escuela.localidad}</p>
+                    <p>Provincia: ${escuela.provincia}</p>
+                    <p>Instructor: ${escuela.nombre_instructor} ${escuela.apellido_instructor}</p>
+                </div>
+                <div class="botones">
+                    <a href="https://api.whatsapp.com/send?phone=${escuela.telefono}" class="boton">WhatsApp</a>
+                    <a href="${escuela.enlace}" class="boton boton-conocer" target="_blank">Conocer</a>
+                </div>
+            `;
+            contenedorTarjetas.appendChild(tarjeta);
+        });
+    }
+
+    
+        function mostrarMensaje(mensaje) {
+            const contenedorTarjetas = document.getElementById('tarjetas-sedes');
+            contenedorTarjetas.innerHTML = `<p class="mensaje-no-sedes">${mensaje}</p>`;
+        }
+    </script>
+    
 </body>
 </html>
