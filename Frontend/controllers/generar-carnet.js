@@ -90,7 +90,7 @@ async function generatePDF(dni, token) {
 
         pdf.setTextColor(150, 174, 182);
         pdf.setFontSize(12);
-        pdf.text(x - 43, y + 65, "Para validar esta credencial dirigirse a https://unionmediterraneaTKD.com/validar-credencial", { align: "center" });
+        pdf.text(x - 43, y + 65, "Para validar esta credencial dirigirse a http://127.0.0.1:5501/Frontend/validator.html", { align: "center" });
 
         pdf.setTextColor(0);
         pdf.setFontSize(8);
