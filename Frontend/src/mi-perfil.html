@@ -260,35 +260,30 @@
                 <script src="../controllers/generar-carnet.js"></script>
                 <script>
                     function verificarTokenYRol() {
-    const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
+                        const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto
 
-    if (!token) {
-        // Si no hay token, redirigir al home
-        window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
-        return;
-    }
+                        if (!token) {
+                            // Si no hay token, redirigir al home
+                            window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                            return;
+                        }
 
-    // Decodificar el JWT
-    const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
+                        // Decodificar el JWT
+                        const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
 
-    // Verificar si el usuario tiene el rol de Administrador
-    if (usuario.rol === 'Administrador') {
-        // Redirigir al administrador a la página correspondiente
-        window.location.href = 'http://127.0.0.7:5501/Frontend/src/administrador/ABM_publicaciones.html'; // Cambia esto a la URL del administrador
-        return; // Termina la ejecución de la función aquí
-    }
+                        
 
-    // Verificar si el usuario tiene el rol de Instructor o Alumno
-    if (usuario.rol !== 'Instructor' && usuario.rol !== 'Alumno' && usuario.rol !== 'Administrador') {
-        // Si no es Instructor ni Alumno, redirigir al home
-        localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
-        window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
-    } else if (!usuario.estado) {
-        // Si el usuario no está activo, redirigir a Mercado Pago
-        localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
-        window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
-    }
-}
+                        // Verificar si el usuario tiene el rol de Instructor o Alumno
+                        if (usuario.rol !== 'Instructor' && usuario.rol !== 'Miembro' && usuario.rol !== 'Administrador') {
+                            // Si no es Instructor ni Alumno, redirigir al home
+                            localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                            window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
+                        } else if (!usuario.estado) {
+                            // Si el usuario no está activo, redirigir a Mercado Pago
+                            localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
+                            window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+                        }
+                    }
 
 
 
@@ -296,14 +291,14 @@
 
 
 
-                // Llamar a la función al cargar la página
-                document.addEventListener('DOMContentLoaded', verificarTokenYRol);
+                        // Llamar a la función al cargar la página
+                        document.addEventListener('DOMContentLoaded', verificarTokenYRol);
 
-                // Función para cerrar sesión
-                function cerrarSesion() {
-                    localStorage.removeItem('authToken'); // Elimina el token del local storage
-                    window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio de sesión
-                }
+                        // Función para cerrar sesión
+                        function cerrarSesion() {
+                            localStorage.removeItem('authToken'); // Elimina el token del local storage
+                            window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio de sesión
+                        }
                 </script>
                                
     </body>

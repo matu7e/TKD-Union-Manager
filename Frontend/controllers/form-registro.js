@@ -252,8 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 if (!miembroResponse.ok) {
                     const miembroResponseText = await miembroResponse.text();
-                    if (miembroResponseText.includes('El miembro con este DNI ya existe')) {
-                        showAlert('aviso', 'El miembro con este DNI ya existe');
+                    if (miembroResponseText.includes('Usuario Existente')) {
+                        showAlert('aviso', 'Usuario Existente');
                     } else {
                         throw new Error('Error al enviar los datos a /miembros');
                     }
@@ -270,8 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!tutorResponse.ok) {
                         const tutorResponseText = await tutorResponse.text();
                         if (tutorResponseText.includes('El tutor con este DNI ya existe')) {
-                            // El tutor ya existe, continuar sin hacer nada
-                            console.log('El tutor con este DNI ya existe, continuando...');
                         } else {
                             throw new Error('Error al enviar los datos a /tutores');
                         }

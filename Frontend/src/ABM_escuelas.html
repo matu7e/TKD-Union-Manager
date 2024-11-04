@@ -315,14 +315,14 @@ h3{
             <form action="#" method="POST" id="create-sede-form" novalidate>
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="direccion">Dirección</label>
+                        <label for="direccion">Dirección *</label>
                         <input type="text" id="direccion" name="direccion" placeholder="Ingresa la dirección" required />
                     </div>
                 </div>
         
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="provincia">Provincia</label>
+                        <label for="provincia">Provincia *</label>
                         <select id="provincia" name="provincia" required>
                             <option value="">Selecciona la provincia</option>
                             <!-- Opciones dinámicas de provincias -->
@@ -330,7 +330,7 @@ h3{
                     </div>
         
                     <div class="filter-group">
-                        <label for="localidad">Localidad</label>
+                        <label for="localidad">Localidad *</label>
                         <select id="localidad" name="localidad" required>
                             <option value="">Selecciona la localidad</option>
                             <!-- Opciones dinámicas de localidades -->
@@ -424,7 +424,7 @@ h3{
     const enlace = document.getElementById('enlaceInstagram').value;
 
     if (!nombre || !email || !telefono || !enlace) {
-        alert('Por favor, complete todos los campos del formulario.');
+        showAlert('aviso', 'Debe completar los campos obligatorios(*).');
         return;
     }
 
@@ -446,7 +446,6 @@ h3{
 
 async function createSchool(data, token) {
     try {
-        console.log('Creando nueva escuela...');
         const response = await fetch(`http://localhost:3000/escuelas`, {
             method: 'POST',
             headers: {
@@ -457,11 +456,12 @@ async function createSchool(data, token) {
         });
 
         const responseData = await response.text();
-        console.log('Respuesta del servidor:', responseData);
 
         if (!response.ok) {
-            alert('Error al crear la escuela: ' + responseData);
+            showAlert('error', 'Error al crear la escuela.');
             return;
+        }else{
+            showAlert('success', 'Escuela creada con éxito.');
         }
 
         let jsonData = null;
@@ -472,23 +472,20 @@ async function createSchool(data, token) {
         }
 
         if (jsonData && jsonData.message) {
-            alert(jsonData.message);
             idEscuela = jsonData.id_escuela; // Asigna el ID de la escuela
             uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcional
         } else {
-            alert('Operación realizada: ' + responseData);
+            showAlert('aviso', 'Operación realizada ' + responseData);
             cargarSedes();
         }
 
     } catch (error) {
         console.error('Error al crear la escuela:', error);
-        alert('Se produjo un error al crear la escuela: ' + error.message);
     }
 }
 
 async function updateSchool(data, token) {
     try {
-        console.log('Actualizando escuela existente con ID:', idEscuela);
         const response = await fetch(`http://localhost:3000/escuelas/${idEscuela}`, {
             method: 'PUT',
             headers: {
@@ -499,22 +496,19 @@ async function updateSchool(data, token) {
         });
 
         const responseData = await response.text();
-        console.log('Respuesta del servidor:', responseData);
 
         if (!response.ok) {
-            alert('Error al actualizar la escuela: ' + responseData);
+            showAlert('error', 'Error al actualizar la escuela.');
             return;
+        }else{
+            showAlert('success', 'Escuela actualizada con éxito.');
         }
-
-        // Solo mostramos el mensaje directamente, ya que es texto plano.
-        alert(responseData); // Asume que esta es la respuesta del servidor.
         
         // Después de mostrar el mensaje de éxito, carga el logo opcional.
         uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcionalmente
 
     } catch (error) {
         console.error('Error al actualizar la escuela:', error);
-        alert('Se produjo un error al actualizar la escuela: ' + error.message);
     }
 }
 
@@ -523,8 +517,6 @@ async function uploadLogo(token, idEscuela) {
     if (logoInput.files.length > 0) {
         const logoFormData = new FormData();
         logoFormData.append('logo', logoInput.files[0]);
-
-        console.log('Preparando carga del logo para la escuela ID:', idEscuela);
         try {
             const logoResponse = await fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
                 method: 'POST',
@@ -535,17 +527,14 @@ async function uploadLogo(token, idEscuela) {
             });
 
             if (logoResponse.ok) {
-                alert('Logo cargado con éxito');
+                showAlert('success', 'Logo cargado con éxito.');
             } else {
                 const logoResponseText = await logoResponse.text();
-                alert('Error al cargar el logo: ' + logoResponseText);
+                console.error('Error al cargar el logo: ' + logoResponseText);
             }
         } catch (error) {
             console.error('Error al cargar el logo:', error);
-            alert('Se produjo un error al cargar el logo: ' + error.message);
-        }
-    } else {
-        console.log('No se ha seleccionado un logo para cargar, se omite la carga.');
+        }    
     }
       // Llama a cargar las sedes solo después de que el logo se haya manejado.
       if (idEscuela) {
@@ -567,7 +556,6 @@ async function uploadLogo(token, idEscuela) {
     
             async function cargarDatosEscuela() {
                 try {
-                    console.log('Iniciando GET para cargar datos de la escuela...');
                     const response = await fetch(`http://localhost:3000/escuelas/instructor/${idInstructor}`, {
                         method: 'GET',
                         headers: {
@@ -576,12 +564,10 @@ async function uploadLogo(token, idEscuela) {
                     });
     
                     const responseText = await response.text(); // Cambia a text en lugar de json
-                    console.log('Respuesta completa del GET:', responseText);
                     
     
                     if (!response.ok) {
                         if (responseText.includes("No se encontraron escuelas para ese instructor.")) {
-                            console.log('No se encontró ninguna escuela para el instructor.');
                             return;
                         }
                         throw new Error('Error al cargar los datos de la escuela: ' + response.statusText);
@@ -592,7 +578,6 @@ async function uploadLogo(token, idEscuela) {
                     if (Array.isArray(data) && data.length > 0) {
                         const escuela = data[0];
                         idEscuela = escuela.id_escuela; // Asigna el ID de la escuela
-                        console.log('ID de la escuela encontrado:', idEscuela);
                         cargarSedes();
                         // Actualiza los campos del formulario si la escuela ya existe
                         document.getElementById('titulo').value = escuela.nombre || '';
@@ -600,13 +585,10 @@ async function uploadLogo(token, idEscuela) {
                         document.getElementById('telefono').value = escuela.telefono_escuela || '';
                         document.getElementById('enlaceInstagram').value = escuela.enlace || '';
                         document.getElementById('imagePreview').src = '../../Backend/' + (escuela.logo_escuela || 'uploads/default/logo.png');
-                    } else {
-                        console.log('No se encontró ningún registro en el array de respuesta.');
                     }
                 
                 } catch (error) {
                     console.error('Error al cargar datos de la escuela:', error);
-                    alert('Se produjo un error al cargar los datos: ' + error.message);
                 }
             }
             
@@ -663,7 +645,7 @@ async function uploadLogo(token, idEscuela) {
                 return null;
             })
             .then(data => {
-                alert('Sede creada con éxito');
+                showAlert('success', 'Sede creada con éxito.');
                 cargarSedes(); // Refrescar la lista de sedes en la tabla
                 location.reload();
                 // Limpiar los campos del formulario
@@ -673,13 +655,13 @@ async function uploadLogo(token, idEscuela) {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('No se pudo crear la sede. Intenta nuevamente.');
+                showAlert('error', 'No se pudo crear la sede. Intenta nuevamente.');
             });
         } else {
-            alert('Por favor completa todos los campos.');
+            showAlert('aviso', 'Debe completar los campos obligatorios(*).');
         }
     } else {
-        alert('El ID de la escuela no puede ser nulo.');
+        showAlert('error', 'Error intente de nuevo mas tarde.');
     }
 });
 
@@ -724,7 +706,6 @@ async function uploadLogo(token, idEscuela) {
     <script>
         // Función para cargar las sedes dinámicamente desde el endpoint
 function cargarSedes() {
-    console.log(idEscuela);
     return new Promise((resolve, reject) => {
         fetch('http://localhost:3000/sedes')
             .then(response => {
@@ -744,7 +725,7 @@ function cargarSedes() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('No se pudieron cargar las sedes.');
+                showAlert('error', 'No se pudieron cargar las sedes.');
                 reject(error); // Rechazamos la promesa en caso de error
             });
     });
@@ -787,11 +768,11 @@ function mostrarSedesEnTabla(sedes) {
 
                 if (!response.ok) throw new Error('Error al eliminar la sede');
 
-                alert('Sede eliminada con éxito');
+                showAlert('success', 'Sede eliminada con éxito.');
                 cargarSedes(); // Recarga la lista de sedes
             } catch (error) {
                 console.error('Error:', error);
-                alert('No se pudo eliminar la sede. Intenta nuevamente.');
+                showAlert('error', 'No se pudo eliminar la sede. Intenta nuevamente.');
             }
         }
 
@@ -883,7 +864,8 @@ function mostrarSedesEnTabla(sedes) {
             const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
 
             // Verificar si el usuario tiene el rol de administrador
-            if (usuario.rol !== 'Instructor') {
+            if (usuario.rol !== 'Instructor'  && usuario.rol !== 'Administrador') {
+
                 // Si no es administrador, redirigir al home
                 localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
                 window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio

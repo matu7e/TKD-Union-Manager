@@ -83,7 +83,10 @@ select {
   border-radius: 5px;
   font-size: 14px;
 }
-
+#confirmMessage{
+    text-align: center;
+    font-size: larger;
+}
 select:focus {
     border-color: #f36b2b;
 }
@@ -320,11 +323,11 @@ select option {
     }
 
     function agregarMiembro(dni) {
-        mostrarModalConfirmacion('¿Estás seguro de agregar privilegios a este miembro?', 'agregar', dni);
+        mostrarModalConfirmacion('¿Estás seguro de cambiar el Rol a Instructor?', 'agregar', dni);
     }
 
     function darDeBaja(dni) {
-        mostrarModalConfirmacion('¿Estás seguro de dar de baja a este miembro?', 'baja', dni);
+        mostrarModalConfirmacion('¿Estás seguro de dar de baja a este Usuario?', 'baja', dni);
     }
 
         // Cargar cintos al select

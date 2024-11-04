@@ -31,7 +31,6 @@ function hideLoader() {
 
 // Función para abrir el modal y bloquear el scroll
 function openModal(modal) {
-    console.log("Abriendo modal:", modal.id);
     modal.style.display = 'block';
     document.body.classList.add('no-scroll'); // Bloquear el scroll
 }
@@ -43,7 +42,6 @@ document.getElementById('pageSelect').addEventListener('change', (event) => {
 
 // Función para cerrar el modal y restaurar el scroll si todos los modales están cerrados
 function closeModal(modal) {
-    console.log("Cerrando modal:", modal.id);
     modal.style.display = 'none';
 
     // Verificar si hay algún modal abierto
@@ -60,8 +58,6 @@ function previewImage(event) {
     const imagePreview = document.getElementById('imagePreview');
     const file = event.target.files[0];
 
-    console.log("Previsualizando imagen:", file);
-
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -76,10 +72,8 @@ function previewImage(event) {
 // Cerrar modales si se hace clic fuera de ellos
 window.addEventListener('click', (event) => {
     if (event.target === newPublicationModal) {
-        console.log("Clic fuera del modal de nueva publicación");
         closeModal(newPublicationModal);
     } else if (event.target === confirmModal) {
-        console.log("Clic fuera del modal de confirmación");
         closeModal(confirmModal);
     }
 });
@@ -90,11 +84,9 @@ function resetForm() {
     const form = document.getElementById('publicationForm');
     form.reset();
     document.getElementById('imagePreview').src = ''; // Limpiar vista previa de la imagen
-    console.log("Formulario reseteado y vista previa de imagen limpia");
 }
 
 openModalButton.addEventListener('click', () => {
-    console.log("Botón abrir modal clickeado");
     resetForm(); // Limpiar los campos antes de abrir el modal
     openModal(newPublicationModal);
 });
@@ -106,15 +98,10 @@ cancelConfirmButton.addEventListener('click', () => closeModal(confirmModal));
 
 btnGuardar.addEventListener('click', (event) => {
     event.preventDefault(); // Prevenir la recarga de la página
-    console.log("Botón guardar clickeado");
 
     const titulo = document.getElementById('titulo').value.trim();
     const descripcion = document.getElementById('descripcion').value.trim();
     const enlace = document.getElementById('enlace').value.trim();
-
-    console.log('Título:', titulo); 
-    console.log('Descripción:', descripcion);
-    console.log('Enlace:', enlace);
 
     if (!titulo) {
         showAlert('aviso', 'Por favor, complete todos los campos.');
@@ -131,7 +118,6 @@ function createPublication() {
     const descripcion = document.getElementById('descripcion').value;
     const enlace = document.getElementById('enlace').value;
 
-    console.log("Iniciando creación de publicación:", { titulo, descripcion, enlace });
 
     const url = 'http://localhost:3000/publicaciones';
     const method = 'POST';
@@ -152,7 +138,6 @@ function createPublication() {
         return response.json();
     })
     .then(data => {
-        console.log('Publicación creada con éxito:', data);
         const id_pub = data.id_pub;
 
         cargarPublicaciones(); // Cargar las publicaciones después de la creación
@@ -176,10 +161,8 @@ function uploadImage(id_pub) {
     const imageInput = document.getElementById('imagen');
     const imageFile = imageInput.files[0];
 
-    console.log("Intentando cargar imagen para publicación:", id_pub);
 
     if (!imageFile) {
-        console.log('No se seleccionó una imagen para subir');
         hideLoader();
         showAlert('aviso', 'No se seleccionó una imagen para subir.');
         return;
@@ -201,7 +184,6 @@ function uploadImage(id_pub) {
         return response.json();
     })
     .then(data => {
-        console.log('Imagen cargada con éxito:', data);
         showAlert('success', 'Imagen cargada con éxito.');
     })
     .catch(error => {
@@ -233,8 +215,6 @@ function cargarPublicaciones() {
         })
         .then(data => {
             publicaciones = data; // Aquí se cargan las publicaciones
-            console.log("Datos de publicaciones:", data); // Log para ver los datos
-            console.log("Número de publicaciones cargadas:", publicaciones.length); // Mover aquí el log
             mostrarPagina(currentPage); // Mostrar la página actual
             actualizarPaginador(); // Actualizar paginador
             mostrarTotalRegistros(); // Mostrar total de registros

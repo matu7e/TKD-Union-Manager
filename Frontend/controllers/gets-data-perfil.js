@@ -1,7 +1,6 @@
 const API_BASE_URL = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM completamente cargado y parseado');
     const loader = document.getElementById('loader');
     loader.style.display = 'block'; // Mostrar el loader
     
@@ -62,7 +61,7 @@ function handleUserData(data, token, rol) {
     loader.style.display = 'none'; // Ocultar el loader
 
     if (!data.activo) {
-        alert('El usuario no está activo.');
+        handleAlerts('error', 'Usuario inactivo.');
         redirectToLogin('Usuario inactivo.');
         return;
     }
@@ -215,7 +214,7 @@ function construirMenu(rol) {
         <li><a href="publicaciones.html">Publicaciones</a></li>
     `;
 
-    if (rol === 'Instructor') {
+    if (rol === 'Instructor' || rol === 'Administrador' ) {
         navbarMenu.innerHTML += `
             <li><a href="ABM_alumnos.html">Mis Alumnos</a></li>
             <li><a href="ABM_escuelas.html">Mi Escuela</a></li>
@@ -268,7 +267,6 @@ function redirectToLogin(message) {
 }
 
 function redirectToPayment() {
-    console.log('Usuario inactivo. Redirigiendo a la página de pago...');
     window.location.href = 'https://www.mercadopago.com.ar/...';
 }
 

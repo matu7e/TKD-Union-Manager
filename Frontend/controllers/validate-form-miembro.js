@@ -107,13 +107,15 @@ async function updateAlumno(dni) {
         });
 
         if (response.ok) {
-            alert('Datos del alumno actualizados con éxito');
+            
+            handleAlerts('success', 'Datos del alumno actualizados con éxito.');
+
         } else {
-            alert('Error al actualizar los datos del alumno');
+            handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
         }
     } catch (error) {
         console.error('Error al actualizar datos del alumno:', error);
-        alert('Ocurrió un error al actualizar los datos del alumno');
+        handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
     }
 }
 
@@ -133,14 +135,14 @@ async function uploadImage(dni) {
             }
         });
 
-        if (response.ok) {
-            alert('Imagen subida con éxito');
-        } else {
-            alert('Error al subir la imagen');
-        }
+         if (response.ok) {
+             handleAlerts('success', 'Imagen perfil actualizada.');
+        // } else {
+            // alert('Error al subir la imagen');
+         }
     } catch (error) {
-        console.error('Error al subir la imagen:', error);
-        alert('Ocurrió un error al subir la imagen');
+        // console.error('Error al subir la imagen:', error);
+        // alert('Ocurrió un error al subir la imagen');
     }
 }
 
@@ -163,13 +165,30 @@ async function updateTutor(tutorDNI) {
         });
 
         if (response.ok) {
-            alert('Datos del tutor actualizados con éxito');
+            handleAlerts('success', 'Datos del tutor actualizados con éxito.');
         } else {
-            alert('Error al actualizar los datos del tutor');
+            handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
         }
     } catch (error) {
         console.error('Error al actualizar datos del tutor:', error);
-        alert('Ocurrió un error al actualizar los datos del tutor');
+        handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
+    }
+}
+// Manejo de alertas
+function handleAlerts(type, message = null) {
+    // Ocultar alertas existentes
+    document.getElementById('alert-error').style.display = 'none';
+    document.getElementById('alert-success').style.display = 'none';
+    document.getElementById('alert-aviso').style.display = 'none';
+
+    // Si se proporciona un mensaje, mostrar la alerta correspondiente
+    if (message) {
+        const alert = document.getElementById(`alert-${type}`);
+        alert.textContent = message;
+        alert.style.display = 'block';
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 3000); // Ocultar alerta después de 3 segundos
     }
 }
 

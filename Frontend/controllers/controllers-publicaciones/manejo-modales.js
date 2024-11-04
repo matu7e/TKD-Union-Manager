@@ -57,7 +57,6 @@ cancelConfirmButton.addEventListener('click', () => closeModal(confirmModal));
 // Función para ejecutar la acción de confirmación
 function submitForm() {
     // Aquí puedes agregar la lógica para enviar el formulario o realizar la acción
-    console.log('Formulario enviado');
     closeModal(confirmModal); // Cerrar el modal de confirmación
     closeModal(newPublicationModal); // Cerrar el modal de nueva publicación
 }

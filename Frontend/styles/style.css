@@ -115,7 +115,7 @@ main{
 
 .contador p {
   font-size: 2em;
-  color: #ff6600;
+  color: #f36b2b;
   margin: 5px 0 0 0;
 }
 
@@ -160,7 +160,7 @@ main{
   color: #323232;
 }
 .section-info b{
-  color: #ff6600;
+  color: #f36b2b;
   font-size: x-large;
 }
 .section-info, p{
@@ -196,7 +196,7 @@ main{
 }
 
 .sedes{
-  min-height: 900px;
+  min-height: 700px;
   
 }
 
@@ -246,7 +246,9 @@ main{
 
 
 
-
+.b-contadores{
+  color: #D2D2D2;
+}
 
 .container-sedes{
   margin: 0px !important;
@@ -266,6 +268,7 @@ main{
   margin: auto;
   max-width: 350px;
   background-color:   #323232;
+  margin: 60px 0;
 }
 
 .card-title{
@@ -687,7 +690,7 @@ h2 {
 
 
 .button-buscar-sedes:hover {
-  background-color: #d65f2f; /* Color del botón al pasar el ratón */
+  background-color: #f36b2b; /* Color del botón al pasar el ratón */
 }
 
 /* Media query para pantallas mayores a 740px */

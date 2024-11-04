@@ -265,7 +265,6 @@ select option {
     <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-                    console.log('DOM completamente cargado y parseado');
                     const loader = document.getElementById('loader');
                     loader.style.display = 'block'; // Mostrar el loader 
             
@@ -306,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Manejo de datos de usuario
                 function handleUserData(data, token, rol) {
                     if (!data.estado) { // Cambiar esto si "estado" es la propiedad que indica si el usuario está activo
-                        alert('El usuario no está activo.');
+                        showAlert('success', 'Usuario inactivo.');
                         redirectToLogin('Usuario inactivo.');
                         return;
                     }
@@ -335,7 +334,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        console.log('DOM completamente cargado y parseado');
         loader.style.display = 'block'; // Mostrar el loader
 
         const token = localStorage.getItem('authToken');
@@ -402,7 +400,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function cargarDatosEscuela() {
         try {
-            console.log('Iniciando GET para cargar datos de la escuela...');
             const response = await fetch(`http://localhost:3000/escuelas/instructor/${idInstructor}`, {
                 method: 'GET',
                 headers: {
@@ -415,8 +412,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const escuelaData = await response.json();
-            console.log('Datos de la escuela recibidos:', escuelaData);
-
             if (escuelaData && escuelaData[0] && escuelaData[0].id_escuela) {
                 const escuelaInput = document.getElementById('escuela');
                 escuelaInput.value = escuelaData[0].nombre;
@@ -656,7 +651,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
 
             // Verificar si el usuario tiene el rol de administrador
-            if (usuario.rol !== 'Instructor') {
+            if (usuario.rol !== 'Instructor'  && usuario.rol !== 'Administrador') {
+
                 // Si no es administrador, redirigir al home
                 localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
                 window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio
