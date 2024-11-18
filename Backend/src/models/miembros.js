@@ -265,6 +265,73 @@ async function subirPrivilegios(id_miembro) {
   }
 }
 
+async function bajarPrivilegios(id_miembro) {
+  try {
+    const request = new sql.Request();
+    const query = `
+        UPDATE Miembros
+        SET id_rol = @id_rol
+        WHERE dni_miembro = @id_miembro
+    `;
+
+    request.input('id_miembro', sql.Int, id_miembro);
+    request.input('id_rol', sql.Int, 1); // El valor 1 para el rol básico
+
+    const result = await request.query(query);
+    return result.rowsAffected[0]; // Devuelve la cantidad de filas afectadas
+  } catch (err) {
+    console.error("Error al bajar los privilegios: ", err);
+    throw new Error("Error al bajar privilegios del miembro.");
+  }
+}
+
+
+async function actualizarMiembroCompleto(dni_miembro, miembro) {
+  const query = `
+    UPDATE Miembros
+    SET nombre = @nombre,
+        apellido = @apellido,
+        telefono = @telefono,
+        email = @email,
+        fecha_nacimiento = @fecha_nacimiento,
+        grupo_sanguineo = @grupo_sanguineo,
+        direccion = @direccion,
+        fecha_alta = @fecha_alta,
+        activo = @activo,
+        id_cinto = @id_cinto,
+        id_escuela = @id_escuela,
+        dni_tutor = @dni_tutor,
+        relacion_tutor = @relacion_tutor,
+        id_rol = @id_rol
+    WHERE dni_miembro = @dni_miembro
+  `;
+
+  const request = new sql.Request();
+  request.input('dni_miembro', sql.Int, dni_miembro);
+  request.input('nombre', sql.VarChar, miembro.nombre);
+  request.input('apellido', sql.VarChar, miembro.apellido);
+  request.input('telefono', sql.BigInt, miembro.telefono);
+  request.input('email', sql.VarChar, miembro.email);
+  request.input('fecha_nacimiento', sql.Date, miembro.fecha_nacimiento);
+  request.input('grupo_sanguineo', sql.VarChar, miembro.grupo_sanguineo);
+  request.input('direccion', sql.VarChar, miembro.direccion);
+  request.input('fecha_alta', sql.Date, miembro.fecha_alta);
+  request.input('activo', sql.Bit, miembro.activo);
+  request.input('id_cinto', sql.Int, miembro.id_cinto);
+  request.input('id_escuela', sql.Int, miembro.id_escuela);
+  request.input('dni_tutor', sql.Int, miembro.dni_tutor);
+  request.input('relacion_tutor', sql.VarChar, miembro.relacion_tutor);
+  request.input('id_rol', sql.Int, miembro.id_rol);
+
+  try {
+    const result = await request.query(query);
+    return result.rowsAffected[0]; // Retorna el número de filas afectadas
+  } catch (err) {
+    console.error("Error al actualizar completamente el miembro: ", err);
+    throw new Error("No se pudo actualizar el miembro");
+  }
+}
+
 module.exports = { crearMiembro, 
   getMiembros, 
   updateMember, 
@@ -276,5 +343,7 @@ module.exports = { crearMiembro,
   cargaFichaMedica, 
   buscarMiembros, 
   getByEscuela,
-  subirPrivilegios
+  subirPrivilegios,
+  bajarPrivilegios,
+  actualizarMiembroCompleto
 };

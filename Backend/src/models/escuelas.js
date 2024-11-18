@@ -52,13 +52,18 @@ async function updateEscuela(id_escuela, escuela) {
 }
 
 // Eliminar una escuela por su ID
-async function deleteEscuela(id_escuela) {
+async function eliminarEscuela(id_escuela) {
   try {
-    await sql.query`DELETE FROM Escuelas WHERE id_escuela = ${id_escuela}`;
-    console.log('Escuela eliminada correctamente.');
+    const request = new sql.Request();
+    request.input('id_escuela', sql.Int, id_escuela);
+
+    // Llamada al procedimiento almacenado
+    const result = await request.execute('EliminarEscuela');
+
+    return result.rowsAffected; // Devuelve un array con las filas afectadas en cada operación del procedimiento
   } catch (err) {
-    console.error('Error al eliminar escuela:', err);
-    throw err;
+    console.error('Error al eliminar la escuela:', err);
+    throw new Error('No se pudo eliminar la escuela.');
   }
 }
 
@@ -169,7 +174,7 @@ module.exports = {
   getAllEscuelas,
   createEscuela,
   updateEscuela,
-  deleteEscuela,
+  eliminarEscuela,
   getEscuelaById,
   cargaLogo,
   getByInstructor,

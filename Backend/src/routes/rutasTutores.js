@@ -12,4 +12,6 @@ router.put('/:dni_tutor', tutoresController.update);
 
 router.delete('/:dni_tutor', tutoresController.remove);
 
+router.put('/:dni_tutor/completo', tutoresController.updateCompleto);
+
 module.exports = router;

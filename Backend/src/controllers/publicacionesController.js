@@ -67,6 +67,14 @@ async function eliminarPublicacion(req, res) {
     const { id_publicacion } = req.params;
 
     try {
+                // 1. Obtener la ruta de la imagen anterior publicacion
+                const publ = await Publicacion.getPublicacionById(id_publicacion);
+                const imagenAntigua = publ.imagen;
+        
+                // 2. Eliminar la imagen anterior si existe
+                if (imagenAntigua && fs.existsSync(imagenAntigua)) {
+                    fs.unlinkSync(path.resolve(imagenAntigua));
+                }
         const publicacionExistente = await Publicacion.getPublicacionById(id_publicacion);
         if (!publicacionExistente) {
             return res.status(404).send('Publicación no encontrada');

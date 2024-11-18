@@ -66,10 +66,40 @@ async function deleteTutor(dni_tutor) {
   }
 }
 
+const { sql } = require('./../config/bdHelper');
+
+// Actualizar un tutor existente
+async function actualizarTutorCompleto(dni_tutor_anterior, tutor) {
+  const query = `
+    UPDATE Tutores
+    SET dni_tutor = @dni_tutor,
+        nombre = @nombre,
+        apellido = @apellido,
+        telefono = @telefono
+    WHERE dni_tutor = @dni_tutor_anterior
+  `;
+
+  const request = new sql.Request();
+  request.input('dni_tutor_anterior', sql.Int, dni_tutor_anterior);
+  request.input('dni_tutor', sql.Int, tutor.dni_tutor);
+  request.input('nombre', sql.VarChar, tutor.nombre);
+  request.input('apellido', sql.VarChar, tutor.apellido);
+  request.input('telefono', sql.BigInt, tutor.telefono);
+
+  try {
+    const result = await request.query(query);
+    return result.rowsAffected[0]; // Retorna el número de filas afectadas
+  } catch (err) {
+    console.error('Error al actualizar completamente el tutor:', err);
+    throw new Error('No se pudo actualizar el tutor');
+  }
+}
+
 module.exports = {
   getAllTutores,
   getTutorByDni,
   createTutor,
   updateTutor,
   deleteTutor,
+  actualizarTutorCompleto
 };

@@ -64,10 +64,41 @@ async function remove(req, res) {
   }
 }
 
+const { actualizarTutorCompleto } = require('./../models/tutoresModel');
+
+async function updateCompleto(req, res) {
+  const { dni_tutor } = req.params; // DNI del tutor anterior
+  const { nuevo_dni_tutor, nombre, apellido, telefono } = req.body; // Nuevo DNI y demás datos
+
+  if (!nuevo_dni_tutor || !nombre || !apellido || !telefono) {
+    return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+  }
+
+  try {
+    const filasAfectadas = await actualizarTutorCompleto(parseInt(dni_tutor, 10), {
+      dni_tutor: parseInt(nuevo_dni_tutor, 10),
+      nombre,
+      apellido,
+      telefono,
+    });
+
+    if (filasAfectadas > 0) {
+      res.status(200).json({ message: 'Tutor actualizado correctamente' });
+    } else {
+      res.status(404).json({ message: 'Tutor no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al actualizar tutor:', err);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+}
+
+
 module.exports = {
   getAll,
   getByDni,
   create,
   update,
   remove,
+  updateCompleto
 };
