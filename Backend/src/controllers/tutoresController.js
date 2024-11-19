@@ -64,8 +64,6 @@ async function remove(req, res) {
   }
 }
 
-const { actualizarTutorCompleto } = require('./../models/tutoresModel');
-
 async function updateCompleto(req, res) {
   const { dni_tutor } = req.params; // DNI del tutor anterior
   const { nuevo_dni_tutor, nombre, apellido, telefono } = req.body; // Nuevo DNI y demás datos
@@ -75,7 +73,7 @@ async function updateCompleto(req, res) {
   }
 
   try {
-    const filasAfectadas = await actualizarTutorCompleto(parseInt(dni_tutor, 10), {
+    const filasAfectadas = await Tutor.actualizarTutorCompleto(parseInt(dni_tutor, 10), {
       dni_tutor: parseInt(nuevo_dni_tutor, 10),
       nombre,
       apellido,

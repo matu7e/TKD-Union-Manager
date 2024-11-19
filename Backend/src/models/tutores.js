@@ -66,8 +66,6 @@ async function deleteTutor(dni_tutor) {
   }
 }
 
-const { sql } = require('./../config/bdHelper');
-
 // Actualizar un tutor existente
 async function actualizarTutorCompleto(dni_tutor_anterior, tutor) {
   const query = `
