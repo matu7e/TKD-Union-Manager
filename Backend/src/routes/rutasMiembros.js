@@ -10,11 +10,14 @@ router.post('/login', miembrosController.loginMiembro);
 router.put('/:dni', miembrosController.actualizarMiembro);
 router.post('/:dni_miembro/cargaImagen', upload.single('imagen'), miembrosController.cargarImagen);
 router.post('/:dni_miembro/cargaFichaMedica', upload.single('ficha_medica'), miembrosController.cargarFichaMedica);
+router.put('/:dni/completo', miembrosController.actualizarMiembroCompleto);
+
 
 router.get('/buscar', miembrosController.buscarMiembros);
 router.get('/:dni', miembrosController.obtenerByDni);
 router.put('/subirPrivilegios/:dni_miembro', miembrosController.subirPrivilegios);
 router.delete('/:dni_miembro', miembrosController.eliminarMiembro);
+router.put('/bajarPrivilegios/:dni_miembro', miembrosController.bajarPrivilegios);
 
 
 module.exports = router;

@@ -189,15 +189,42 @@ async function subirPrivilegios(req, res) {
     }
 }
 
+async function bajarPrivilegios(req, res) {
+    const { dni_miembro } = req.params; // Tomamos el dni_miembro desde los parámetros de la ruta
+  
+    try {
+      const resultado = await Miembro.bajarPrivilegios(dni_miembro);
+  
+      if (resultado === 0) {
+        return res.status(404).send("No se encontró el miembro con ese ID.");
+      }
+  
+      return res.status(200).send("Privilegios reducidos correctamente.");
+    } catch (err) {
+      console.error("Error al bajar privilegios: ", err);
+      return res.status(500).send("Hubo un problema al actualizar los privilegios del miembro.");
+    }
+  }
+    
+
 async function eliminarMiembro(req, res) {
     const { dni_miembro } = req.params;
 
     try {
+
+        
         // Verificamos si el miembro existe
         const miembro = await Miembro.getBydni(dni_miembro);
-
         if (!miembro) {
             return res.status(404).send(`No se encontró un miembro con el DNI ${dni_miembro}`);
+        }
+
+        // 1. Obtener la ruta de la imagen anterior del miembro
+        const imagenAntigua = miembro.imagen; // Campo 'imagen' en la base de datos
+        
+        // 2. Eliminar la imagen anterior si existe
+         if (imagenAntigua && fs.existsSync(imagenAntigua)) {
+            fs.unlinkSync(path.resolve(imagenAntigua));
         }
 
         // Si existe, procedemos a eliminar
@@ -212,9 +239,25 @@ async function eliminarMiembro(req, res) {
     }
 }
 
+async function actualizarMiembroCompleto(req, res) {
+    const { dni } = req.params;
+    const miembro = req.body;
+  
+    try {
+      const actualizado = await Miembro.actualizarMiembroCompleto(dni, miembro);
+      if (!actualizado) {
+        return res.status(404).send("Miembro no encontrado.");
+      }
+      res.status(200).send("Datos del miembro actualizados completamente.");
+    } catch (err) {
+      console.error("Error en la actualización completa: ", err);
+      res.status(500).send("No se pudieron actualizar los datos del miembro.");
+    }
+  }
 module.exports = { obtenerTodos, registrarMiembro, 
                     asignarEscuela, loginMiembro, 
                     obtenerByDni, actualizarMiembro, 
                     cargarFichaMedica, cargarImagen, 
                     buscarMiembros, subirPrivilegios, 
-                    eliminarMiembro}
+                    eliminarMiembro, actualizarMiembroCompleto,
+                    bajarPrivilegios}

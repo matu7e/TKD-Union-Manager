@@ -29,11 +29,29 @@ async function update(req, res) {
   // Eliminar una escuela
   async function remove(req, res) {
     const id_escuela = req.params.id_escuela;
+    if (!id_escuela) {
+      return res.status(400).json({ message: 'El ID de la escuela es obligatorio.' });
+    }
+  
     try {
-      await Escuela.deleteEscuela(id_escuela);
-      res.send('Escuela eliminada con éxito');
+            // 1. Obtener la ruta del logo anterior
+            const escuela = await Escuela.getEscuelaById(id_escuela);
+            const logoAntiguo = escuela.logo_escuela;
+      
+            // 2. Eliminar la ficha anterior si existe
+            if (logoAntiguo && fs.existsSync(logoAntiguo)) {
+                fs.unlinkSync(path.resolve(logoAntiguo));
+            }
+      const filasAfectadas = await eliminarEscuela(parseInt(id_escuela, 10));
+  
+      if (filasAfectadas[2] > 0) { // La tercera operación elimina la escuela
+        return res.status(200).json({ message: 'Escuela eliminada correctamente.' });
+      } else {
+        return res.status(404).json({ message: 'No se encontró la escuela.' });
+      }
     } catch (err) {
-      res.status(500).send('Error al eliminar escuela');
+      console.error('Error al eliminar la escuela:', err);
+      return res.status(500).json({ message: 'Hubo un problema al eliminar la escuela.' });
     }
   }
   
@@ -71,7 +89,7 @@ async function cargarLogo(req, res) {
     }
 
   try{
-      // 1. Obtener la ruta de la ficha anterior del miembro
+      // 1. Obtener la ruta del logo anterior
       const escuela = await Escuela.getEscuelaById(id_escuela);
       const logoAntiguo = escuela.logo_escuela;
 
