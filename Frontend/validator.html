@@ -176,7 +176,7 @@ main {
     <main class="main-content">
       <h2 class="titulo">Validar Credenciales</h2>
       <div class="input-container">
-        <input type="text" id="dniInput" placeholder="Ingrese el DNI">
+        <input type="text" id="dniInput" placeholder="N° de Documento">
         <button class="export-btn btn btn-success" onclick="validateCarnet()">Validar</button>
       </div>
       <section>
@@ -240,7 +240,7 @@ main {
       const resultDiv = document.getElementById('result');
 
       if (!isValidDni(dni)) {
-        resultDiv.innerHTML = `<p class="invalid">Por favor, ingrese un DNI válido (7 u 8 dígitos).</p>`;
+        resultDiv.innerHTML = `<p class="invalid">Por favor, ingrese un N° de Documento válido.</p>`;
         showResult();
         dniInput.value = ''; // Limpia el campo
         return;
@@ -252,7 +252,7 @@ main {
       const miembro = await fetchUserData(dni);
 
       if (!miembro) {
-        resultDiv.innerHTML = '<p class="invalid">DNI no registrado.</p>';
+        resultDiv.innerHTML = '<p class="invalid">Usuario no encontrado.</p>';
         return;
       }
 
@@ -263,7 +263,7 @@ main {
         <p><span class="attribute">Nombre:</span> <span class="value">${nombre}</span></p>
         <p><span class="attribute">Apellido:</span> <span class="value">${apellido}</span></p>
         <p><span class="attribute">Fecha de Nacimiento:</span> <span class="value">${new Date(fecha_nacimiento).toLocaleDateString()}</span></p>
-        <p><span class="attribute">DNI:</span> <span class="value">${dni_miembro}</span></p>
+        <p><span class="attribute">N° Documento:</span> <span class="value">${dni_miembro}</span></p>
         <p><span class="attribute">Escuela:</span> <span class="value">${escuela}</span></p>
         <p><span class="attribute">Cinto:</span> <span class="value">${cinto}</span></p>
         <p><span class="attribute">Grupo Sanguíneo:</span> <span class="value">${grupo_sanguineo}</span></p>

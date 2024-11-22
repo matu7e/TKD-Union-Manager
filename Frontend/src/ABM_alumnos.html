@@ -30,12 +30,12 @@ border-collapse: collapse;
 .table th, .table td {
 text-align: left;
 padding: 12px;
-border-bottom: 1px solid #ddd;
+border-bottom: 1px solid #D2D2D2;
 }
 
 .table th {
 background-color: #323232;
-color: white;
+color: #D2D2D2;
 }
 
 .table td{
@@ -46,7 +46,7 @@ background-color: #63666B !important; /* Color de fondo alterno */
 }
 
 .table tbody tr:hover {
-background-color: #e0e0e0; /* Color al pasar el ratón */
+background-color: #D2D2D2; /* Color al pasar el ratón */
 }
 .icon-download {
     color: rgba(0, 191, 255, 0.664);
@@ -54,13 +54,20 @@ background-color: #e0e0e0; /* Color al pasar el ratón */
     font-size: 25px;
     padding: 0 3px;
 }
+.icon-edit{
+    color: rgba(0, 153, 255, 0.664);
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 25px;
+    padding: 0 3px;
+}
 
-.icon-download-disabled {
+.icon-download-disabled, .icon-disabled {
     color: #63666B;
     cursor: not-allowed; /* Cambia el cursor para indicar que no se puede hacer clic */
     font-size: 25px;
     padding: 0 3px;
 }
+
 
 .icon-ban {
     color: #f36b2b;
@@ -78,7 +85,7 @@ background-color: #e0e0e0; /* Color al pasar el ratón */
 select {
     width: 100%;
   padding: 16px;
-  background-color: #d5d7d8;
+  background-color: #D2D2D2;
   border: none;
   border-radius: 5px;
   font-size: 14px;
@@ -91,9 +98,111 @@ select:focus {
 select option {
     color: #63666B; /* Ajusta el color de las opciones dentro del select */
 }
+/* Estilos para el modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); /* Fondo semitransparente */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #323232;
+    margin: 5% auto; 
+    padding: 50px;
+    width: 85%;
+    max-width: 900px; /* Tamaño máximo */
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    background-color: #4CAF50; /* Verde */
+    color: D2D2D2;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+.modal h2{
+    color: #D2D2D2;
+}
+/* Estilo para los campos readonly */
+input[readonly], select[readonly] {
+    opacity: 0.6;
+    color: #777; /* Color de texto gris oscuro */
+    border: 1px solid #D2D2D2; /* Borde gris claro */
+    cursor: not-allowed; /* Cursor indicando que no se puede editar */
+}
+
+/* Opcional: cambiar el color del texto cuando está en readonly */
+input[readonly]:focus, select[readonly]:focus {
+    outline: none; /* Quitar el borde de enfoque */
+}
+
+#formEdicion {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #formEdicion button {
+        color: #D2D2D2;
+        padding: 15px 50px; /* Tamaño del botón */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+        display: block;
+        background-color: #f36b2b;
+        align-self: center; /* Centra solo el botón */
+        margin-top: 20px; /* Espacio superior */
+        
+        
+        
+    }
+
+    #formEdicion button:hover {
+        background-color: #f36b2b;
+        transform: scale(1.05); /* Efecto de aumento en el hover */
+    }
+    
+    
+    
+    
+
 
 </style>
-<body>
+<body >
     <header class="navbar">
         <div class="navbar-left">
             <a href="../Index.html">
@@ -230,6 +339,119 @@ select option {
         </div>
     </div>
 
+        <!-- Modal de Edición -->
+        <div id="modalEdicion" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModalEdicion()">&times;</span>
+                <h2>Editar Miembro</h2>
+        
+                <!-- Imagen centrada debajo del título -->
+                <div id="imagenPreview" style="text-align: center; margin-bottom: 10px;">
+                    <img id="imagenActual" src="" alt="Previsualización de Imagen" 
+                        style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 2px solid #ddd;">
+                </div>
+        
+                <form id="formEdicion">
+                    <div class="mb-3">
+                        <label for="dni_miembro" class="form-label">DNI:</label>
+                        <input type="text" class="form-control" id="dni_miembro2" name="dni_miembro" readonly>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre2" name="nombre" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido:</label>
+                        <input type="text" class="form-control" id="apellido2" name="apellido" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono:</label>
+                        <input type="tel" class="form-control" id="telefono2" name="telefono" pattern="[0-9]{10}" title="Debe contener 10 dígitos" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email2" name="email" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                        <input type="date" class="form-control" id="fecha_nacimiento2" name="fecha_nacimiento" max="${new Date().toISOString().split('T')[0]}" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="grupo_sanguineo" class="form-label">Grupo Sanguíneo:</label>
+                        <select class="form-control" id="grupo_sanguineo2" name="grupo_sanguineo" required>
+                            <option value="A+" selected>A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="rol" class="form-label">Rol:</label>
+                        <input type="text" class="form-control" id="rol2" name="rol" readonly>
+                    </div>
+        
+                    
+        
+        
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección:</label>
+                        <input type="text" class="form-control" id="direccion2" name="direccion" required>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="cinto" class="form-label">Cinto:</label>
+                        <select class="form-control" id="cinto2" name="cinto"></select>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <input type="text" class="form-control" id="activo2" name="activo" readonly>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="escuela" class="form-label">Escuela:</label>
+                        <select class="form-control" id="escuela2" name="escuela"></select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni_tutor" class="form-label">DNI del Tutor:</label>
+                        <input type="text" class="form-control" id="dni_tutor2" name="dni_tutor" readonly>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="relacion_tutor" class="form-label">Relación con el Tutor:</label>
+                        <input type="text" class="form-control" id="relacion_tutor2" name="relacion_tutor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre_tutor" class="form-label">Nombre del Tutor:</label>
+                        <input type="text" class="form-control" id="nombre_tutor2" name="nombre_tutor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido_tutor" class="form-label">Apellido del Tutor:</label>
+                        <input type="text" class="form-control" id="apellido_tutor2" name="apellido_tutor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono_tutor" class="form-label">Teléfono del Tutor:</label>
+                        <input type="tel" class="form-control" id="telefono_tutor2" name="telefono_tutor" pattern="[0-9]{10}" title="Debe contener 10 dígitos" required>
+                    </div>
+                    
+        
+                    <button type="button" class="btn btn-primary" onclick="actualizarMiembro()">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    
+
     <footer>
         <div class="footer">
             <div class="footer-content">
@@ -261,7 +483,213 @@ select option {
     <script src="../controllers/public/menu.js"></script>
     <script src="../controllers/controllers-publicaciones/manejo-modales.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script>
+        function cerrarModalEdicion() {
+            const modal = document.getElementById('modalEdicion');
+            modal.style.display = 'none';
+            document.body.classList.remove('no-scroll'); // Restaurar el scroll
+        }
+
         
+        
+        let dniTutorOriginal = null; // Variable global para almacenar el DNI original del tutor
+
+function abrirModalEdicion(dni) {
+    document.body.classList.add('no-scroll'); // Bloquear el scroll
+    console.log("DNI del miembro:", dni);
+    const modal = document.getElementById('modalEdicion');
+    modal.style.display = 'block';
+
+    const miembro = miembros.find(m => m.dni_miembro === dni);
+    console.log("Miembro encontrado:", miembro);
+
+    if (miembro) {
+        // Rellenar campos del miembro
+        document.getElementById('dni_miembro2').value = miembro.dni_miembro;
+        document.getElementById('nombre2').value = miembro.nombre;
+        document.getElementById('apellido2').value = miembro.apellido;
+        document.getElementById('telefono2').value = miembro.telefono;
+        document.getElementById('email2').value = miembro.email;
+
+        const fechaNacimiento = new Date(miembro.fecha_nacimiento);
+        const fechaFormateada = fechaNacimiento.toISOString().split('T')[0];
+        document.getElementById('fecha_nacimiento2').value = fechaFormateada;
+
+        document.getElementById('grupo_sanguineo2').value = miembro.grupo_sanguineo;
+        document.getElementById('direccion2').value = miembro.direccion;
+        document.getElementById('activo2').value = miembro.activo ? 'Activo' : 'Inactivo';
+        document.getElementById('rol2').value = miembro.rol;
+        const imagenSrc = miembro.imagen ? `../../../Backend/${miembro.imagen}` : '../../../Backend/uploads/default.jpg';
+        document.getElementById('imagenActual').src = imagenSrc || 'placeholder-image-url.jpg';
+        cargarCintos(miembro.cinto);
+        cargarEscuelas(miembro.escuela);
+
+        // Cargar la relación del tutor desde el miembro
+        const relacionTutorField = document.getElementById('relacion_tutor2');
+        if (relacionTutorField) {
+            relacionTutorField.value = miembro.relacion_tutor || 'No especificada';
+        } else {
+            console.error("El campo 'relacion_tutor2' no está disponible en el DOM.");
+        }
+
+        // Solicitar los datos del tutor si hay un DNI de tutor
+        if (miembro.dni_tutor) {
+            dniTutorOriginal = miembro.dni_tutor; // Guardar el DNI original del tutor
+            fetch(`http://localhost:3000/tutores/${miembro.dni_tutor}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Error al obtener los datos del tutor.");
+                    return response.json();
+                })
+                .then(tutor => {
+                    document.getElementById('dni_tutor2').value = miembro.dni_tutor || '';
+                    document.getElementById('nombre_tutor2').value = tutor.nombre || '';
+                    document.getElementById('apellido_tutor2').value = tutor.apellido || '';
+                    document.getElementById('telefono_tutor2').value = tutor.telefono || '';
+                })
+                .catch(error => {
+                    console.error("Error al cargar los datos del tutor:", error);
+                    document.getElementById('nombre_tutor2').value = 'No disponible';
+                    document.getElementById('apellido_tutor2').value = 'No disponible';
+                    document.getElementById('telefono_tutor2').value = 'No disponible';
+                });
+        } else {
+            // Si no hay DNI del tutor, limpiar los campos relacionados
+            dniTutorOriginal = null; // Limpiar variable global si no hay tutor
+            document.getElementById('nombre_tutor2').value = 'No asignado';
+            document.getElementById('apellido_tutor2').value = 'No asignado';
+            document.getElementById('telefono_tutor2').value = 'No asignado';
+        }
+    }
+}
+
+function actualizarMiembro() {
+    const form = document.getElementById('formEdicion');
+    const datos = new FormData(form);
+
+    const tutorActualizado = {
+        nuevo_dni_tutor: datos.get('dni_tutor'),
+        nombre: datos.get('nombre_tutor'),
+        apellido: datos.get('apellido_tutor'),
+        telefono: datos.get('telefono_tutor'),
+    };
+
+    const miembroActualizado = {
+        dni_miembro: datos.get('dni_miembro'),
+        nombre: datos.get('nombre'),
+        apellido: datos.get('apellido'),
+        telefono: datos.get('telefono'),
+        email: datos.get('email'),
+        fecha_nacimiento: datos.get('fecha_nacimiento'),
+        grupo_sanguineo: datos.get('grupo_sanguineo'),
+        direccion: datos.get('direccion'),
+        activo: datos.get('activo') === 'Activo',
+        id_rol: '1',
+        id_cinto: datos.get('cinto'),
+        id_escuela: datos.get('escuela'),
+        dni_tutor: datos.get('dni_tutor'),
+        relacion_tutor: datos.get('relacion_tutor'),
+    };
+
+    // Actualizar datos del tutor
+    fetch(`http://localhost:3000/tutores/${dniTutorOriginal}/completo`, { // Usar el DNI original aquí
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tutorActualizado),
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al actualizar el tutor.');
+        return fetch(`http://localhost:3000/miembros/${miembroActualizado.dni_miembro}/completo`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(miembroActualizado),
+        });
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al actualizar el miembro.');
+        showAlert('success', 'Datos actualizados con éxito.');
+        cerrarModalEdicion();
+        buscarMiembros();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('error', `Error al actualizar: ${error.message}`);
+    });
+}
+        function cargarCintos(cintoSeleccionado) {
+            const cintoSelect = document.getElementById('cinto2');
+            fetch('http://localhost:3000/cintos')
+                .then(response => response.json())
+                .then(data => {
+                    cintoSelect.innerHTML = ''; // Limpiar las opciones anteriores
+                    let preseleccionado = false;
+
+                    data.forEach(cinto => {
+                        const option = document.createElement('option');
+                        option.value = cinto.id_cinto; // Usar id_escuela como valor
+                        option.textContent = cinto.descripcion;
+
+                        // Verificar coincidencia con descripcion
+                        if (cinto.descripcion === cintoSeleccionado) {
+                            option.selected = true;
+                            preseleccionado = true;
+                        }
+
+                        cintoSelect.appendChild(option);
+                    });
+
+                    // Si no se encontró un cinto preseleccionado, seleccionar la primera opción por defecto
+                    if (!preseleccionado && data.length > 0) {
+                        cintoSelect.selectedIndex = 0;
+                    }
+
+                    console.log("Cintos cargados:", data);
+                    console.log("Cinto seleccionado:", cintoSeleccionado);
+                })
+                .catch(error => {
+                    console.error('Error al cargar los cintos:', error);
+                });
+        }
+
+        function cargarEscuelas(escuelaSeleccionada) {
+            const escuelaSelect = document.getElementById('escuela2');
+            fetch('http://localhost:3000/escuelas')
+                .then(response => response.json())
+                .then(data => {
+                    escuelaSelect.innerHTML = ''; // Limpiar las opciones anteriores
+                    let preseleccionado = false;
+
+                    data.forEach(escuela => {
+                        const option = document.createElement('option');
+                        option.value = escuela.id_escuela; // Usar id_escuela como valor
+                        option.textContent = escuela.nombre;
+
+                        // Verificar coincidencia con nombre
+                        if (escuela.nombre === escuelaSeleccionada) {
+                            option.selected = true;
+                            preseleccionado = true;
+                        }
+
+                        escuelaSelect.appendChild(option);
+                    });
+
+                    // Si no se encontró una escuela preseleccionada, seleccionar la primera opción por defecto
+                    if (!preseleccionado && data.length > 0) {
+                        escuelaSelect.selectedIndex = 0;
+                    }
+
+                    console.log("Escuelas cargadas:", data);
+                    console.log("Escuela seleccionada:", escuelaSeleccionada);
+                })
+                .catch(error => {
+                    console.error('Error al cargar las escuelas:', error);
+                });
+        }
+
+    </script>
     <script>
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -316,6 +744,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let currentAction = null;
     let currentDni = null;
+
+    
 
     function mostrarModalConfirmacion(mensaje, accion, dni = null) {
         const modal = document.getElementById('confirmModal');
@@ -513,6 +943,8 @@ document.addEventListener('DOMContentLoaded', function() {
             buscarMiembros();
         }
 
+
+
         // Función para mostrar los miembros en la tabla
         function mostrarPagina(pagina) {
             const tableBody = document.querySelector('#miTabla tbody');
@@ -542,6 +974,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             ? `<a href="${rutaFichaMedica}" target="_blank" download>
                             <i class="fa-solid fa-cloud-arrow-down icon-download"></i></a>`
                             : `<i class="fa-solid fa-cloud-arrow-down icon-download-disabled" title="No hay ficha médica" onclick=" showAlert('error','Este miembro no tiene ficha médica disponible');"></i>`}
+                    
+                        <!-- Ícono de editar -->
+                        ${miembro.rol === 'Administrador'
+                            ? `<i class="fa-solid fa-pen-to-square icon-disabled" title="No se puede modificar a un administrador"></i>`
+                            : `<i class="fa-solid fa-pen-to-square icon-edit" title="Modificar miembro" onclick="abrirModalEdicion(${miembro.dni_miembro})"></i>`}
                     </td>
                 `;
                 tableBody.appendChild(row);

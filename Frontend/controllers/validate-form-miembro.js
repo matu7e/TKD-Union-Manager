@@ -15,59 +15,60 @@ function validateForm(event) {
         }
     }
 
-    // Validación de datos personales
-    const firstName = document.getElementById('firstName');
-    const firstNameError = document.getElementById('firstNameError');
-    toggleError(firstName, firstNameError, !firstName.value.match(/^[A-Za-z]{4,16}$/));
+// Validación de datos personales
+const firstName = document.getElementById('firstName');
+const firstNameError = document.getElementById('firstNameError');
+toggleError(firstName, firstNameError, !firstName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{4,16}$/));
 
-    const lastName = document.getElementById('lastName');
-    const lastNameError = document.getElementById('lastNameError');
-    toggleError(lastName, lastNameError, !lastName.value.match(/^[A-Za-z]{4,16}$/));
+const lastName = document.getElementById('lastName');
+const lastNameError = document.getElementById('lastNameError');
+toggleError(lastName, lastNameError, !lastName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{4,16}$/));
 
-    const dni = document.getElementById('dni');
-    const dniError = document.getElementById('dniError');
-    toggleError(dni, dniError, !dni.value.match(/^\d{8}$/));
+const dni = document.getElementById('dni');
+const dniError = document.getElementById('dniError');
+toggleError(dni, dniError, !dni.value.match(/^\d{8}$/));
 
-    const dob = document.getElementById('dob');
-    const dobError = document.getElementById('dobError');
-    toggleError(dob, dobError, !dob.value);
+const dob = document.getElementById('dob');
+const dobError = document.getElementById('dobError');
+toggleError(dob, dobError, !dob.value);
 
-    const bloodGroup = document.getElementById('bloodGroup');
-    const bloodGroupError = document.getElementById('bloodGroupError');
-    toggleError(bloodGroup, bloodGroupError, !bloodGroup.value.match(/^(A|B|AB|O)[+-]$/));
+const bloodGroup = document.getElementById('bloodGroup');
+const bloodGroupError = document.getElementById('bloodGroupError');
+toggleError(bloodGroup, bloodGroupError, !bloodGroup.value.match(/^(A|B|AB|O)[+-]$/));
 
-    const phone = document.getElementById('phone');
-    const phoneError = document.getElementById('phoneError');
-    toggleError(phone, phoneError, !phone.value.match(/^\d{10}$/));
+const phone = document.getElementById('phone');
+const phoneError = document.getElementById('phoneError');
+toggleError(phone, phoneError, !phone.value.match(/^\d{10}$/));
 
-    const email = document.getElementById('email');
-    const emailError = document.getElementById('emailError');
-    toggleError(email, emailError, !email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/));
+const email = document.getElementById('email');
+const emailError = document.getElementById('emailError');
+toggleError(email, emailError, !email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/));
 
-    const address = document.getElementById('address');
-    const addressError = document.getElementById('addressError');
-    toggleError(address, addressError, !address.value);
+const address = document.getElementById('address');
+const addressError = document.getElementById('addressError');
+toggleError(address, addressError, !address.value);
 
-    // Validación de datos del tutor
-    const tutorDNI = document.getElementById('tutorDNI');
-    const tutorDNIError = document.getElementById('tutorDNIError');
-    toggleError(tutorDNI, tutorDNIError, !tutorDNI.value.match(/^\d{8}$/));
+// Validación de datos del tutor
+const tutorDNI = document.getElementById('tutorDNI');
+const tutorDNIError = document.getElementById('tutorDNIError');
+toggleError(tutorDNI, tutorDNIError, !tutorDNI.value.match(/^\d{8}$/));
 
-    const tutorFirstName = document.getElementById('tutorFirstName');
-    const tutorFirstNameError = document.getElementById('tutorFirstNameError');
-    toggleError(tutorFirstName, tutorFirstNameError, !tutorFirstName.value.match(/^[A-Za-z]{4,16}$/));
+const tutorFirstName = document.getElementById('tutorFirstName');
+const tutorFirstNameError = document.getElementById('tutorFirstNameError');
+toggleError(tutorFirstName, tutorFirstNameError, !tutorFirstName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{4,16}$/));
 
-    const tutorLastName = document.getElementById('tutorLastName');
-    const tutorLastNameError = document.getElementById('tutorLastNameError');
-    toggleError(tutorLastName, tutorLastNameError, !tutorLastName.value.match(/^[A-Za-z]{4,16}$/));
+const tutorLastName = document.getElementById('tutorLastName');
+const tutorLastNameError = document.getElementById('tutorLastNameError');
+toggleError(tutorLastName, tutorLastNameError, !tutorLastName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{4,16}$/));
 
-    const relationship = document.getElementById('relationship');
-    const relationshipError = document.getElementById('relationshipError');
-    toggleError(relationship, relationshipError, !relationship.value.match(/^[A-Za-z\s]{4,16}$/));
+const relationship = document.getElementById('relationship');
+const relationshipError = document.getElementById('relationshipError');
+toggleError(relationship, relationshipError, !relationship.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{4,16}$/));
 
-    const tutorPhone = document.getElementById('tutorPhone');
-    const tutorPhoneError = document.getElementById('tutorPhoneError');
-    toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
+const tutorPhone = document.getElementById('tutorPhone');
+const tutorPhoneError = document.getElementById('tutorPhoneError');
+toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
+
 
     if (isValid) {
         // Llamada para actualizar datos del alumno

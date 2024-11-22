@@ -37,18 +37,29 @@
     display: flex;
 }
 
+
 .modal-content-custom {
-    padding: 90px;
+    padding: 60px;
     border-radius: 20px;
-    width: 1200px;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: #323232;
     position: relative;
     animation: modalFadeIn 0.3s ease-out;
-    min-height: 800px;
-    background-color: #323232;
     margin: auto;
-    align-content: center;
     margin-top: 80px;
+
+    /* Oculta la barra de desplazamiento en navegadores WebKit */
+    scrollbar-width: none; /* Firefox */
 }
+
+.modal-content-custom::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y otros navegadores basados en WebKit */
+}
+
+
 .form-control{
     width: 100%;
     padding: 16px;

@@ -97,9 +97,10 @@ label {
     color: #fff;
     margin-bottom: 5px;
     text-align: initial;
+    
 }
 
-input[type="text"] {
+input {
     width: 100%;
     padding: 16px;
     background-color: #d5d7d8;
@@ -108,7 +109,7 @@ input[type="text"] {
     font-size: 14px;
 }
 
-input[type="text"]:focus {
+input:focus {
     outline: none;
     
 }
@@ -140,7 +141,7 @@ select {
 }
 .clear-button:hover {
     background-color: #f36a2bc2;
-} input
+} 
 
 /* Nueva clase para alinear el botón a la derecha */
 .filter-row.right-align {
@@ -306,3 +307,4 @@ h2{
         .contenedor-img{
             background-color: #D2D2D2;
         }
+
