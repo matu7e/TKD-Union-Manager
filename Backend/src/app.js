@@ -12,6 +12,7 @@ const georefRoutes = require('./routes/rutasGeoref');
 const miembrosRoutes = require('./routes/rutasMiembros');
 const sedesRoutes = require('./routes/rutasSedes');
 const publicacionesRoutes = require('./routes/rutasPublicaciones');
+const pagosRoutes = require('./routes/rutasPagos');
 const app = express();
 
 connectToDatabase();
@@ -28,5 +29,6 @@ app.use('/georef', georefRoutes);
 app.use('/miembros', miembrosRoutes);
 app.use('/sedes', sedesRoutes);
 app.use('/publicaciones', publicacionesRoutes);
+app.use('/mercadopago', pagosRoutes);
 
 module.exports = app;
