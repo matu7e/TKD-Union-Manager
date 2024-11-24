@@ -191,8 +191,8 @@ form label {
                 <img src="../../assets/log1.png" alt="Logo" class="navbar-logo-U">
                 <li><a href="ABM_publicaciones.html">Publicaciones</a></li>
                 <li><a  href="ABM_alumnos.html">Miembros</a></li>
-                <li><a id="actual" href="ABM_sedes.html">Escuelas</a></li>
-                <li><a href="Gestion_cobros.html">Cobros</a></li>
+                <li><a  href="ABM_sedes.html">Escuelas</a></li>
+                <li><a id="actual" href="Gestion_cobros.html">Cobros</a></li>
                 <li><a href="../login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
@@ -211,20 +211,18 @@ form label {
         </div>
     </div>
     <main class="container">
-        <h2 class="my-4">ESCUELAS</h2>
-        <button class="new-publication" id="openModalButton">Eliminar Escuelas</button>
+        <h2 class="my-4">COBROS</h2>
+        <button class="new-publication" id="openModalButton">Modificar Monto</button>
 
-        <!-- Modal para seleccionar escuela -->
+        <!-- Modal para Actualizar monto -->
         <div id="escuelaModal" class="modal">
             <div class="modal-content">
                 <span class="close" id="closeEscuelaModal">&times;</span>
-                <h2>Selecciona una Escuela</h2>
+                <h2>Ingresar el nuevo monto</h2>
                 <form id="formSeleccionEscuela">
-                    <label for="escuela">Escuela:</label>
-                    <select id="escuela" class="form-select">
-                        <option value="">Seleccione una escuela</option>
-                    </select>
-                    <button type="button" class="btnEliminar" id="openConfirmModalButton">Eliminar</button>
+                    <label for="escuela">Monto:</label>
+                    <input type="number" id="escuela" class="form-input" placeholder="Ingrese el nuevo monto" required>
+                    <button type="button" class="btnEliminar" id="openConfirmModalButton">Actualizar</button>
                 </form>
             </div>
         </div>
@@ -238,7 +236,7 @@ form label {
                     <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
                 </div>
                 <div class="confirmacion-modal-body">
-                    <p id="confirmMessage">¿Estás seguro de eliminar la escuela seleccionada? Esta acción eliminará sus sedes y los alumnos quedarán sin escuela asignada.</p>
+                    <p id="confirmMessage">¿Estás seguro que sedea modificar el monto de la cuota.</p>
                 </div>
                 <div class="modal-footer-confirmacion">
                     <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
@@ -357,84 +355,84 @@ form label {
     <script src="../../controllers/public/menu.js"></script>
     <script src="../../controllers/controllers-publicaciones/manejo-modales.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    // Botón para abrir el modal de selección de escuelas
-    const openModalButton = document.getElementById('openModalButton');
-    const escuelaModal = document.getElementById('escuelaModal');
-    const closeModalButton = document.getElementById('closeEscuelaModal');
-    const escuelaSelect = document.getElementById('escuela');
-    const openConfirmModalButton = document.getElementById('openConfirmModalButton');
+        document.addEventListener('DOMContentLoaded', () => {
+        // Botón para abrir el modal de selección de escuelas
+        const openModalButton = document.getElementById('openModalButton');
+        const escuelaModal = document.getElementById('escuelaModal');
+        const closeModalButton = document.getElementById('closeEscuelaModal');
+        const escuelaSelect = document.getElementById('escuela');
+        const openConfirmModalButton = document.getElementById('openConfirmModalButton');
 
-    // Modal de confirmación
-    const confirmModal = document.getElementById('confirmModal');
-    const closeConfirmModal = document.getElementById('closeConfirmModal');
-    const confirmActionButton = document.getElementById('confirmActionButton');
-    const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+        // Modal de confirmación
+        const confirmModal = document.getElementById('confirmModal');
+        const closeConfirmModal = document.getElementById('closeConfirmModal');
+        const confirmActionButton = document.getElementById('confirmActionButton');
+        const cancelConfirmButton = document.getElementById('cancelConfirmButton');
 
-    // Mostrar el modal de selección de escuelas
-    openModalButton.addEventListener('click', () => {
-        escuelaModal.style.display = 'block';
-        document.body.classList.add('no-scroll'); // Bloquear el scroll
-    });
+        // Mostrar el modal de selección de escuelas
+        openModalButton.addEventListener('click', () => {
+            escuelaModal.style.display = 'block';
+            document.body.classList.add('no-scroll'); // Bloquear el scroll
+        });
 
-    // Cerrar el modal de selección de escuelas
-    closeModalButton.addEventListener('click', () => {
-        escuelaModal.style.display = 'none';
-        document.body.classList.remove('no-scroll'); // Restaurar el scroll
-    });
+        // Cerrar el modal de selección de escuelas
+        closeModalButton.addEventListener('click', () => {
+            escuelaModal.style.display = 'none';
+            document.body.classList.remove('no-scroll'); // Restaurar el scroll
+        });
 
-    // Mostrar el modal de confirmación al presionar "Eliminar"
-    openConfirmModalButton.addEventListener('click', () => {
-        const selectedEscuelaId = escuelaSelect.value;
+        // Mostrar el modal de confirmación al presionar "Eliminar"
+        openConfirmModalButton.addEventListener('click', () => {
+            const selectedEscuelaId = escuelaSelect.value;
 
-        if (!selectedEscuelaId) {
-            alert('Por favor, selecciona una escuela.');
-            return;
-        }
+            if (!selectedEscuelaId) {
+                alert('Por favor, ingrese un monto.');
+                return;
+            }
 
-        confirmModal.style.display = 'block';
-    });
+            confirmModal.style.display = 'block';
+        });
 
-    // Cerrar el modal de confirmación
-    closeConfirmModal.addEventListener('click', () => {
-        confirmModal.style.display = 'none';
-    });
+        // Cerrar el modal de confirmación
+        closeConfirmModal.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
 
-    cancelConfirmButton.addEventListener('click', () => {
-        confirmModal.style.display = 'none';
-    });
+        cancelConfirmButton.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
 
-    // Función para eliminar la escuela
-    function eliminarEscuela(escuelaId) {
-        if (!escuelaId) {
-            alert('Por favor, selecciona una escuela antes de confirmar.');
-            return;
-        }
+        // Función para eliminar la escuela
+        function eliminarEscuela(escuelaId) {
+            if (!escuelaId) {
+                alert('Por favor, selecciona una escuela antes de confirmar.');
+                return;
+            }
 
-        fetch(`http://localhost:3000/escuelas/${escuelaId}`, {
-            method: 'DELETE', // Método DELETE para eliminar la escuela
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Escuela eliminada exitosamente. Sus sedes y alumnos han sido actualizados.');
-                    location.reload(); // Recargar la página para reflejar los cambios
-                } else {
-                    alert('Error al intentar eliminar la escuela. Por favor, intenta de nuevo.');
-                }
+            fetch(`http://localhost:3000/escuelas/${escuelaId}`, {
+                method: 'DELETE', // Método DELETE para eliminar la escuela
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Ocurrió un problema al conectarse al servidor.');
-            });
-    }
+                .then(response => {
+                    if (response.ok) {
+                        alert('Escuela eliminada exitosamente. Sus sedes y alumnos han sido actualizados.');
+                        location.reload(); // Recargar la página para reflejar los cambios
+                    } else {
+                        alert('Error al intentar eliminar la escuela. Por favor, intenta de nuevo.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un problema al conectarse al servidor.');
+                });
+        }
 
-    // Confirmar eliminación
-    confirmActionButton.addEventListener('click', () => {
-        const selectedEscuelaId = escuelaSelect.value; // Obtener el ID de la escuela seleccionada
-        eliminarEscuela(selectedEscuelaId);
-        confirmModal.style.display = 'none'; // Cerrar el modal de confirmación
+        // Confirmar eliminación
+        confirmActionButton.addEventListener('click', () => {
+            const selectedEscuelaId = escuelaSelect.value; // Obtener el ID de la escuela seleccionada
+            eliminarEscuela(selectedEscuelaId);
+            confirmModal.style.display = 'none'; // Cerrar el modal de confirmación
+        });
     });
-});
 
     </script>
     

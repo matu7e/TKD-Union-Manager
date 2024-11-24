@@ -101,12 +101,14 @@ select option {
 }
 
 .img-circular {
-    width: 250px; /* Ancho de la imagen */
-    height: 250px; /* Alto de la imagen */
-    border-radius: 50%; /* Hace que la imagen sea circular */
-    object-fit: cover; /* Recorta la imagen para que encaje en el contenedor */
-    border: 2px solid #ccc; /* Bordes opcionales para la imagen */
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: contain; /* Alternativa para mostrar toda la imagen */
+    background-color: #f36b2b; /* Fondo para identificar espacios vacíos */
+    border: 2px solid #ccc;
 }
+
 
 .container {
     text-align: center;
@@ -251,7 +253,7 @@ h3{
                     <form id="publicationForm">
                         <!-- Campo para el logo de la escuela con vista previa -->
                         <div class="mb-3 img-circular-container">
-                            <img id="imagePreview" src="../../Backend/uploads/default/logo.png" alt="Vista previa" class="img-circular">
+                            <img id="imagePreview" src="" alt="Vista previa" class="img-circular">
                         </div>
     
                         <!-- Campo para el nombre de la escuela -->
@@ -594,7 +596,7 @@ async function uploadLogo(token, idEscuela) {
                         document.getElementById('descripcion').value = escuela.email_escuela || '';
                         document.getElementById('telefono').value = escuela.telefono_escuela || '';
                         document.getElementById('enlaceInstagram').value = escuela.enlace || '';
-                        document.getElementById('imagePreview').src = '../../Backend/' + (escuela.logo_escuela || 'uploads/default/logo.png');
+                        document.getElementById('imagePreview').src = '../../Backend/' + (escuela.logo_escuela || 'uploads/defaultLogo.jpg');
                     }
                 
                 } catch (error) {
@@ -882,7 +884,7 @@ function mostrarSedesEnTabla(sedes) {
             } else if (!usuario.estado) {
                 // Si el usuario no está activo, redirigir a Mercado Pago
                 localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
-                window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+                window.location.href = 'cuotaimpaga.html'; // Redirige a la página de cobros
             }
         }
 

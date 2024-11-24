@@ -180,6 +180,7 @@ select option {
                 <li><a id="actual" href="ABM_publicaciones.html">Publicaciones</a></li>
                 <li><a href="ABM_alumnos.html">Miembros</a></li>
                 <li><a href="ABM_sedes.html">Escuelas</a></li>
+                <li><a href="Gestion_cobros.html">Cobros</a></li>
                 <li><a href="../login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
@@ -370,7 +371,7 @@ select option {
                         } else if (!usuario.estado) {
                             // Si el usuario no está activo, redirigir a Mercado Pago
                             localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
-                            window.location.href = 'https://www.mercadopago.com.ar/'; // Cambia esto a la URL de Mercado Pago
+                            window.location.href = '../cuotaimpaga.html'; // Redirige a la página de cobros
                         }
                     }
 

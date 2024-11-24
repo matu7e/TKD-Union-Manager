@@ -559,22 +559,37 @@
         escuelas.forEach(escuela => {
             const tarjeta = document.createElement('div');
             tarjeta.classList.add('tarjeta-sede');
+
+            // Definir el logo por defecto si el logo_escuela es null o undefined
+            const logoSrc = escuela.logo_escuela ? `../Backend/${escuela.logo_escuela}` : '/Frontend/assets/defaultLogo.jpg';
+
+            // Verificar los campos que podrían ser null y asignar "Consultar" si es necesario
+            const nombreEscuela = escuela.nombre_escuela || "Consultar";
+            const direccion = escuela.sede_direccion || "Consultar";
+            const localidad = escuela.localidad || "Consultar";
+            const provincia = escuela.provincia || "Consultar";
+            const instructorNombre = escuela.nombre_instructor || "Consultar";
+            const instructorApellido = escuela.apellido_instructor || "Consultar";
+            const telefono = escuela.telefono || "Consultar";
+            const enlace = escuela.enlace || "#"; // Default to "#" if enlace is null
+
             tarjeta.innerHTML = `
-                <img src="../Backend/${escuela.logo_escuela}" alt="${escuela.nombre_escuela} Logo" class="logo2" />
+                <img src="${logoSrc}" alt="${nombreEscuela} Logo" class="logo2" />
                 <div class="datos">
-                    <h2 class="nom-escuela">${escuela.nombre_escuela}</h2>
-                    <p>Dirección: ${escuela.sede_direccion}</p>
-                    <p>Localidad: ${escuela.localidad}</p>
-                    <p>Provincia: ${escuela.provincia}</p>
-                    <p>Instructor: ${escuela.nombre_instructor} ${escuela.apellido_instructor}</p>
+                    <h2 class="nom-escuela">${nombreEscuela}</h2>
+                    <p>Dirección: ${direccion}</p>
+                    <p>Localidad: ${localidad}</p>
+                    <p>Provincia: ${provincia}</p>
+                    <p>Instructor: ${instructorNombre} ${instructorApellido}</p>
                 </div>
                 <div class="botones">
-                    <a href="https://api.whatsapp.com/send?phone=${escuela.telefono}" class="boton">WhatsApp</a>
-                    <a href="${escuela.enlace}" class="boton boton-conocer" target="_blank">Conocer</a>
+                    <a href="https://api.whatsapp.com/send?phone=${telefono}" class="boton">WhatsApp</a>
+                    <a href="${enlace}" class="boton boton-conocer" target="_blank">Conocer</a>
                 </div>
             `;
             contenedorTarjetas.appendChild(tarjeta);
         });
+
     }
 
     
