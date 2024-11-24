@@ -17,7 +17,7 @@ router.get('/success', (req, res, next) => {
 
   // Fallo en el pago
 router.get('/failure', (req, res) => {
-    res.status(400).send('El pago no fue completado. Intenta nuevamente.');
+    return res.redirect('http://127.0.0.7:5501/Frontend/src/error.html'); // Redirige a la página de error
   });
   
   // Pago pendiente

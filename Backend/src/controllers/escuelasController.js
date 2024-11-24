@@ -42,7 +42,7 @@ async function update(req, res) {
             if (logoAntiguo && fs.existsSync(logoAntiguo)) {
                 fs.unlinkSync(path.resolve(logoAntiguo));
             }
-      const filasAfectadas = await eliminarEscuela(parseInt(id_escuela, 10));
+      const filasAfectadas = await Escuela.eliminarEscuela(parseInt(id_escuela, 10));
   
       if (filasAfectadas[2] > 0) { // La tercera operación elimina la escuela
         return res.status(200).json({ message: 'Escuela eliminada correctamente.' });

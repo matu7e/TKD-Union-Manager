@@ -312,7 +312,7 @@
                         const userStatus = decodedToken.estado;
         
                         if (userStatus === false) {
-                            window.location.href = 'https://www.mercadopago.com.ar/...'; // Redirige a la página de cobros
+                            window.location.href = 'cuotaimpaga.html'; // Redirige a la página de cobros
                         } else if (userStatus === true) {
                             showAlert('success', '¡Inicio de sesión exitoso!'); // Mensaje de éxito
                             window.location.href = 'getway.html'; // Redirige a la página de perfil
@@ -320,7 +320,7 @@
                             showAlert('aviso', 'Estado de usuario no reconocido');
                         }
                     } else {
-                        showAlert('error', 'Credenciales incorrectas');
+                        showAlert('error', 'Credenciales incorrectas'); 
                     }
                 })
                 .catch(error => {

@@ -75,7 +75,7 @@ background-color: #e0e0e0; /* Color al pasar el ratón */
     font-size: 25px;
     padding: 0 3px;
 }
-select {
+select, .form-select {
     width: 100%;
   padding: 16px;
   background-color: #d5d7d8;
@@ -83,7 +83,17 @@ select {
   border-radius: 5px;
   font-size: 14px;
 }
-
+.new-publication{
+    
+    height: 200px;
+    margin-bottom: 50px;
+    background-color: #323232;
+    padding: 20px;
+    border-radius: 20px;
+    width: 100%;
+    color: #D2D2D2;
+    font-size: 30px;
+}
 select:focus {
     border-color: #f36b2b;
 }
@@ -91,6 +101,81 @@ select:focus {
 select option {
     color: #63666B; /* Ajusta el color de las opciones dentro del select */
 }
+
+/* Estilos para el modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); /* Fondo semitransparente */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #323232;
+    margin: 5% auto; 
+    padding: 50px;
+    width: 85%;
+    max-width: 900px; /* Tamaño máximo */
+    border-radius: 10px;
+}
+
+.modal h2 {
+    color: #D2D2D2;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+form label {
+    margin-top: 12px !important;
+}
+
+
+
+.btnEliminar {
+    display: flex;
+    flex-direction: column;
+}
+
+.btnEliminar {
+    color: #D2D2D2;
+    padding: 15px 50px; /* Tamaño del botón */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    display: block;
+    background-color: #f36b2b;
+    align-self: center; /* Centra solo el botón */
+    margin-top: 20px; /* Espacio superior */
+}
+
+.btnEliminar:hover {
+    background-color: #f36b2b;
+    transform: scale(1.05); /* Efecto de aumento en el hover */
+}
+
+
+
 
 </style>
 <body>
@@ -126,7 +211,40 @@ select option {
     </div>
     <main class="container">
         <h2 class="my-4">ESCUELAS</h2>
-        
+        <button class="new-publication" id="openModalButton">Eliminar Escuelas</button>
+
+        <!-- Modal para seleccionar escuela -->
+        <div id="escuelaModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeEscuelaModal">&times;</span>
+                <h2>Selecciona una Escuela</h2>
+                <form id="formSeleccionEscuela">
+                    <label for="escuela">Escuela:</label>
+                    <select id="escuela" class="form-select">
+                        <option value="">Seleccione una escuela</option>
+                    </select>
+                    <button type="button" class="btnEliminar" id="openConfirmModalButton">Eliminar</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Modal de Confirmación -->
+        <div id="confirmModal" class="confirmacion-modal">
+            <div class="modal-content-confirmacion">
+                <div class="modal-header-confirmacion">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button class="btn-close-confirmacion" id="closeConfirmModal">&times;</button>
+                </div>
+                <div class="confirmacion-modal-body">
+                    <p id="confirmMessage">¿Estás seguro de eliminar la escuela seleccionada? Esta acción eliminará sus sedes y los alumnos quedarán sin escuela asignada.</p>
+                </div>
+                <div class="modal-footer-confirmacion">
+                    <button type="button" class="btn btn-cancelar" id="cancelConfirmButton">Cancelar</button>
+                    <button type="button" class="btn btn-confirmar" id="confirmActionButton">Confirmar</button>
+                </div>
+            </div>
+        </div>
         <section class="search-filters mb-4">
             <form action="#" method="GET">
                 <div class="filter-row">
@@ -238,6 +356,90 @@ select option {
     <script src="../../controllers/public/menu.js"></script>
     <script src="../../controllers/controllers-publicaciones/manejo-modales.js"></script>
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Botón para abrir el modal de selección de escuelas
+    const openModalButton = document.getElementById('openModalButton');
+    const escuelaModal = document.getElementById('escuelaModal');
+    const closeModalButton = document.getElementById('closeEscuelaModal');
+    const escuelaSelect = document.getElementById('escuela');
+    const openConfirmModalButton = document.getElementById('openConfirmModalButton');
+
+    // Modal de confirmación
+    const confirmModal = document.getElementById('confirmModal');
+    const closeConfirmModal = document.getElementById('closeConfirmModal');
+    const confirmActionButton = document.getElementById('confirmActionButton');
+    const cancelConfirmButton = document.getElementById('cancelConfirmButton');
+
+    // Mostrar el modal de selección de escuelas
+    openModalButton.addEventListener('click', () => {
+        escuelaModal.style.display = 'block';
+        document.body.classList.add('no-scroll'); // Bloquear el scroll
+    });
+
+    // Cerrar el modal de selección de escuelas
+    closeModalButton.addEventListener('click', () => {
+        escuelaModal.style.display = 'none';
+        document.body.classList.remove('no-scroll'); // Restaurar el scroll
+    });
+
+    // Mostrar el modal de confirmación al presionar "Eliminar"
+    openConfirmModalButton.addEventListener('click', () => {
+        const selectedEscuelaId = escuelaSelect.value;
+
+        if (!selectedEscuelaId) {
+            alert('Por favor, selecciona una escuela.');
+            return;
+        }
+
+        confirmModal.style.display = 'block';
+    });
+
+    // Cerrar el modal de confirmación
+    closeConfirmModal.addEventListener('click', () => {
+        confirmModal.style.display = 'none';
+    });
+
+    cancelConfirmButton.addEventListener('click', () => {
+        confirmModal.style.display = 'none';
+    });
+
+    // Función para eliminar la escuela
+    function eliminarEscuela(escuelaId) {
+        if (!escuelaId) {
+            alert('Por favor, selecciona una escuela antes de confirmar.');
+            return;
+        }
+
+        fetch(`http://localhost:3000/escuelas/${escuelaId}`, {
+            method: 'DELETE', // Método DELETE para eliminar la escuela
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Escuela eliminada exitosamente. Sus sedes y alumnos han sido actualizados.');
+                    location.reload(); // Recargar la página para reflejar los cambios
+                } else {
+                    alert('Error al intentar eliminar la escuela. Por favor, intenta de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un problema al conectarse al servidor.');
+            });
+    }
+
+    // Confirmar eliminación
+    confirmActionButton.addEventListener('click', () => {
+        const selectedEscuelaId = escuelaSelect.value; // Obtener el ID de la escuela seleccionada
+        eliminarEscuela(selectedEscuelaId);
+        confirmModal.style.display = 'none'; // Cerrar el modal de confirmación
+    });
+});
+
+    </script>
+    
+    <script>
+
+
         const buscarUrl = 'http://localhost:3000/escuelas/buscar';
     
         document.addEventListener('DOMContentLoaded', () => {
