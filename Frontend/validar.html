@@ -19,7 +19,7 @@
    .titulo {
     text-align: center;
     margin-top: 20px;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
     color: #32323257;
     margin-bottom: 60px;
@@ -174,16 +174,12 @@ main {
     </header>
   
     <main class="main-content">
-      <h2 class="titulo">Validar Credenciales</h2>
-      <div class="input-container">
-        <input type="text" id="dniInput" placeholder="N° de Documento">
-        <button class="export-btn btn btn-success" onclick="validateCarnet()">Validar</button>
-      </div>
-      <section>
-        
-        <div class="result" id="result"></div>
-      </section>
+        <h2 class="titulo">Validar Credenciales</h2>
+        <section>
+          <div class="result" id="result"></div>
+        </section>
     </main>
+      
 
     <footer>
       <div class="footer">
@@ -217,66 +213,92 @@ main {
 
   
   <script src="controllers/public/menu.js"></script>
+  
   <script>
     const API_BASE_URL = 'http://localhost:3000';
 
-    async function fetchUserData(dni) {
-      try {
-        const response = await fetch(`${API_BASE_URL}/miembros/${dni}`);
-        if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
-        return await response.json();
-      } catch (error) {
-        console.error('Error al obtener los datos del miembro:', error);
-        return null;
-      }
-    }
+// Función para codificar el DNI
+function encodeDni(dni) {
+  return btoa(dni); // Codifica en Base64
+}
 
-    function isValidDni(dni) {
-      return /^\d{7,8}$/.test(dni);
-    }
+// Función para decodificar el DNI
+function decodeDni(encodedDni) {
+  return atob(encodedDni); // Decodifica Base64
+}
 
-    async function validateCarnet() {
-      const dni = document.getElementById('dniInput').value.trim();
-      const resultDiv = document.getElementById('result');
+// Función para extraer el parámetro codificado de la URL
+function getEncodedDniFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('key'); // Usa 'key' como nombre del parámetro codificado
+}
 
-      if (!isValidDni(dni)) {
-        resultDiv.innerHTML = `<p class="invalid">Por favor, ingrese un N° de Documento válido.</p>`;
-        showResult();
-        dniInput.value = ''; // Limpia el campo
-        return;
-      }
+// Función para validar el DNI
+function isValidDni(dni) {
+  return /^\d{7,8}$/.test(dni);
+}
 
-      resultDiv.innerHTML = 'Validando...';
-      showResult();
+// Función para mostrar resultados
+function showResult(message, isValid = true) {
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `<p class="${isValid ? 'valid' : 'invalid'}">${message}</p>`;
+  resultDiv.classList.add('visible');
+}
 
-      const miembro = await fetchUserData(dni);
+// Función para buscar datos del miembro por DNI
+async function fetchUserData(dni) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/miembros/${dni}`);
+    if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
+    return await response.json();
+  } catch (error) {
+    console.error('Error al obtener los datos del miembro:', error);
+    return null;
+  }
+}
 
-      if (!miembro) {
-        resultDiv.innerHTML = '<p class="invalid">Usuario no encontrado.</p>';
-        return;
-      }
+// Validar automáticamente al cargar la página
+async function validateCarnet() {
+  const encodedDni = getEncodedDniFromUrl();
+  if (!encodedDni) {
+    showResult('No se encontró el parámetro de validación.', false);
+    return;
+  }
 
-      const { nombre, apellido, fecha_nacimiento, dni_miembro, escuela, cinto, grupo_sanguineo, activo } = miembro;
+  const dni = decodeDni(encodedDni);
+  if (!isValidDni(dni)) {
+    showResult('El N° de Documento no es válido.', false);
+    return;
+  }
 
-      resultDiv.innerHTML = `
-        <p class="p-titulo-val"><span class="titulo-val">DATOS DEL MIEMBRO</span></p>
-        <p><span class="attribute">Nombre:</span> <span class="value">${nombre}</span></p>
-        <p><span class="attribute">Apellido:</span> <span class="value">${apellido}</span></p>
-        <p><span class="attribute">Fecha de Nacimiento:</span> <span class="value">${new Date(fecha_nacimiento).toLocaleDateString()}</span></p>
-        <p><span class="attribute">N° Documento:</span> <span class="value">${dni_miembro}</span></p>
-        <p><span class="attribute">Escuela:</span> <span class="value">${escuela}</span></p>
-        <p><span class="attribute">Cinto:</span> <span class="value">${cinto}</span></p>
-        <p><span class="attribute">Grupo Sanguíneo:</span> <span class="value">${grupo_sanguineo}</span></p>
-        <p class="${activo ? 'valid' : 'invalid'}">${activo ? 'Carnet Válido' : 'Carnet Inválido'}</p>
-      `;
+  const miembro = await fetchUserData(dni);
 
-      dniInput.value = ''; 
-    }
+  if (!miembro) {
+    showResult('Usuario no encontrado.', false);
+    return;
+  }
 
-    function showResult() {
-      const resultDiv = document.getElementById('result');
-      resultDiv.classList.add('visible');
-    }
+  const { nombre, apellido, fecha_nacimiento, escuela, cinto, grupo_sanguineo, activo } = miembro;
+
+
+  
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `
+    <p class="p-titulo-val"><span class="titulo-val">DATOS DEL MIEMBRO</span></p>
+    <p><span class="attribute">Nombre:</span> <span class="value">${nombre}</span></p>
+    <p><span class="attribute">Apellido:</span> <span class="value">${apellido}</span></p>
+    <p><span class="attribute">Fecha de Nacimiento:</span> <span class="value">${new Date(fecha_nacimiento).toLocaleDateString()}</span></p>
+    <p><span class="attribute">Escuela:</span> <span class="value">${escuela}</span></p>
+    <p><span class="attribute">Cinto:</span> <span class="value">${cinto}</span></p>
+    <p><span class="attribute">Grupo Sanguíneo:</span> <span class="value">${grupo_sanguineo}</span></p>
+    <p class="${activo ? 'valid' : 'invalid'}">${activo ? 'Carnet Válido' : 'Carnet Inválido'}</p>
+  `;
+  resultDiv.classList.add('visible');
+}
+
+// Llama a la validación al cargar la página
+document.addEventListener('DOMContentLoaded', validateCarnet);
+
   </script>
 </body>
 </html>

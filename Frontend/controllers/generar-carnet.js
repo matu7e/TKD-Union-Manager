@@ -14,6 +14,10 @@ async function generatePDF(dni, token) {
             const ano = fecha.getFullYear(); // Año completo
             return `${dia}/${mes}/${ano}`;
         }
+
+        // Constante del DNI
+        const dniBase64 = btoa(dni_miembro);
+        const url = `http://127.0.0.1:5501/Frontend/validar.html?key=${dniBase64}`;
     
         // Definir valores por defecto
         const nombreText = nombre || "Nombre no disponible";
@@ -22,11 +26,14 @@ async function generatePDF(dni, token) {
         // Formatear la fecha de nacimiento si está disponible
         const fechaNacimientoText = fecha_nacimiento ? formatearFecha(fecha_nacimiento) : "Fecha de nacimiento no disponible";
         
-        const escuelaText = escuela || "Escuela no disponible";
+        const escuelaText = escuela || "Union Mediterranea";
         const cintoText = cinto || "Cinto no disponible";
         const imageUrl = imagen ? `../../Backend/${imagen}` : '../../Backend/uploads/default.jpg'; // Usar imagen por defecto si es null    
         const grupoSanguineo = grupo_sanguineo;
     
+        // Generar código QR
+        const qrCodeDataUrl = await QRCode.toDataURL(url);
+
         const pdf = new jsPDF({
             format: 'a4',
             unit: 'mm',
@@ -52,6 +59,9 @@ async function generatePDF(dni, token) {
         const y = (pageHeight - rectHeight) / 2;
 
         pdf.rect(x + 43, y, rectWidth, rectHeight);
+
+        
+        pdf.addImage(qrCodeDataUrl, 'PNG', x + 101, y + 35, 20, 20, undefined, 'FAST', 0.8);
 
         // Imprimir el texto "CARNET DE MIEMBRO"
         pdf.setFont("times", "bold");
@@ -88,9 +98,9 @@ async function generatePDF(dni, token) {
         pdf.text(x - 39, y + 50, "Cortesía - Integridad - Perseverancia - Autocontrol - Espíritu Indomable", { align: "center" });
 
 
-        pdf.setTextColor(150, 174, 182);
-        pdf.setFontSize(12);
-        pdf.text(x - 43, y + 65, "Para validar esta credencial dirigirse a http://127.0.0.1:5501/Frontend/validator.html", { align: "center" });
+        //pdf.setTextColor(150, 174, 182);
+        //pdf.setFontSize(12);
+        //pdf.text(x - 43, y + 65, "Para validar esta credencial dirigirse a http://127.0.0.1:5501/Frontend/validator.html", { align: "center" });
 
         pdf.setTextColor(0);
         pdf.setFontSize(8);
@@ -101,7 +111,7 @@ async function generatePDF(dni, token) {
         image.src = imageUrl;
 
         image.onload = function () {
-            pdf.addImage(image, 'PNG', x + 100, y + 17.5, 22, 22, undefined, 'FAST', 0.8);
+            pdf.addImage(image, 'PNG', x + 100, y + 12, 22, 22, undefined, 'FAST', 0.8);
 
             // Crear una nueva imagen para la marca de agua y otros logos
             const marcaAguaImage = new Image();
@@ -124,6 +134,7 @@ async function generatePDF(dni, token) {
             log5.src = '../../Backend/uploads/img-carnet/log5.png';
 
             log5.onload = function () {
+                pdf.addImage(marcaAguaImage, 'PNG', x + 70, y + 12, 30, 30, undefined, 'FAST', 0.8);
                 pdf.addImage(itf, 'PNG', x - 55, y - 70, 35, 35, undefined, 'FAST', 0.8);
                 pdf.addImage(union, 'PNG', x + 105, y - 70, 35, 35, undefined, 'FAST', 0.8);
                 pdf.addImage(log1, 'PNG', x + 18, y + 13, 22, 22);
