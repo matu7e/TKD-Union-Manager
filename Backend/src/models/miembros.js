@@ -332,6 +332,19 @@ async function actualizarMiembroCompleto(dni_miembro, miembro) {
   }
 }
 
+async function actualizarContrasena(dni, nuevaContrasena) {
+  try {
+      await sql.query`
+          UPDATE Miembros 
+          SET password = ${nuevaContrasena} 
+          WHERE dni_miembro = ${dni}`;
+      console.log('Contraseña actualizada correctamente');
+  } catch (err) {
+      console.error('Error al actualizar la contraseña:', err);
+      throw err; // Lanza el error para que el controlador lo gestione
+  }
+}
+
 module.exports = { crearMiembro, 
   getMiembros, 
   updateMember, 
@@ -345,5 +358,6 @@ module.exports = { crearMiembro,
   getByEscuela,
   subirPrivilegios,
   bajarPrivilegios,
-  actualizarMiembroCompleto
+  actualizarMiembroCompleto,
+  actualizarContrasena
 };

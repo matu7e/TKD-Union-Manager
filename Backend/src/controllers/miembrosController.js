@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const Miembro = require('../models/miembros');
+const transporter = require('../middleware/mailer');
 
 const JWT_SECRET = 'AnalistasNoIngenieros';
 
@@ -254,10 +255,73 @@ async function actualizarMiembroCompleto(req, res) {
       res.status(500).send("No se pudieron actualizar los datos del miembro.");
     }
   }
+
+async function solicitarCambioPassw(req, res) {
+    const { dni } = req.body;
+
+    try {
+        // Verificar si el miembro existe
+        const miembro = await Miembro.getBydni(dni);
+        if (!miembro) {
+            return res.status(404).send('El miembro con este DNI no existe');
+        }
+
+        // Crear un token para el cambio de contraseña
+        const token = jwt.sign({ dni: miembro.dni_miembro, rol: miembro.rol}, JWT_SECRET, { expiresIn: '1h' }); 
+       // const token = jwt.sign({ dni }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Expira en 1 hora
+        const enlace = `http://localhost:3000/miembros/cambiarContrasena/${token}`;
+
+        // Configurar el correo
+        const mailOptions = {
+            from: 'Union Mediterranea <unionTDK@gmail.com>',
+            to: miembro.email,
+            subject: 'Solicitud de cambio de contraseña',
+            html: `<p>Hola ${miembro.nombre} ${miembro.apellido},</p>
+                   <p>Has solicitado cambiar tu contraseña. Haz clic en el siguiente enlace para continuar:</p>
+                   <a href="${enlace}">Cambiar contraseña</a>
+                   <p>Este enlace expirará en 1 hora.</p>`
+        };
+
+        // Enviar el correo
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).send('Se envió un correo para el cambio de contraseña');
+    } catch (err) {
+        console.error('Error al enviar correo:', err);
+        res.status(500).send('Hubo un problema al procesar la solicitud');
+    }
+}
+
+async function cambioPassw(req, res) {
+    const { token, nuevaContrasena } = req.body;
+
+    try {
+        // Verificar el token
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const dni = decoded.dni;
+
+        // Generar el hash de la nueva contraseña
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(nuevaContrasena, salt);
+
+        // Actualizar la contraseña
+        await Miembro.actualizarContrasena(dni, hashedPassword);
+
+        res.status(200).send('Contraseña actualizada exitosamente');
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(400).send('El enlace ha expirado');
+        }
+        console.error('Error al cambiar contraseña:', err);
+        res.status(500).send('Hubo un problema al cambiar la contraseña');
+    }
+}
+
 module.exports = { obtenerTodos, registrarMiembro, 
                     asignarEscuela, loginMiembro, 
                     obtenerByDni, actualizarMiembro, 
                     cargarFichaMedica, cargarImagen, 
                     buscarMiembros, subirPrivilegios, 
                     eliminarMiembro, actualizarMiembroCompleto,
-                    bajarPrivilegios}
+                    bajarPrivilegios, solicitarCambioPassw,
+                    cambioPassw}

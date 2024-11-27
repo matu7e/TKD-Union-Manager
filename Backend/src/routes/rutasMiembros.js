@@ -19,5 +19,8 @@ router.put('/subirPrivilegios/:dni_miembro', miembrosController.subirPrivilegios
 router.delete('/:dni_miembro', miembrosController.eliminarMiembro);
 router.put('/bajarPrivilegios/:dni_miembro', miembrosController.bajarPrivilegios);
 
+router.post('/solicitarCambioPassw', miembrosController.solicitarCambioPassw);
+router.post('/cambiarPassw', miembrosController.cambioPassw);
 
+router.get('/cambiarPassw/:token') //Queda para el front
 module.exports = router;
