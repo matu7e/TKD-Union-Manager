@@ -83,20 +83,23 @@ input, select{
     margin-top: 10px;
     font-size: 0.9em;
     color: #fff;
-    text-align: center; /* Opcional, centra el texto */
+    text-align: center; /* Opcional, para alinear el texto en el centro */
+    display: flex; /* Utiliza flexbox para alinear los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    gap: 1px; /* Espaciado entre el texto y el enlace */
+    margin-bottom: 0px;
 }
+
 
 .switch-form a {
     color: #ff5722;
     text-decoration: none;
     display: block; /* Hace que el enlace se muestre en una línea separada */
-    margin-top: 5px; /* Añade espacio entre la pregunta y el enlace */
     font-weight: bold; /* Opcional, para resaltar el enlace */
+    margin-left: 5px;
 }
 
-.switch-form a:hover {
-    text-decoration: underline; /* Opcional, subraya el enlace al pasar el ratón */
-}
+
 
 .form-container.show-register .login-form {
     transform: rotateY(-180deg);

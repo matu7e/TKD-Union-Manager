@@ -56,6 +56,72 @@
   opacity: 0.6;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    background-color: #323232;
+    color: #D2D2D2;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 550px;
+    height: 350px;
+    position: relative; /* Necesario para posicionar el botón cerrar */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.label-left {
+    text-align: left;
+    display: block; /* Para que ocupe toda la línea y quede alineado a la izquierda */
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    
+}
+.form-buttons button {
+    
+    margin: 20px;
+    
+}
+
+.btn-cancel {
+    background-color: #63666B;
+    color: #323232;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #63666B;
+}
+#dniInput{
+    width: 100%;
+}
+
+
 </style>
 <body>
     <header class="navbar">
@@ -85,8 +151,27 @@
         </div>
         <div id="alert-error" class="alert alert-danger">
         </div>
+    </div>  
+    <!-- Modal Olvidé mi Contraseña -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Recuperar Contraseña</h2>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="dniInput" class="label-left">N° Documento:</label>
+                    <input type="text" id="dniInput" name="dni" placeholder="Número de documento" required>
+                </div>
+                <div class="form-buttons">
+                    
+                    <button type="button" class="btn-cancel" id="cancelModal">Cancelar</button>
+                    <button type="button" class="btn-login" id="validateDni">Validar</button>
+                </div>
+            </form>
+        </div>
     </div>
-    
+
+        
     <main  class="main-content">
         <div class="container">
             <h1>Unión Mediterránea</h1>
@@ -106,8 +191,12 @@
                     </div>
                     <button type="submit" class="btn-login">Ingresar</button>
                     <p class="switch-form">
+                        <a href="#" id="forgotPassword">Olvidé mi contraseña</a>
+                    </p>
+                    <p class="switch-form">
                         ¿No tienes cuenta? <a href="#" id="showRegister">Registrarse</a>
                     </p>
+                    
                 </form>
 
                 <!-- Paso 1: Datos de Usuario -->
@@ -132,7 +221,7 @@
                     <div class="form-group">
                         <label for="registerPassword">Contraseña:</label>
                         <input type="password" id="registerPassword" placeholder="Contraseña" pattern=".{8,}" required>
-                        <span class="error" id="passwordError">La contraseña debe tener al menos 8 caracteres</span>
+                        <span class="error" id="passwordError">La contraseña debe tener al menos 8 caracteres, debe contener letras, numeros y almenos 1 simbolo</span>
                     </div>
                     <div class="form-group">
                         <label for="repeatPassword">Repetir Contraseña:</label>
@@ -335,7 +424,71 @@
                 document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
             });
         </script>
-        
+        <!-- Script para manejar la funcionalidad -->
+        <script>
+            const forgotPasswordLink = document.getElementById('forgotPassword');
+            const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+            const closeModal = document.getElementById('closeModal');
+            const validateDniButton = document.getElementById('validateDni');
+            const cancelModalButton = document.getElementById('cancelModal');
+            const dniInput = document.getElementById('dniInput');
+
+            // Mostrar el modal al hacer clic en "Olvidé mi contraseña"
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                forgotPasswordModal.style.display = 'block';
+                document.body.classList.add('no-scroll'); // Bloquear el scroll
+            }); 
+
+            // Cerrar el modal al hacer clic en el botón de cerrar
+            closeModal.addEventListener('click', closeForgotPasswordModal);
+
+            // Cerrar el modal al hacer clic fuera del contenido
+            window.addEventListener('click', (e) => {
+                if (e.target === forgotPasswordModal) {
+                    closeForgotPasswordModal();
+                }
+            });
+
+            // Cerrar el modal al hacer clic en el botón Cancelar
+            cancelModalButton.addEventListener('click', closeForgotPasswordModal);
+
+            // Validar y enviar la solicitud al presionar "Validar"
+            validateDniButton.addEventListener('click', async () => {
+                const dni = dniInput.value.trim();
+
+                if (!dni) {
+                    showAlert('error', 'Número de documento inválido.'); 
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://localhost:3000/miembros/solicitarCambioPassw', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ dni: dni })
+                    });
+
+                    if (response.ok) {
+                        showAlert('success', 'Solicitud enviada. Revise su correo electrónico.'); // Mensaje de éxito
+                        closeForgotPasswordModal();
+                    } else {
+                        showAlert('error','Hubo un error al procesar su solicitud. Intente nuevamente.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('error','Hubo un error al procesar su solicitud. Intente nuevamente mas tarde.');
+                }
+            });
+
+            // Función para cerrar el modal y limpiar el input
+            function closeForgotPasswordModal() {
+                forgotPasswordModal.style.display = 'none';
+                dniInput.value = ''; // Limpiar el campo de entrada
+                document.body.classList.remove('no-scroll'); // Desbloquear el scroll
+            }
+
+        </script>
     </body>
     </html>
     

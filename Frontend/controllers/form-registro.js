@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateStep1() {
         let isValid = true;
-
+    
         const dni = document.getElementById('dni');
         const password = document.getElementById('registerPassword');
         const repeatPassword = document.getElementById('repeatPassword');
-
+    
         // Validar DNI
         if (!/^\d{8}$/.test(dni.value)) {
             document.getElementById('dniError').style.display = 'block';
@@ -38,9 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('dniError').style.display = 'none';
             dni.classList.remove('is-invalid');
         }
-
+    
+        // Expresión regular para validar la contraseña
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    
         // Validar Contraseña
-        if (password.value.length < 8) {
+        if (!passwordPattern.test(password.value)) {
             document.getElementById('passwordError').style.display = 'block';
             password.classList.add('is-invalid');
             isValid = false;
@@ -48,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('passwordError').style.display = 'none';
             password.classList.remove('is-invalid');
         }
-
+    
         // Validar Repetir Contraseña
         if (password.value !== repeatPassword.value) {
             document.getElementById('repeatPasswordError').style.display = 'block';
@@ -58,10 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('repeatPasswordError').style.display = 'none';
             repeatPassword.classList.remove('is-invalid');
         }
-
+    
         return isValid;
     }
-
+    
     function validateStep2() {
         let isValid = true;
     

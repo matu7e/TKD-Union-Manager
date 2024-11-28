@@ -269,7 +269,8 @@ async function solicitarCambioPassw(req, res) {
         // Crear un token para el cambio de contraseña
         const token = jwt.sign({ dni: miembro.dni_miembro, rol: miembro.rol}, JWT_SECRET, { expiresIn: '1h' }); 
        // const token = jwt.sign({ dni }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Expira en 1 hora
-        const enlace = `http://localhost:3000/miembros/cambiarContrasena/${token}`;
+        const enlace = `http://127.0.0.7:5501/Frontend/src/cambiarContrasena.html?token=${token}`;
+        ;
 
         // Configurar el correo
         const mailOptions = {
