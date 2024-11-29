@@ -469,7 +469,24 @@ main{
     
   
   }
+  .contador {
+    padding: 10px;
+    width: 90px;
+  }
+  .b-contadores {
+    font-size: 0.7rem;
+  }
 
+  .tarjeta-sede{
+    margin: 20px;
+  }
+  .buscar-sedes-selector{
+    width: 250px;
+  }
+  .mensaje-no-sedes {
+    font-size: 15px;
+    margin-top: 65px;
+  }
 }
 
 /* Estilos responsivos */
@@ -560,7 +577,7 @@ main{
   background-color: #323232;
   padding: 60px;
   border-radius: 8px;
-  width: 500px;
+  max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   animation: modalShow 0.3s ease;
   align-content: center;
@@ -704,7 +721,7 @@ h2 {
     width: auto; /* Ancho automático para selectores en pantallas grandes */
   }
   
-
+  
 
 }
 

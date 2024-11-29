@@ -200,7 +200,20 @@ h3{
     font-size: 25px;
     padding: 0 3px;
 }
+@media (max-width: 768px) {
 
+    .container{
+        text-align: center;
+        
+        padding: 15px;
+        border-radius: none;
+        box-shadow: none;
+        margin: 50px auto;
+        flex: 1;
+
+    }
+
+}
 
 
 </style>
@@ -319,7 +332,7 @@ h3{
                 <div class="filter-row">
                     <div class="filter-group">
 
-                        <label for="direccion">Dirección*</label>
+                        <label for="direccion">Dirección *</label>
                         <input type="text" id="direccion" name="direccion" placeholder="Ingresa la dirección" required />
                     </div>
         
@@ -332,19 +345,19 @@ h3{
                 <div class="filter-row">
                     <div class="filter-group">
 
-                        <label for="provincia">Provincia*</label>
+                        <label for="provincia">Provincia *</label>
 
                         <select id="provincia" name="provincia" required>
-                            <option value="">Selecciona la provincia</option>
+                            <option value="">Selecciona</option>
                             <!-- Opciones dinámicas de provincias -->
                         </select>
                     </div>
         
                     <div class="filter-group">
-                        <label for="localidad">Localidad*</label>
+                        <label for="localidad">Localidad *</label>
 
                         <select id="localidad" name="localidad" required>
-                            <option value="">Selecciona la localidad</option>
+                            <option value="">Selecciona</option>
                             <!-- Opciones dinámicas de localidades -->
                         </select>
                     </div>
@@ -809,7 +822,7 @@ function mostrarSedesEnTabla(sedes) {
         
                 const provincias = await response.json();
                 const selectProvincia = document.getElementById('provincia');
-                selectProvincia.innerHTML = '<option value="">Seleccione una provincia</option>';
+                selectProvincia.innerHTML = '<option value="">Seleccione</option>';
         
                 provincias.forEach(provincia => {
                     const option = document.createElement('option');
@@ -837,7 +850,7 @@ function mostrarSedesEnTabla(sedes) {
         
                 const localidades = await response.json();
                 const selectLocalidad = document.getElementById('localidad');
-                selectLocalidad.innerHTML = '<option value="">Seleccione una localidad</option>';
+                selectLocalidad.innerHTML = '<option value="">Seleccione </option>';
         
                 localidades.forEach(localidad => {
                     const option = document.createElement('option');
@@ -848,7 +861,7 @@ function mostrarSedesEnTabla(sedes) {
         
                 // Inicializar Select2
                 $('#localidad').select2({
-                    placeholder: 'Seleccione una localidad',
+                    placeholder: 'Seleccione ',
                     allowClear: true
                 });
         

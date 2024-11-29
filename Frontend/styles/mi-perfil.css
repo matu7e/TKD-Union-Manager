@@ -334,10 +334,11 @@ input[type="file"]:focus {
     input[type="text"], input[type="email"], input[type="date"], input[type="file"] {
         
         margin: auto;
+        width: 100%;
     }
     .drop-area2 {
-        margin: auto;
-        margin-top: 24px;
+        margin: 0px;
+        width: 100%;
         
         
     }
@@ -348,10 +349,12 @@ input[type="file"]:focus {
         margin-left: 25px;
     }
     label{
-        padding-left: 20px;
+        padding-left: 0px;
+        font-size: small;
     }
     select{
         margin: auto;
+        width: 100%;
     }
     .user-form {
         display: block;
@@ -375,6 +378,8 @@ input[type="file"]:focus {
         display: block;
        
     }
+    .main-content{
+        padding: 50px 30px;}
 }
 
 @media (max-width: 480px) {
@@ -397,8 +402,8 @@ input[type="file"]:focus {
     }
 
     .avatar {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
     }
 
     .btn-generate-card,

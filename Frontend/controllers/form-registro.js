@@ -240,9 +240,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     document.querySelector('.btn-register').addEventListener('click', async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevenir el comportamiento predeterminado del botón
+    
+        // Validar el checkbox de términos y condiciones
+        const terminosCheckbox = document.getElementById("terminos");
+        const terminosError = document.getElementById("terminosError");
+        // Validar los campos del paso 3
         if (validateStep3()) {
+            if (!terminosCheckbox.checked) {
+                // Mostrar el mensaje de error si el checkbox no está marcado
+                terminosError.style.display = "block";
+                return; // Salir de la función, no se ejecutará nada más
+            } else {
+                // Ocultar el mensaje de error si el checkbox está marcado
+                terminosError.style.display = "none";
+            }
+    
+        
+        
             const { miembroData, tutorData } = collectFormData();
+    
             try {
                 // Enviar datos a /miembros
                 const miembroResponse = await fetch('http://localhost:3000/miembros', {
@@ -264,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Si el miembro se creó con éxito, ahora enviar datos a /tutores
                     const tutorResponse = await fetch('http://localhost:3000/tutores', {
                         method: 'POST',
-                        headers: {  
+                        headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(tutorData)
@@ -273,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!tutorResponse.ok) {
                         const tutorResponseText = await tutorResponse.text();
                         if (tutorResponseText.includes('El tutor con este DNI ya existe')) {
+                            showAlert('error', 'El tutor con este DNI ya existe');
                         } else {
                             throw new Error('Error al enviar los datos a /tutores');
                         }
@@ -280,7 +298,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
                     // Limpia los datos del formulario
                     document.querySelectorAll('input').forEach(input => input.value = '');
-                    // Redirige al login
+    
+                    // Redirige al login con un mensaje de éxito
                     showAlert('success', 'Miembro registrado con éxito');
                     setTimeout(() => location.reload(), 500);
                 }

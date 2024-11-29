@@ -62,6 +62,34 @@
   font-size: 22px;
 }
 
+
+
+.navbar-menu2 {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+
+.navbar-menu2 ul {
+  list-style: none;
+  display: flex;
+  gap: 70px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu2 li {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-menu2 li a {
+  color: #323232;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+
 .login-btn {
   padding: 8px 16px;
   background-color: #323232;
@@ -104,6 +132,19 @@
       transition: right 0.5s ease;
       z-index: 1000;
   }
+  .navbar-menu2 {
+    position: fixed;
+    top: 150px;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #323232;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.5s ease;
+    z-index: 1000;
+}
 
   .navbar-logo-U {
       display: block;
@@ -116,6 +157,12 @@
       gap: 20px;
 
   }
+  .navbar-menu2 ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+}
   
 
   .hamburger {
@@ -127,6 +174,13 @@
   }
 
   .navbar-menu li a {
+      color: #D2D2D2;
+  }
+  .navbar-menu2.open {
+    right: 0;
+  }
+
+  .navbar-menu2 li a {
       color: #D2D2D2;
   }
 
@@ -142,6 +196,10 @@
   .no-scroll {
       overflow: hidden;
   }
+}
+
+.navbar-menu2 li{
+  margin: -32px !important;
 }
 /* Estilos responsivos */
 @media (max-width: 550px) {
@@ -159,11 +217,26 @@
       z-index: 1000;
       padding: 20px; /* Añadido padding para mejorar el diseño */
   }
+  .navbar-menu2 {
+    position: fixed;
+    top: 130px;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #323232;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.5s ease;
+    z-index: 1000;
+    padding: 20px; /* Añadido padding para mejorar el diseño */
+}
 
   .navbar-logo-U {
       display: block;
-      height: 25%; /* Reducido para ajustarse a pantallas más pequeñas */
-  }
+      height: 23%; /* Reducido para ajustarse a pantallas más pequeñas */
+      
+    }
   .navbar-logo {
     width: 40px;
     height: auto;
@@ -182,6 +255,13 @@
       margin: 0; /* Elimina margin en la lista */
       list-style: none; /* Asegúrate de que no haya puntos de lista */
   }
+  .navbar-menu2 ul {
+    flex-direction: column;
+    align-items: center;
+    padding: 0; /* Elimina padding en la lista */
+    margin: 0; /* Elimina margin en la lista */
+    list-style: none; /* Asegúrate de que no haya puntos de lista */
+}
 
   .hamburger {
       display: block;
@@ -194,8 +274,18 @@
   .navbar-menu li a {
       color: #D2D2D2;
       font-size: 1.2em; /* Aumenta el tamaño de fuente para mejor legibilidad */
-      margin: 10px 0; /* Añadir espacio entre enlaces */
+      margin: 3px 0; /* Añadir espacio entre enlaces */
   }
+
+  .navbar-menu2.open {
+    right: 0;
+}
+
+.navbar-menu2 li a {
+    color: #D2D2D2;
+    font-size: 1.2em; /* Aumenta el tamaño de fuente para mejor legibilidad */
+    margin: 3px 0; /* Añadir espacio entre enlaces */
+}
 
   .login-btn {
       background-color: #f36b2b;

@@ -18,6 +18,10 @@
     <title>Union Mediterranea</title>
 </head>
 <style>
+    .modal{
+        margin: auto;
+        align-content: center;
+    }
     .tarjeta-sede {
         border-radius: 5px;
         padding: 50px; /* Espaciado interno ajustado */
@@ -95,39 +99,6 @@
         background-color: #f36b2b; /* Color de fondo para el botón Conocer */
         transform: scale(1.05); /* Efecto de aumento en el hover */
     }
-    @media (max-width: 550px) {
-        .tarjeta-sede {
-            flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
-            align-items: center; /* Centrar elementos */
-        }
-        .logo2 {
-            width: 150px; /* Ajustar margen del logo */
-            height: 150px;
-            
-        }
-        .boton{
-            background-color: #00000093;
-            color: white;
-            padding: 15px 45px;
-            margin: 10px 0;
-            border: none;
-            border-radius: px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            width: 100%;
-            max-width: 250px;
-        }
-        .button-buscar-sedes{
-            margin-left: 0 !important;
-            margin-bottom: 0 !important;
-        }
-        .nom-escuela {
-        
-        font-size: 15px;
-        
-        }
-    }
     /* Estilo responsivo */
     @media (max-width: 768px) {
         .tarjeta-sede {
@@ -144,6 +115,44 @@
     p{
         font-size: 20px;
     }
+    @media (max-width: 550px) {
+        .tarjeta-sede {
+            flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+            align-items: center; /* Centrar elementos */
+            margin: 20px;
+        }
+        .logo2 {
+            width: 150px; /* Ajustar margen del logo */
+            height: 150px;
+            
+        }
+        .boton{
+            background-color: #00000093;
+            color: white;
+            padding: 15px 45px;
+            margin: 10px 0;
+            border: none;
+            border-radius: px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            width: 90%;
+            max-width: 250px;
+        }
+        .button-buscar-sedes{
+            margin-left: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        .nom-escuela {
+        
+        font-size: 15px;
+        
+        }
+        p {
+            font-size: 13px;
+            }
+    }
+    
 </style>
 <body>
     
