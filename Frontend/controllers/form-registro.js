@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         step3Form.style.display = 'none';
         formToShow.style.display = 'block';
     }
+    
 
     function validateStep1() {
         let isValid = true;

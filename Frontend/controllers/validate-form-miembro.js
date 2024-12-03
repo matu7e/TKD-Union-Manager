@@ -79,6 +79,8 @@ toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
 
         // Llamada para actualizar datos del tutor
         updateTutor(tutorDNI.value);
+
+        
     }
 }
 
@@ -173,6 +175,17 @@ async function updateTutor(tutorDNI) {
     } catch (error) {
         console.error('Error al actualizar datos del tutor:', error);
         handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
+    }
+    // GET Miembro
+    async function fetchUserData(dni, token) {
+        const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
+        return response.json();
     }
 }
 // Manejo de alertas

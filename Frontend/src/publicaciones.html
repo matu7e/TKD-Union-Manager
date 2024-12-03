@@ -603,7 +603,7 @@
                                 const usuario = JSON.parse(atob(token.split('.')[1])); // Decodifica la parte payload del token
 
                                 // Verificar si el usuario tiene el rol de Instructor o Alumno
-                                if (usuario.rol !== 'Instructor' && usuario.rol !== 'Miembro' && usuario.rol !== 'Administrador') {
+                                if (usuario.rol !== 'Instructor' && usuario.rol !== 'Alumno' && usuario.rol !== 'Administrador') {
                                     // Si no es Instructor ni Alumno, redirigir al home
                                     localStorage.removeItem('authToken'); // Asegúrate de usar el nombre correcto
                                     window.location.href = 'login.html'; // Cambia esto a la URL de tu página de inicio

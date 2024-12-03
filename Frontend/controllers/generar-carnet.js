@@ -61,7 +61,7 @@ async function generatePDF(dni, token) {
         pdf.rect(x + 43, y, rectWidth, rectHeight);
 
         
-        pdf.addImage(qrCodeDataUrl, 'PNG', x + 101, y + 35, 20, 20, undefined, 'FAST', 0.8);
+        pdf.addImage(qrCodeDataUrl, 'PNG', x + 101, y + 33, 20, 20, undefined, 'FAST', 0.8);
 
         // Imprimir el texto "CARNET DE MIEMBRO"
         pdf.setFont("times", "bold");

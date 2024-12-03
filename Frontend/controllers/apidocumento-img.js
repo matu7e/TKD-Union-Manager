@@ -66,6 +66,18 @@ document.getElementById('upload-ficha-button').addEventListener('click', async (
         alertMessage.textContent = 'Archivo subido exitosamente';
         alertMessage.className = 'alert alert-success';
         alertMessage.style.display = 'block';
+
+        // GET Miembro
+        async function fetchUserData(dni, token) {
+            const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
+            return response.json();
+        }
     } catch (error) {
         const alertMessage = document.getElementById('alert-message');
         alertMessage.textContent = error.message;
