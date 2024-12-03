@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const repeatPassword = document.getElementById('repeatPassword');
     
         // Validar DNI
-        if (!/^\d{11}$/.test(dni.value)) {
+        if (!/^\d{8,11}$/.test(dni.value)) {
             document.getElementById('dniError').style.display = 'block';
             dni.classList.add('is-invalid');
             isValid = false;
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         // Validar Teléfono
-        if (!/^\d{12}$/.test(phone.value)) {
+        if (!/^\d{8,12}$/.test(phone.value)) {
             document.getElementById('phoneError').style.display = 'block';
             phone.classList.add('is-invalid');
             isValid = false;
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const relationship = document.getElementById('relationship');
 
         // Validar DNI del Tutor
-        if (!/^\d{11}$/.test(tutorDNI.value)) {
+        if (!/^\d{8,11}$/.test(tutorDNI.value)) {
             document.getElementById('tutorDNIError').style.display = 'block';
             tutorDNI.classList.add('is-invalid');
             isValid = false;
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar Teléfono del Tutor
-        if (!/^\d{12}$/.test(tutorPhone.value)) {
+        if (!/^\d{8,12}$/.test(tutorPhone.value)) {
             document.getElementById('tutorPhoneError').style.display = 'block';
             tutorPhone.classList.add('is-invalid');
             isValid = false;
