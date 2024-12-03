@@ -207,7 +207,7 @@ h2{
             background-color: #323232;
             padding: 60px;
             border-radius: 8px;
-            width: 500px;
+            max-width: 450px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             animation: modalShow 0.3s ease;
             align-content: center;
@@ -307,4 +307,31 @@ h2{
         .contenedor-img{
             background-color: #D2D2D2;
         }
+
+        @media (max-width: 768px) {
+
+            .container{
+                text-align: center;
+                
+                padding: 15px;
+                border-radius: none;
+                box-shadow: none;
+                margin: 50px auto;
+                flex: 1;
+        
+            }
+        
+        }
+        @media (max-width: 768px) {
+            .btn {
+              padding: 15px 10px;
+            }
+            .search-filters{
+                padding: 0px;
+            }
+
+            .table-container{
+                padding-right: 25px;
+            }
+          }
 

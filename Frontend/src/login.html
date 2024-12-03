@@ -27,7 +27,9 @@
   z-index: 1000; /* Para asegurarse de que esté encima de otros elementos */
   
 }
-
+.no-scroll {
+      overflow: hidden;
+  } 
 /* Estilos para las alertas */
 .alert {
   padding: 15px;
@@ -214,7 +216,7 @@
         <i class="fas fa-bars hamburger" id="hamburger"></i> <!-- Ícono de hamburguesa -->
     </header>
     <div class="alert-container">
-        <div id="alert-aviso" class="alert alert-aviso">            
+        <div id="alert-aviso" class="alert alert-aviso">                
         </div>
         <div id="alert-success" class="alert alert-success">            
         </div>
@@ -228,7 +230,7 @@
             <h2>Recuperar Contraseña</h2>
             <form id="forgotPasswordForm">
                 <div class="form-group">
-                    <label for="dniInput" class="label-left">N° Documento:</label>
+                    <label for="dniInput" class="label-left">N° Documento</label>
                     <input type="text" id="dniInput" name="dni" placeholder="Número de documento" required>
                 </div>
                 <div class="form-buttons">
@@ -251,11 +253,11 @@
                 <form class="form login-form" id="loginForm" method="POST" action="">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
                     <div class="form-group">
-                        <label for="loginUsername">N° Documento:</label>
+                        <label for="loginUsername">N° Documento</label>
                         <input type="text" id="loginUsername" name="Número de Documento" placeholder="Número de Documento" required>
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">Contraseña:</label>
+                        <label for="loginPassword">Contraseña</label>
                         <input type="password" id="loginPassword" name="password" placeholder="Contraseña" required>
                     </div>
                     <button type="submit" class="btn-login">Ingresar</button>
@@ -272,7 +274,7 @@
                 <div class="form register-form" id="step1Form" style="display: none;">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
                     <div class="form-group">
-                        <label for="tipoDocumento">Tipo de Documento:</label>
+                        <label for="tipoDocumento">Tipo de Documento</label>
                         <select id="tipoDocumento" required>
                             <option value="" disabled selected>Seleccionar tipo de documento</option>
                             <option value="DNI">DNI</option>
@@ -283,17 +285,17 @@
                         <span class="error" id="tipoDocumentoError">Debe seleccionar un tipo de documento</span>
                     </div>
                     <div class="form-group">
-                        <label for="dni">N° Documento:</label>
+                        <label for="dni">N° Documento</label>
                         <input type="text" id="dni" placeholder="Número de Documento" pattern="\d{8}" required>
                         <span class="error" id="dniError">El número de documento es inválido</span>
                     </div>
                     <div class="form-group">
-                        <label for="registerPassword">Contraseña:</label>
+                        <label for="registerPassword">Contraseña</label>
                         <input type="password" id="registerPassword" placeholder="Contraseña" pattern=".{8,}" required>
                         <span class="error" id="passwordError">La contraseña debe tener al menos 8 caracteres, debe contener letras, numeros y almenos 1 simbolo</span>
                     </div>
                     <div class="form-group">
-                        <label for="repeatPassword">Repetir Contraseña:</label>
+                        <label for="repeatPassword">Repetir Contraseña</label>
                         <input type="password" id="repeatPassword" placeholder="Repetir Contraseña" required>
                         <span class="error" id="repeatPasswordError">Las contraseñas no coinciden</span>
                     </div>
@@ -307,40 +309,40 @@
                 <div class="form register-form" id="step2Form" style="display: none;">
                     <img src="../assets/log1.png" alt="Logo" class="logo">
                     <div class="form-group">
-                        <label for="firstName">Nombre:</label>
+                        <label for="firstName">Nombre</label>
                         <input type="text" id="firstName" placeholder="Nombre" pattern="[A-Za-z]{4,16}" required>
                         <span class="error" id="firstNameError">El nombre debe tener entre 4 y 16 letras</span>
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Apellido:</label>
+                        <label for="lastName">Apellido</label>
                         <input type="text" id="lastName" placeholder="Apellido" pattern="[A-Za-z]{4,16}" required>
                         <span class="error" id="lastNameError">El apellido debe tener entre 4 y 16 letras</span>
                     </div>
                     <div class="form-group">
-                        <label for="dob">Fecha de Nacimiento:</label>
+                        <label for="dob">Fecha de Nacimiento</label>
                         <input type="date" id="dob" required>
                         <span class="error" id="dobError">La fecha de nacimiento es obligatoria</span>
                     </div>
                     <div class="form-group">
-                        <label for="phone">Teléfono:</label>
+                        <label for="phone">Teléfono</label>
                         <input type="text" id="phone" placeholder="Teléfono" pattern="\d{10}" required>
                         <span class="error" id="phoneError">El teléfono debe tener 10 dígitos</span>
                     </div>
                     <!-- Nuevo campo de Dirección -->
                     <div class="form-group">
-                        <label for="address">Dirección:</label>
+                        <label for="address">Dirección</label>
                         <input type="text" id="address" placeholder="Dirección" required>
                         <span class="error" id="addressError">La dirección es obligatoria</span>
                     </div>
                     <!-- Nuevo campo de Email -->
                     <div class="form-group">
-                        <label for="email">Email:</label>
+                        <label for="email">Email</label>
                         <input type="email" id="email" placeholder="Email" required>
                         <span class="error" id="emailError">Por favor, introduce un email válido</span>
                     </div>
                     <!-- Nuevo campo de Grupo Sanguíneo -->
                     <div class="form-group">
-                        <label for="bloodGroup">Grupo Sanguíneo:</label>
+                        <label for="bloodGroup">Grupo Sanguíneo</label>
                         <select id="bloodGroup" required>
                             <option value="" disabled selected>Seleccionar grupo sanguíneo</option>
                             <option value="A+">A+</option>
@@ -365,7 +367,7 @@
                         <img src="../assets/log1.png" alt="Logo" class="logo">
                         <!-- Nuevo select para Tipo de Documento -->
                     <div class="form-group">
-                        <label for="tipoDocumento">Tipo de Documento:</label>
+                        <label for="tipoDocumento">Tipo de Documento</label>
                         <select id="tipoDocumento" required>
                             <option value="" disabled selected>Seleccionar tipo de documento</option>
                             <option value="DNI">DNI</option>
@@ -376,27 +378,27 @@
                         <span class="error" id="tipoDocumentoError">Debe seleccionar un tipo de documento</span>
                     </div>
                     <div class="form-group">
-                        <label for="tutorDNI">N° Documento:</label>
+                        <label for="tutorDNI">N° Documento</label>
                         <input type="text" id="tutorDNI" placeholder="Número de Documento" pattern="\d{8}" title="El número de documento es inválido" required>
                         <span class="error" id="tutorDNIError">El número de documento es inválido</span>
                     </div>
                     <div class="form-group">
-                        <label for="tutorPhone">Teléfono del Tutor:</label>
+                        <label for="tutorPhone">Teléfono del Tutor</label>
                         <input type="text" id="tutorPhone" placeholder="Teléfono del Tutor" pattern="\d{10}" title="El teléfono debe tener 10 dígitos" required>
                         <span class="error" id="tutorPhoneError">El teléfono debe tener 10 dígitos</span>
                     </div>
                     <div class="form-group">
-                        <label for="tutorFirstName">Nombre del Tutor:</label>
+                        <label for="tutorFirstName">Nombre del Tutor</label>
                         <input type="text" id="tutorFirstName" placeholder="Nombre del Tutor" pattern="[A-Za-z]{4,16}" required>
                         <span class="error" id="tutorFirstNameError">El nombre del tutor debe tener entre 4 y 16 letras</span>
                     </div>
                     <div class="form-group">
-                        <label for="tutorLastName">Apellido del Tutor:</label>
+                        <label for="tutorLastName">Apellido del Tutor</label>
                         <input type="text" id="tutorLastName" placeholder="Apellido del Tutor" pattern="[A-Za-z]{4,16}" required>
                         <span class="error" id="tutorLastNameError">El apellido del tutor debe tener entre 4 y 16 letras</span>
                     </div>
                     <div class="form-group">
-                        <label for="relationship">Relación:</label>
+                        <label for="relationship">Relación</label>
                         <input type="text" id="relationship" placeholder="Relación" pattern="[A-Za-z\s]{4,16}" required>
                         <span class="error" id="relationshipError">La relación debe tener entre 4 y 16 letras</span>
                     </div>
@@ -517,11 +519,13 @@
 		// Función para mostrar el modal
 		function mostrarModal() {
 		  document.getElementById('modalTyC').style.display = 'flex';
+          document.body.classList.add('no-scroll'); // Bloquear el scroll
 		}
 	
 		// Función para cerrar el modal
 		function cerrarModal() {
 		  document.getElementById('modalTyC').style.display = 'none';
+          document.body.classList.remove('no-scroll'); // Bloquear el scroll
 		}
 	
 		// Evento clic en el enlace

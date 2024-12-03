@@ -196,11 +196,12 @@
   .no-scroll {
       overflow: hidden;
   }
+  .navbar-menu2 li{
+    margin: -40px !important;
+  }
 }
 
-.navbar-menu2 li{
-  margin: -32px !important;
-}
+
 /* Estilos responsivos */
 @media (max-width: 550px) {
   .navbar-menu {
@@ -235,7 +236,7 @@
   .navbar-logo-U {
       display: block;
       height: 23%; /* Reducido para ajustarse a pantallas más pequeñas */
-      
+      margin-top: 80px;
     }
   .navbar-logo {
     width: 40px;

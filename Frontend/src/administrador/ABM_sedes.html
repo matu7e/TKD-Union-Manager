@@ -134,8 +134,9 @@ select option {
     font-size: 28px;
     font-weight: bold;
     position: absolute;
-    right: 20px;
+    right: 55px;
     top: 10px;
+    cursor: pointer;
 }
 
 .close:hover,
@@ -174,7 +175,14 @@ form label {
     transform: scale(1.05); /* Efecto de aumento en el hover */
 }
 
-
+@media (max-width: 768px) {
+    .modal h2 {
+        
+        margin: 0px;
+        margin-bottom: 10px;
+        font-size: 25;
+    }
+}
 
 
 </style>
@@ -183,7 +191,7 @@ form label {
         <div class="navbar-left">
             <a href="../../Index.html">
                 <img src="../../assets/log4.png" alt="Logo" class="navbar-logo">
-                <h1 class="navbar-title">PANEL DE ADMINISTRACION</h1>
+                <h1 class="navbar-title">ADMINISTRACION</h1>
             </a>
         </div>
         <nav class="navbar-menu" id="navbar-menu">
@@ -218,7 +226,7 @@ form label {
         <div id="escuelaModal" class="modal">
             <div class="modal-content">
                 <span class="close" id="closeEscuelaModal">&times;</span>
-                <h2>Selecciona una Escuela</h2>
+                <h2>Eliminar Escuela</h2>
                 <form id="formSeleccionEscuela">
                     <label for="escuela">Escuela:</label>
                     <select id="escuela" class="form-select">
@@ -250,11 +258,11 @@ form label {
             <form action="#" method="GET">
                 <div class="filter-row">
                     <div class="filter-group">
-                        <label for="nombre	">Nombre Instructor</label>
+                        <label for="nombre	">Nom. Ins.</label>
                         <input type="text" id="nombre" name="nombre" class="form-control" />
                     </div>
                     <div class="filter-group">
-                        <label for="apellido">Apellido Instructor</label>
+                        <label for="apellido">Ape. Ins.</label>
                         <input type="text" id="apellido" name="apellido" class="form-control" />
                     </div>
                     <div class="filter-group">
@@ -310,7 +318,7 @@ form label {
                     </tbody>
                 </table>
                 <div class="pagination">
-                    <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
+                    <div class="records-count"><span id="totalRegistros">0</span></div>
                     <div>
                         Página:
                         <select id="pageSelect">

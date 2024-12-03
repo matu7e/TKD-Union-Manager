@@ -122,7 +122,7 @@ select option {
 }
 
 .modal-content {
-    background-color: #323232;
+    background-color: #323232 !important;
     margin: 5% auto; 
     padding: 50px;
     width: 85%;
@@ -138,8 +138,9 @@ form label{
     font-size: 28px;
     font-weight: bold;
     position: absolute;
-    right: 20px;
+    right: 50px;
     top: 10px;
+    cursor: pointer;
 }
 
 .close:hover,
@@ -216,7 +217,7 @@ input[readonly]:focus, select[readonly]:focus {
         <div class="navbar-left">
             <a href="../../Index.html">
                 <img src="../../assets/log4.png" alt="Logo" class="navbar-logo">
-                <h1 class="navbar-title">PANEL DE ADMINISTRACION</h1>
+                <h1 class="navbar-title">ADMINISTRACION</h1>
             </a>
         </div>
         <nav class="navbar-menu" id="navbar-menu">
@@ -311,6 +312,7 @@ input[readonly]:focus, select[readonly]:focus {
                             <th>Rol</th>
                             <th>Estado</th> 
                             <th>Acciones</th>
+                            <th>---</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -318,7 +320,7 @@ input[readonly]:focus, select[readonly]:focus {
                     </tbody>
                 </table>
                 <div class="pagination">
-                    <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
+                    <div class="records-count"><span id="totalRegistros">0</span></div>
                     <div>
                         Página:
                         <select id="pageSelect">
