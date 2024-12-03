@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const repeatPassword = document.getElementById('repeatPassword');
     
         // Validar DNI
-        if (!/^\d{8}$/.test(dni.value)) {
+        if (!/^\d{11}$/.test(dni.value)) {
             document.getElementById('dniError').style.display = 'block';
             dni.classList.add('is-invalid');
             isValid = false;
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bloodGroup = document.getElementById('bloodGroup'); // Nuevo campo Grupo Sanguíneo
     
         // Validar Nombre
-        if (!/^[A-Za-z]{4,16}$/.test(firstName.value)) {
+        if (!/^[A-Za-z]{3,16}$/.test(firstName.value)) {
             document.getElementById('firstNameError').style.display = 'block';
             firstName.classList.add('is-invalid');
             isValid = false;
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         // Validar Apellido
-        if (!/^[A-Za-z]{4,16}$/.test(lastName.value)) {
+        if (!/^[A-Za-z]{3,16}$/.test(lastName.value)) {
             document.getElementById('lastNameError').style.display = 'block';
             lastName.classList.add('is-invalid');
             isValid = false;
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         // Validar Teléfono
-        if (!/^\d{10}$/.test(phone.value)) {
+        if (!/^\d{12}$/.test(phone.value)) {
             document.getElementById('phoneError').style.display = 'block';
             phone.classList.add('is-invalid');
             isValid = false;
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const relationship = document.getElementById('relationship');
 
         // Validar DNI del Tutor
-        if (!/^\d{8}$/.test(tutorDNI.value)) {
+        if (!/^\d{11}$/.test(tutorDNI.value)) {
             document.getElementById('tutorDNIError').style.display = 'block';
             tutorDNI.classList.add('is-invalid');
             isValid = false;
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar Teléfono del Tutor
-        if (!/^\d{10}$/.test(tutorPhone.value)) {
+        if (!/^\d{12}$/.test(tutorPhone.value)) {
             document.getElementById('tutorPhoneError').style.display = 'block';
             tutorPhone.classList.add('is-invalid');
             isValid = false;
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar Nombre del Tutor
-        if (!/^[A-Za-z]{4,16}$/.test(tutorFirstName.value)) {
+        if (!/^[A-Za-z]{3,16}$/.test(tutorFirstName.value)) {
             document.getElementById('tutorFirstNameError').style.display = 'block';
             tutorFirstName.classList.add('is-invalid');
             isValid = false;
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar Apellido del Tutor
-        if (!/^[A-Za-z]{4,16}$/.test(tutorLastName.value)) {
+        if (!/^[A-Za-z]{3,16}$/.test(tutorLastName.value)) {
             document.getElementById('tutorLastNameError').style.display = 'block';
             tutorLastName.classList.add('is-invalid');
             isValid = false;
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar Relación
-        if (!/^[A-Za-z\s]{4,16}$/.test(relationship.value)) {
+        if (!/^[A-Za-z\s]{3,16}$/.test(relationship.value)) {
             document.getElementById('relationshipError').style.display = 'block';
             relationship.classList.add('is-invalid');
             isValid = false;
