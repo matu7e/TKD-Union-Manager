@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sedesController = require('../controllers/sedesController');
+const {validarAdministrador, validarInstructor, validarMiembro} = require('../middleware/authToken');
 
 // Rutas del ABMC de Sedes
 router.get('/', sedesController.getAll);

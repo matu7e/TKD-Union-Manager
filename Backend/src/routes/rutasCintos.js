@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cintosController = require('../controllers/cintosController');
+const {validarAdministrador, validarInstructor, validarMiembro} = require('../middleware/authToken');
 
 // Ruta para obtener todos los cintos
 router.get('/', cintosController.getAll);

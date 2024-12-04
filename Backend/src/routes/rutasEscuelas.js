@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/fileManager');
 const escuelasController = require('../controllers/escuelasController');
+const {validarAdministrador, validarInstructor, validarMiembro} = require('../middleware/authToken');
 
 router.get('/', escuelasController.getAll)
 router.post('/', escuelasController.crearEscuela);

@@ -10,6 +10,6 @@ const transporter = nodemailer.createTransport({
 });
 
 transporter.verify()
-.then(() => console.log("Mail enviado con exito"))
+.then(() => console.log())
 .catch((err) => console.error(err));
 module.exports = transporter;
