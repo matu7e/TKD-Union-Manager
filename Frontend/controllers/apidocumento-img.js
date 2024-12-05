@@ -68,7 +68,8 @@ document.getElementById('upload-ficha-button').addEventListener('click', async (
         alertMessage.style.display = 'block';
 
         // GET Miembro
-        async function fetchUserData(dni, token) {
+        async function fetchUserData(dni) {
+            const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
                 method: 'GET',
                 headers: {

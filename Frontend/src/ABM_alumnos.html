@@ -586,7 +586,7 @@ function abrirModalEdicion(dni) {
 function actualizarMiembro() {
     const form = document.getElementById('formEdicion');
     const datos = new FormData(form);
-
+    const token = localStorage.getItem('authToken');
     const tutorActualizado = {
         nuevo_dni_tutor: datos.get('dni_tutor'),
         nombre: datos.get('nombre_tutor'),
@@ -616,6 +616,7 @@ function actualizarMiembro() {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(tutorActualizado),
     })
@@ -625,6 +626,7 @@ function actualizarMiembro() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(miembroActualizado),
         });
@@ -851,6 +853,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function cargarDatosEscuela() {
         try {
+            const token = localStorage.getItem('authToken');
             const response = await fetch(`http://localhost:3000/escuelas/instructor/${idInstructor}`, {
                 method: 'GET',
                 headers: {

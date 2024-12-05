@@ -15,6 +15,10 @@ function validateForm(event) {
         }
     }
 
+    // Asumiendo que ya tienes el token en una variable
+const token = localStorage.getItem('authToken');
+const decodedToken = jwt_decode(token);
+
 // Validación de datos personales
 const firstName = document.getElementById('firstName');
 const firstNameError = document.getElementById('firstNameError');
@@ -84,6 +88,8 @@ toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
     }
 }
 
+
+
     
    
 
@@ -91,6 +97,7 @@ toggleError(tutorPhone, tutorPhoneError, !tutorPhone.value.match(/^\d{10}$/));
 
 // Actualiza los datos del alumno
 async function updateAlumno(dni) {
+    const token = localStorage.getItem('authToken');
     const data = {
         email: document.getElementById('email').value,
         direccion: document.getElementById('address').value,
@@ -104,8 +111,10 @@ async function updateAlumno(dni) {
         const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
-            },
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            ,
             body: JSON.stringify(data)  
         });
 
@@ -130,6 +139,7 @@ async function uploadImage(dni) {
     formData.append('imagen', imageInput.files[0]); // Asegurarse de que la imagen esté seleccionada
 
     try {
+        const token = localStorage.getItem('authToken');
         const response = await fetch(`${API_BASE_URL}/miembros/${dni}/cargaImagen`, {
             method: 'POST',
             body: formData,
@@ -151,6 +161,7 @@ async function uploadImage(dni) {
 
 // Actualiza los datos del tutor
 async function updateTutor(tutorDNI) {
+    const token = localStorage.getItem('authToken');
     const tutorData = {
         dni_tutor: tutorDNI,
         nombre: document.getElementById('tutorFirstName').value,
@@ -162,7 +173,8 @@ async function updateTutor(tutorDNI) {
         const response = await fetch(`${API_BASE_URL}/tutores/${tutorDNI}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(tutorData)
         });
@@ -177,7 +189,8 @@ async function updateTutor(tutorDNI) {
         handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
     }
     // GET Miembro
-    async function fetchUserData(dni, token) {
+    async function fetchUserData(dni) {
+        const token = localStorage.getItem('authToken');
         const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
             method: 'GET',
             headers: {

@@ -266,7 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const miembroResponse = await fetch('http://localhost:3000/miembros', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(miembroData)
                 });
@@ -283,7 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const tutorResponse = await fetch('http://localhost:3000/tutores', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
                         },
                         body: JSON.stringify(tutorData)
                     });
@@ -311,6 +313,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Asumiendo que ya tienes el token en una variable
+    const token = localStorage.getItem('authToken');
+    const decodedToken = jwt_decode(token);
+    const dni = decodedToken.dni;  
+
     
 
     showRegister.addEventListener('click', (e) => {

@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // GET Miembro
-async function fetchUserData(dni, token) {
+async function fetchUserData(dni) {
+    const token = localStorage.getItem('authToken');
     const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
         method: 'GET',
         headers: {
@@ -68,7 +69,7 @@ function handleUserData(data, token, rol) {
 
     populateUserInfo(data);
     handleFichaMedica(data);
-    handleTutorData(data.dni_tutor, token);
+    handleTutorData(data.dni_tutor);
     cargarCintos(data.cinto);
     cargarEscuelas(data.escuela);
     construirMenu(rol);
@@ -134,7 +135,7 @@ function handleFichaMedica(data) {
 }
 
 // Manejo de datos del tutor
-function handleTutorData(dniTutor, token) {
+function handleTutorData(dniTutor) {
     fetchData(`${API_BASE_URL}/tutores/${dniTutor}`, token)
         .then(data2 => {
             document.getElementById('tutorFirstName').value = data2.nombre;
@@ -144,7 +145,8 @@ function handleTutorData(dniTutor, token) {
 }
 
 // Función para obtener datos
-function fetchData(url, token) {
+function fetchData(url) {
+    const token = localStorage.getItem('authToken');
     return fetch(url, {
         method: 'GET',
         headers: {

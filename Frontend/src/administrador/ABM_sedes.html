@@ -418,11 +418,15 @@ form label {
         if (!escuelaId) {
             showAlert('aviso', 'Por favor, selecciona una escuela antes de confirmar.');
             return;
-            return;
         }
-
+        const token = localStorage.getItem('authToken');
         fetch(`http://localhost:3000/escuelas/${escuelaId}`, {
-            method: 'DELETE', // Método DELETE para eliminar la escuela
+            method: 'DELETE',
+            headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json' // Opcional, según la configuración del backend
+                }
+
         })
             .then(response => {
                 if (response.ok) {

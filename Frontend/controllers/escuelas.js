@@ -1,4 +1,11 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Asumiendo que ya tienes el token en una variable
+    const token = localStorage.getItem('authToken');
+    const decodedToken = jwt_decode(token);
+    const dni = decodedToken.dni;  
+
     const btnGuardar = document.getElementById('btnGuardar');
     const modal = document.getElementById('newPublicationModal');
 
@@ -37,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Enviar los datos al backend
         fetch(`http://localhost:3000/escuelas`, {
             method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         })
         .then(response => response.json())
@@ -52,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
             return fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
                 body: logoFormData
             });
         })
@@ -91,26 +104,41 @@ document.getElementById('closeModalButtonFooter').onclick = function() {
 
 
 
+
 // Muestra el modal y carga los datos de la escuela
 function openModal(schoolId) {
+    
+    const token = localStorage.getItem('authToken');
     // Realiza una solicitud GET para obtener los datos de la escuela
-    fetch(`http://localhost:3000/escuelas/${schoolId}`)
-        .then(response => response.json())
-        .then(data => {
-            // Rellena los campos del formulario con los datos obtenidos
-            document.getElementById('titulo').value = data.nombre || '';
-            document.getElementById('descripcion').value = data.email || '';
-            document.getElementById('telefono').value = data.telefono || '';
-            document.getElementById('enlaceInstagram').value = data.enlace || '';
+    fetch(`http://localhost:3000/escuelas/${schoolId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json' // Opcional, dependiendo de tu backend
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Rellena los campos del formulario con los datos obtenidos
+        document.getElementById('titulo').value = data.nombre || '';
+        document.getElementById('descripcion').value = data.email || '';
+        document.getElementById('telefono').value = data.telefono || '';
+        document.getElementById('enlaceInstagram').value = data.enlace || '';
 
-            // Cargar la imagen predeterminada si no hay logo
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = data.logo ? data.logo : '../../../backend/default/logo.png';
-        })
-        .catch(error => {
-            console.error('Error al cargar los datos de la escuela:', error);
-        });
+        // Cargar la imagen predeterminada si no hay logo
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = data.logo ? data.logo : '../../../backend/default/logo.png';
+    })
+    .catch(error => {
+        console.error('Error al cargar los datos de la escuela:', error);
+    });
 
     // Abre el modal
+    const modal = document.getElementById('modal'); // Asegúrate de que tienes una referencia correcta al modal
     modal.style.display = 'block';
-}
+}});

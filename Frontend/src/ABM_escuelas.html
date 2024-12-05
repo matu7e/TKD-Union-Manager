@@ -479,13 +479,14 @@ h3{
     };
 
     if (idEscuela) {
-        updateSchool(data, token);
+        updateSchool(data);
     } else {
-        createSchool(data, token);
+        createSchool(data);
     }
 }
 
-async function createSchool(data, token) {
+async function createSchool(data) {
+    const token = localStorage.getItem('authToken');
     try {
         const response = await fetch(`http://localhost:3000/escuelas`, {
             method: 'POST',
@@ -514,7 +515,7 @@ async function createSchool(data, token) {
 
         if (jsonData && jsonData.message) {
             idEscuela = jsonData.id_escuela; // Asigna el ID de la escuela
-            uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcional
+            uploadLogo(idEscuela); // Llama a la función para cargar el logo opcional
         } else {
             showAlert('aviso', 'Operación realizada ' + responseData);
             cargarSedes();
@@ -525,8 +526,9 @@ async function createSchool(data, token) {
     }
 }
 
-async function updateSchool(data, token) {
+async function updateSchool(data) {
     try {
+        const token = localStorage.getItem('authToken');
         const response = await fetch(`http://localhost:3000/escuelas/${idEscuela}`, {
             method: 'PUT',
             headers: {
@@ -546,17 +548,18 @@ async function updateSchool(data, token) {
         }
         
         // Después de mostrar el mensaje de éxito, carga el logo opcional.
-        uploadLogo(token, idEscuela); // Llama a la función para cargar el logo opcionalmente
+        uploadLogo(idEscuela); // Llama a la función para cargar el logo opcionalmente
 
     } catch (error) {
         console.error('Error al actualizar la escuela:', error);
     }
 }
 
-async function uploadLogo(token, idEscuela) {
+async function uploadLogo(idEscuela) {
     const logoInput = document.getElementById('imagen');
     if (logoInput.files.length > 0) {
         const logoFormData = new FormData();
+        const token = localStorage.getItem('authToken');
         logoFormData.append('logo', logoInput.files[0]);
         try {
             const logoResponse = await fetch(`http://localhost:3000/escuelas/${idEscuela}/cargaLogo`, {
@@ -668,11 +671,12 @@ async function uploadLogo(token, idEscuela) {
                     provincia: provinciaId,
                 },
             };
-
+            const token = localStorage.getItem('authToken');
             fetch('http://localhost:3000/sedes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(nuevaSede),
             })

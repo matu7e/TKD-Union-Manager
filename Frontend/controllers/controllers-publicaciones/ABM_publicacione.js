@@ -1,6 +1,11 @@
 // Variables para la paginación
 let publicaciones = [];
 let currentPage = 1;
+// Asumiendo que ya tienes el token en una variable
+const token = localStorage.getItem('authToken');
+const decodedToken = jwt_decode(token);
+const dni = decodedToken.dni;  
+
 const registrosPorPagina = 15;
 const publicacionesUrl = 'http://localhost:3000/publicaciones'; // URL de tus publicaciones
 // Estado de acción actual para el modal de confirmación
@@ -118,13 +123,16 @@ function createPublication() {
     const descripcion = document.getElementById('descripcion').value;
     const enlace = document.getElementById('enlace').value;
 
-
+    const token = localStorage.getItem('authToken');
     const url = 'http://localhost:3000/publicaciones';
     const method = 'POST';
 
     fetch(url, {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
             titulo: titulo,
             descripcion: descripcion,
@@ -140,8 +148,8 @@ function createPublication() {
     .then(data => {
         const id_pub = data.id_pub;
 
-        cargarPublicaciones(); // Cargar las publicaciones después de la creación
-        uploadImage(id_pub); // Cargar la imagen después de crear la publicación
+        cargarPublicaciones(token); // Cargar las publicaciones después de la creación
+        uploadImage(id_pub, token); // Cargar la imagen después de crear la publicación
         showAlert('success', 'Publicación creada con éxito.');
     })
     .catch(error => {
@@ -170,11 +178,14 @@ function uploadImage(id_pub) {
 
     const formData = new FormData();
     formData.append('imagen', imageFile);
-
+    const token = localStorage.getItem('authToken');
     const url = `http://localhost:3000/publicaciones/${id_pub}/cargaImagen`;
 
     fetch(url, {
         method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         body: formData
     })
     .then(response => {
@@ -195,7 +206,7 @@ function uploadImage(id_pub) {
 // Evento para confirmar la acción
 confirmActionButton.addEventListener('click', () => {
     if (currentAction === 'eliminar') {
-        eliminarPublicacion(currentId);
+        eliminarPublicacion(currentId, token);
     } else if (currentAction === 'crear') {
         createPublication();
     }
@@ -204,25 +215,35 @@ confirmActionButton.addEventListener('click', () => {
 
 // Función para cargar todas las publicaciones al iniciar
 function cargarPublicaciones() {
+    
+
     showLoader(); // Mostrar loader al iniciar la carga
-    fetch(publicacionesUrl)
-        .then(response => {
-            // Asegúrate de que la respuesta sea OK antes de intentar convertirla a JSON
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
-        .then(data => {
-            publicaciones = data; // Aquí se cargan las publicaciones
-            mostrarPagina(currentPage); // Mostrar la página actual
-            actualizarPaginador(); // Actualizar paginador
-            mostrarTotalRegistros(); // Mostrar total de registros
-        })
-        .catch(error => console.error('Error al cargar las publicaciones:', error))
-        .finally(() => {
-            hideLoader(); // Ocultar loader al finalizar
-        });
+
+    fetch(publicacionesUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Agrega el token a los encabezados
+            'Content-Type': 'application/json' // Opcional, según tu backend
+        }
+    })
+    .then(response => {
+        // Asegúrate de que la respuesta sea OK antes de intentar convertirla a JSON
+        if (!response.ok) {
+            throw new Error('Error en la respuesta de la API');
+        }
+        return response.json();
+    })
+    .then(data => {
+        publicaciones = data; // Aquí se cargan las publicaciones
+        mostrarPagina(currentPage); // Mostrar la página actual
+        actualizarPaginador(); // Actualizar paginador
+        mostrarTotalRegistros(); // Mostrar total de registros
+        
+    })
+    .catch(error => console.error('Error al cargar las publicaciones:', error))
+    .finally(() => {
+        hideLoader(); // Ocultar loader al finalizar
+    });
 }
 
 // Función para mostrar el total de registros
@@ -325,23 +346,32 @@ function verImagen(rutaImagen) {
 
 
 function eliminarPublicacion(id) {
+    
+
     showLoader(); // Mostrar loader al iniciar la eliminación
-    fetch(`http://localhost:3000/publicaciones/${id}`, { method: 'DELETE' })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al eliminar publicación');
-            }
-            showAlert('success', 'Publicación eliminada con éxito.');
-            return cargarPublicaciones(); // Recargar publicaciones después de eliminar
-        })
-        .catch(error => {
-            console.error('Error al eliminar la publicación:', error);
-            showAlert('error', 'Error al eliminar la publicación.');
-        })
-        .finally(() => {
-            hideLoader();
-            closeModal(confirmModal);
-        });
+    const token = localStorage.getItem('authToken');
+    fetch(`http://localhost:3000/publicaciones/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json' // Opcional, según tu backend
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al eliminar publicación');
+        }
+        showAlert('success', 'Publicación eliminada con éxito.');
+        return cargarPublicaciones(token); // Recargar publicaciones después de eliminar
+    })
+    .catch(error => {
+        console.error('Error al eliminar la publicación:', error);
+        showAlert('error', 'Error al eliminar la publicación.');
+    })
+    .finally(() => {
+        hideLoader();
+        closeModal(confirmModal);
+    });
 }
 
 // Función para actualizar el paginador
@@ -380,4 +410,4 @@ function mostrarTotalRegistros() {
 
 
 // Cargar las publicaciones al inicio
-document.addEventListener('DOMContentLoaded', cargarPublicaciones);
+document.addEventListener('DOMContentLoaded', cargarPublicaciones(token));
