@@ -199,6 +199,9 @@
   .navbar-menu2 li{
     margin: -40px !important;
   }
+  .modal-footer-confirmacion{
+    display: block;
+  }
 }
 
 

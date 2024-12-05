@@ -556,8 +556,19 @@
                         password: password
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            showAlert('aviso', 'El DNI o la contraseña son incorrectos');
+                        }
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || 'Error al iniciar sesión');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    
                     if (data.token) {
                         localStorage.setItem('authToken', data.token);
         
@@ -576,9 +587,9 @@
                         showAlert('error', 'Credenciales incorrectas'); 
                     }
                 })
+                
                 .catch(error => {
                     console.error('Error:', error);
-                    showAlert('error', 'Hubo un problema al iniciar sesión');
                     
                 });
             }

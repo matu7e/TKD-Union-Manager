@@ -163,7 +163,27 @@ select option {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
+@media (max-width: 768px) {
+    h2{
+        margin: 25px;
+        font-size: 30px;
+    }
+    .search-filters{
+        display: none;
+    }
+    .modal-footer-custom{
+        display: block;
+        margin: auto;
+    }
+    .btn{
+        width: 100%;
+        margin-left: 0px !important;
+        margin-bottom: 10px;
+    }
+    .modal-footer-confirmacion{
+    display: block;
+  }
+}
 
 </style>
 <body >
@@ -291,6 +311,7 @@ select option {
                     <th>Enlace</th>
                     <th>Fecha publicacion</th>
                     <th>Acciones</th>
+                    <th>--</th>
                 </tr>
             </thead>
             <tbody>
@@ -298,7 +319,7 @@ select option {
             </tbody>
         </table>
         <div class="pagination">
-            <div class="records-count">Registros: <span id="totalRegistros">0</span></div>
+            <div class="records-count"><span id="totalRegistros">0</span></div>
             <div>
                 Página:
                 <select id="pageSelect">

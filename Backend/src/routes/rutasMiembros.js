@@ -13,6 +13,7 @@ router.get('/cambiarPassw/:token')
 router.post('/', miembrosController.registrarMiembro);
 
 // Rutas para los miembros:
+router.get('/:dni', validarMiembro, miembrosController.obtenerByDni);
 router.put('/:dni/asignarEscuela/:id_escuela', validarMiembro, miembrosController.asignarEscuela);
 router.put('/:dni', validarMiembro, miembrosController.actualizarMiembro);
 router.post('/:dni_miembro/cargaImagen', validarMiembro, upload.single('imagen'), miembrosController.cargarImagen);
@@ -21,13 +22,13 @@ router.post('/:dni_miembro/cargaFichaMedica', validarMiembro, upload.single('fic
 // Rutas para Instructores
 router.get('/',  validarInstructor, miembrosController.obtenerTodos);
 router.get('/buscar', validarInstructor, miembrosController.buscarMiembros);
-router.get('/:dni', validarInstructor, miembrosController.obtenerByDni);
-router.put('/subirPrivilegios/:dni_miembro', validarInstructor, miembrosController.subirPrivilegios);
-router.put('/bajarPrivilegios/:dni_miembro', validarInstructor, miembrosController.bajarPrivilegios);
+
+
 
 // Rutas para Administradores
-router.put('/:dni/completo', validarAdministrador,miembrosController.actualizarMiembroCompleto);
+router.put('/:dni/completo', validarInstructor, miembrosController.actualizarMiembroCompleto);
 router.delete('/:dni_miembro', validarAdministrador,miembrosController.eliminarMiembro);
-
+router.put('/subirPrivilegios/:dni_miembro', validarAdministrador, miembrosController.subirPrivilegios);
+router.put('/bajarPrivilegios/:dni_miembro', validarAdministrador, miembrosController.bajarPrivilegios);
 
 module.exports = router;
