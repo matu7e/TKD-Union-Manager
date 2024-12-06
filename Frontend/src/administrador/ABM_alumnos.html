@@ -950,7 +950,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 estado // Añadir estado a los parámetros de búsqueda
             });
 
-            fetch(`${buscarUrl}?${queryParams.toString()}`)
+            const token = localStorage.getItem('authToken'); // Obtener el token desde localStorage
+
+            if (token) {
+                fetch(`${buscarUrl}?${queryParams.toString()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Agregar el token en el encabezado
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('No se encontraron miembros con los filtros proporcionados.');
@@ -971,6 +979,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error en la búsqueda de miembros:', error);
                     mostrarMensajeNoResultados();
                 });
+            } else {
+                console.error('No se encontró el token de autenticación');
+                // Aquí podrías redirigir al usuario a la página de login si no hay token
+            }
         }
 
             // Función para mostrar mensaje cuando no se encuentran resultados
@@ -1083,18 +1095,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Función para cargar todos los miembros al inicio
             function cargarMiembros() {
-                fetch(buscarUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        miembros = data;
-                        mostrarPagina(currentPage);
-                        actualizarPaginador();
-                        mostrarTotalRegistros();
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar los miembros:', error);
-                    });
+    const token = localStorage.getItem('authToken'); // Obtener el token desde localStorage
+
+    if (token) {
+        fetch(buscarUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Incluir el token en los encabezados
             }
+        })
+        .then(response => response.json())
+        .then(data => {
+            miembros = data;
+            mostrarPagina(currentPage);
+            actualizarPaginador();
+            mostrarTotalRegistros();
+        })
+        .catch(error => {
+            console.error('Error al cargar los miembros:', error);
+        });
+    } else {
+        console.error('No se encontró el token de autenticación');
+        // Aquí podrías redirigir al usuario a la página de login si no hay token
+    }
+}
 
     </script>
 

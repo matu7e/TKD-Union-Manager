@@ -750,31 +750,40 @@ async function uploadLogo(idEscuela) {
 
     <script>
         // Función para cargar las sedes dinámicamente desde el endpoint
-function cargarSedes() {
+        function cargarSedes() {
+    const token = localStorage.getItem('authToken'); // Obtén el token desde localStorage
+
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:3000/sedes')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al cargar las sedes');
-                }
-                return response.json();
-            })
-            .then(sedes => {
-                // Filtrar sedes para mostrar solo las que coinciden con idEscuela
-                const sedesFiltradas = sedes.filter(sede => sede.id_escuela === idEscuela);
-                
-                // Mostrar las sedes filtradas en la tabla
-                mostrarSedesEnTabla(sedesFiltradas);
-                mostrarTotalRegistros(sedesFiltradas.length);
-                resolve(); // Resolvemos la promesa al finalizar
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert('error', 'No se pudieron cargar las sedes.');
-                reject(error); // Rechazamos la promesa en caso de error
-            });
+        fetch('http://localhost:3000/sedes', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Agrega el token en los encabezados
+                'Content-Type': 'application/json' // Opcional, según la configuración del backend
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar las sedes');
+            }
+            return response.json();
+        })
+        .then(sedes => {
+            // Filtrar sedes para mostrar solo las que coinciden con idEscuela
+            const sedesFiltradas = sedes.filter(sede => sede.id_escuela === idEscuela);
+            
+            // Mostrar las sedes filtradas en la tabla
+            mostrarSedesEnTabla(sedesFiltradas);
+            mostrarTotalRegistros(sedesFiltradas.length);
+            resolve(); // Resolvemos la promesa al finalizar
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('error', 'No se pudieron cargar las sedes.');
+            reject(error); // Rechazamos la promesa en caso de error
+        });
     });
 }
+
 
 // Función para mostrar las sedes en la tabla
 function mostrarSedesEnTabla(sedes) {

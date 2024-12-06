@@ -228,8 +228,8 @@ form label {
                 <span class="close" id="closeEscuelaModal">&times;</span>
                 <h2>Eliminar Escuela</h2>
                 <form id="formSeleccionEscuela">
-                    <label for="escuela">Escuela:</label>
-                    <select id="escuela" class="form-select">
+                    <label for="escuela2">Escuela:</label>
+                    <select id="escuela2" class="form-select">
                         <option value="">Seleccione una escuela</option>
                     </select>
                     <button type="button" class="btnEliminar" id="openConfirmModalButton">Eliminar</button>
@@ -370,7 +370,7 @@ form label {
     const openModalButton = document.getElementById('openModalButton');
     const escuelaModal = document.getElementById('escuelaModal');
     const closeModalButton = document.getElementById('closeEscuelaModal');
-    const escuelaSelect = document.getElementById('escuela');
+    const escuelaSelect = document.getElementById('escuela2');
     const openConfirmModalButton = document.getElementById('openConfirmModalButton');
 
     // Modal de confirmación
@@ -432,8 +432,9 @@ form label {
                 if (response.ok) {
                     
                     showAlert('success', 'Escuela eliminada exitosamente. Sus sedes y alumnos han sido actualizados.');
-                    return;
                     location.reload(); // Recargar la página para reflejar los cambios
+                    return;
+                    
                 } else {
                     showAlert('error', 'Error al intentar eliminar la escuela. Por favor, intenta de nuevo.');
                     return;
@@ -503,29 +504,33 @@ form label {
             });
     
             
-            fetch(`${buscarUrl}?${queryParams.toString()}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('No se encontraron escuelas con los filtros proporcionados.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    escuelas = data;
-                    
-                    if (escuelas.length === 0) {
-                        mostrarMensajeNoResultados();
-                    } else {
-                        mostrarPagina(currentPage);
-                        actualizarPaginador();
-                        mostrarTotalRegistros();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en la búsqueda de escuelas:', error);
-                    
+            fetch(`${buscarUrl}?${queryParams.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Agregar el token en el encabezado
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se encontraron escuelas con los filtros proporcionados.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                escuelas = data;
+                
+                if (escuelas.length === 0) {
                     mostrarMensajeNoResultados();
-                });
+                } else {
+                    mostrarPagina(currentPage);
+                    actualizarPaginador();
+                    mostrarTotalRegistros();
+                }
+            })
+            .catch(error => {
+                console.error('Error en la búsqueda de escuelas:', error);
+                mostrarMensajeNoResultados();
+            });
         }
     
         // Función para mostrar mensaje cuando no se encuentran resultados
@@ -589,20 +594,25 @@ form label {
     
         // Cargar los escuelas al inicio
         function cargarEscuelas() {
+            const token = localStorage.getItem('authToken'); // Obtener el token del localStorage
             
-            fetch(buscarUrl)
-                .then(response => response.json())
-                .then(data => {
-                    escuelas = data;
-                    ocultarLoader(); // Ocultar loader después de cargar
-                    mostrarPagina(currentPage);
-                    actualizarPaginador();
-                    mostrarTotalRegistros();
-                })
-                .catch(error => {
-                    console.error('Error al cargar los escuelas:', error);
-                    
-                });
+            fetch(buscarUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`  // Agregar el token en el encabezado
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                escuelas = data;
+                ocultarLoader(); // Ocultar loader después de cargar
+                mostrarPagina(currentPage);
+                actualizarPaginador();
+                mostrarTotalRegistros();
+            })
+            .catch(error => {
+                console.error('Error al cargar las escuelas:', error);
+            });
         }
     
         // Función para limpiar los filtros
@@ -673,8 +683,14 @@ form label {
     
         // Cargar las escuelas al select
         document.addEventListener('DOMContentLoaded', () => {
-            const escuelaSelect = document.getElementById('escuela');
-            fetch('http://localhost:3000/escuelas')
+            const token = localStorage.getItem('authToken');
+            const escuelaSelect = document.getElementById('escuela2');
+            fetch('http://localhost:3000/escuelas', {  // Corregido: eliminada la coma y añadido el objeto de opciones correctamente
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(escuela => {
@@ -688,7 +704,32 @@ form label {
                     console.error('Error al cargar las escuelas:', error);
                 });
         });
-    
+              
+        // Cargar las escuelas al select
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('authToken');
+            const escuelaSelect = document.getElementById('escuela');
+            fetch('http://localhost:3000/escuelas', {  // Corregido: eliminada la coma y añadido el objeto de opciones correctamente
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(escuela => {
+                        const option = document.createElement('option');
+                        option.value = escuela.id_escuela;
+                        option.textContent = escuela.nombre;
+                        escuelaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar las escuelas:', error);
+                });
+        });
+            
+          
         // Función para verificar el token y el rol del usuario
         function verificarTokenYRol() {
             const token = localStorage.getItem('authToken'); // Asegúrate de usar el nombre correcto

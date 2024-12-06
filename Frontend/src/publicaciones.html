@@ -457,20 +457,33 @@
                 // Función para cargar las publicaciones
                 async function cargarPublicaciones() {
                     const contenedor = document.getElementById("publicaciones-container");
-                    const response = await fetch(`${API_BASE_URL}/publicaciones`);
-            
-                    if (!response.ok) {
-                        console.error("Error al obtener publicaciones");
-                        return;
+                    const token = localStorage.getItem('authToken'); // Obtén el token desde localStorage
+
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/publicaciones`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`// Agrega el token en los encabezados
+                                
+                            }
+                        });
+
+                        if (!response.ok) {
+                            console.error("Error al obtener publicaciones");
+                            return;
+                        }
+
+                        publicaciones = await response.json();
+                        totalPublicaciones = publicaciones.length;
+
+                        // Mostrar las publicaciones de la página actual
+                        mostrarPublicaciones();
+                        mostrarNumerosPaginas(); // Mostrar los números de las páginas
+                    } catch (error) {
+                        console.error("Error al cargar las publicaciones:", error);
                     }
-            
-                    publicaciones = await response.json();
-                    totalPublicaciones = publicaciones.length;
-            
-                    // Mostrar las publicaciones de la página actual
-                    mostrarPublicaciones();
-                    mostrarNumerosPaginas(); // Mostrar los números de las páginas
                 }
+
             
                 // Función para mostrar las publicaciones de la página actual
                 function mostrarPublicaciones() {
