@@ -636,16 +636,28 @@ function actualizarMiembro() {
 
 function cargarCintos(cintoSeleccionado) {
     const cintoSelect = document.getElementById('cinto2');
-    const token = localStorage.getItem('authToken');
-    fetch('http://localhost:3000/cintos')
-        .then(response => response.json())
+    const token = localStorage.getItem('authToken'); // Obtén el token almacenado
+
+    fetch('http://localhost:3000/cintos', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}` // Header con el token
+            
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             cintoSelect.innerHTML = ''; // Limpiar las opciones anteriores
             let preseleccionado = false;
 
             data.forEach(cinto => {
                 const option = document.createElement('option');
-                option.value = cinto.id_cinto; // Usar id_escuela como valor
+                option.value = cinto.id_cinto; // Usar id_cinto como valor
                 option.textContent = cinto.descripcion;
 
                 // Verificar coincidencia con descripcion
@@ -672,8 +684,21 @@ function cargarCintos(cintoSeleccionado) {
 
 function cargarEscuelas(escuelaSeleccionada) {
     const escuelaSelect = document.getElementById('escuela2');
-    fetch('http://localhost:3000/escuelas')
-        .then(response => response.json())
+    const token = localStorage.getItem('authToken'); // Obtén el token almacenado
+
+    fetch('http://localhost:3000/escuelas', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}` // Header con el token
+            
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             escuelaSelect.innerHTML = ''; // Limpiar las opciones anteriores
             let preseleccionado = false;
@@ -707,41 +732,68 @@ function cargarEscuelas(escuelaSeleccionada) {
 
 
 
+
 // Cargar cintos al select
 document.addEventListener('DOMContentLoaded', () => {
-                const cintoSelect = document.getElementById('cinto');
-                fetch('http://localhost:3000/cintos')
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(cinto => {
-                            const option = document.createElement('option');
-                            option.value = cinto.id_cinto;
-                            option.textContent = cinto.descripcion;
-                            cintoSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar los cintos:', error);
-                    });
-            });
+    const cintoSelect = document.getElementById('cinto');
+    const token = localStorage.getItem('authToken'); // Obtén el token almacenado
 
-            // Cargar las escuelas al select
-            document.addEventListener('DOMContentLoaded', () => {
-                const escuelaSelect = document.getElementById('escuela');
-                fetch('http://localhost:3000/escuelas')
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(escuela => {
-                            const option = document.createElement('option');
-                            option.value = escuela.id_escuela;
-                            option.textContent = escuela.nombre;
-                            escuelaSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar las escuelas:', error);
-                    });
+    fetch('http://localhost:3000/cintos', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}` // Header con el token
+            
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(cinto => {
+                const option = document.createElement('option');
+                option.value = cinto.id_cinto;
+                option.textContent = cinto.descripcion;
+                cintoSelect.appendChild(option);
             });
+        })
+        .catch(error => {
+            console.error('Error al cargar los cintos:', error);
+        });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const escuelaSelect = document.getElementById('escuela');
+    const token = localStorage.getItem('authToken'); // Obtén el token almacenado
+
+    fetch('http://localhost:3000/escuelas', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}` // Header con el token
+            
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(escuela => {
+                const option = document.createElement('option');
+                option.value = escuela.id_escuela;
+                option.textContent = escuela.nombre;
+                escuelaSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar las escuelas:', error);
+        });
+});
 
         function cerrarModalEdicion() {
             const modal = document.getElementById('modalEdicion');
