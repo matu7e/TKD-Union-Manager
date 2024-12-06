@@ -10,7 +10,7 @@ router.put('/:id_escuela',validarInstructor, escuelasController.update);
 router.delete('/:id_escuela',validarAdministrador, escuelasController.remove);
 router.post('/:id_escuela/cargaLogo',validarInstructor, upload.single('logo'), escuelasController.cargarLogo);
 router.get('/instructor/:id_instructor',validarInstructor, escuelasController.getByInstructor);
-router.get('/buscar',validarInstructor, escuelasController.buscarEscuelas);
+router.get('/buscar', escuelasController.buscarEscuelas);
 router.get('/:id_localidad',validarInstructor, escuelasController.getByLocalidad);
 
 

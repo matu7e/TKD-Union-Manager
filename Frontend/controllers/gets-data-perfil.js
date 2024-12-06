@@ -165,8 +165,14 @@ function fetchData(url) {
 
 // Cargar cintos y escuelas
 function cargarCintos(cintoActual) {
+    const token = localStorage.getItem('authToken');
     const cintoSelect = document.getElementById('cinto');
-    fetch(`${API_BASE_URL}/cintos`)
+    fetch(`${API_BASE_URL}/cintos`, {
+        headers: {
+            'Authorization': `Bearer ${token}`, // Agregar el token en el header
+            'Content-Type': 'application/json',
+        },
+    })
         .then(response => response.json())
         .then(data => {
             cintoSelect.innerHTML = '<option value="">Selecciona un cinto</option>'; // Limpiar opciones
@@ -178,15 +184,20 @@ function cargarCintos(cintoActual) {
                     option.selected = true;
                 }
                 cintoSelect.appendChild(option);
-                
             });
         })
         .catch(error => console.error('Error al cargar los cintos:', error));
 }
 
 function cargarEscuelas(escuelaActual) {
+    const token = localStorage.getItem('authToken');
     const escuelaSelect = document.getElementById('escuela');
-    fetch(`${API_BASE_URL}/escuelas`)
+    fetch(`${API_BASE_URL}/escuelas`, {
+        headers: {
+            'Authorization': `Bearer ${token}`, // Agregar el token en el header
+            'Content-Type': 'application/json',
+        },
+    })
         .then(response => response.json())
         .then(data => {
             escuelaSelect.innerHTML = '<option value="">Selecciona su escuela</option>'; // Limpiar opciones
@@ -202,7 +213,6 @@ function cargarEscuelas(escuelaActual) {
         })
         .catch(error => console.error('Error al cargar las escuelas:', error));
 }
-
 
 // Construir el menú
 function construirMenu(rol) {
