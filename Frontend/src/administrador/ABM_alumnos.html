@@ -547,7 +547,14 @@ function abrirModalEdicion(dni) {
         // Solicitar los datos del tutor si hay un DNI de tutor
         if (miembro.dni_tutor) {
             dniTutorOriginal = miembro.dni_tutor; // Guardar el DNI original del tutor
-            fetch(`http://localhost:3000/tutores/${miembro.dni_tutor}`)
+            const token = localStorage.getItem('authToken');
+            fetch(`http://localhost:3000/tutores/${miembro.dni_tutor}`, { // Usar el DNI original aquí
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => {
                     if (!response.ok) throw new Error("Error al obtener los datos del tutor.");
                     return response.json();

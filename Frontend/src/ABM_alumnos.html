@@ -556,7 +556,14 @@ function abrirModalEdicion(dni) {
         // Solicitar los datos del tutor si hay un DNI de tutor
         if (miembro.dni_tutor) {
             dniTutorOriginal = miembro.dni_tutor; // Guardar el DNI original del tutor
-            fetch(`http://localhost:3000/tutores/${miembro.dni_tutor}`)
+            const token = localStorage.getItem('authToken');
+            fetch(`http://localhost:3000/tutores/${miembro.dni_tutor}`, { // Usar el DNI original aquí
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => {
                     if (!response.ok) throw new Error("Error al obtener los datos del tutor.");
                     return response.json();
@@ -644,7 +651,7 @@ function actualizarMiembro() {
 }
     function cargarCintos(cintoSeleccionado) {
         const cintoSelect = document.getElementById('cinto2');
-        const token = localStorage.getItem('token'); // Obtén el token almacenado (puedes ajustarlo según donde guardes el token)
+        const token = localStorage.getItem('authToken');
 
         fetch('http://localhost:3000/cintos', {
             method: 'GET',
