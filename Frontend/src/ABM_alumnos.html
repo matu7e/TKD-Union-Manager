@@ -642,75 +642,103 @@ function actualizarMiembro() {
         showAlert('error', `Error al actualizar: ${error.message}`);
     });
 }
-        function cargarCintos(cintoSeleccionado) {
-            const cintoSelect = document.getElementById('cinto2');
-            fetch('http://localhost:3000/cintos')
-                .then(response => response.json())
-                .then(data => {
-                    cintoSelect.innerHTML = ''; // Limpiar las opciones anteriores
-                    let preseleccionado = false;
+    function cargarCintos(cintoSeleccionado) {
+        const cintoSelect = document.getElementById('cinto2');
+        const token = localStorage.getItem('token'); // Obtén el token almacenado (puedes ajustarlo según donde guardes el token)
 
-                    data.forEach(cinto => {
-                        const option = document.createElement('option');
-                        option.value = cinto.id_cinto; // Usar id_escuela como valor
-                        option.textContent = cinto.descripcion;
+        fetch('http://localhost:3000/cintos', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Header con el token
+                
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                cintoSelect.innerHTML = ''; // Limpiar las opciones anteriores
+                let preseleccionado = false;
 
-                        // Verificar coincidencia con descripcion
-                        if (cinto.descripcion === cintoSeleccionado) {
-                            option.selected = true;
-                            preseleccionado = true;
-                        }
+                data.forEach(cinto => {
+                    const option = document.createElement('option');
+                    option.value = cinto.id_cinto; // Usar id_cinto como valor
+                    option.textContent = cinto.descripcion;
 
-                        cintoSelect.appendChild(option);
-                    });
-
-                    // Si no se encontró un cinto preseleccionado, seleccionar la primera opción por defecto
-                    if (!preseleccionado && data.length > 0) {
-                        cintoSelect.selectedIndex = 0;
+                    // Verificar coincidencia con descripcion
+                    if (cinto.descripcion === cintoSeleccionado) {
+                        option.selected = true;
+                        preseleccionado = true;
                     }
 
-                    console.log("Cintos cargados:", data);
-                    console.log("Cinto seleccionado:", cintoSeleccionado);
-                })
-                .catch(error => {
-                    console.error('Error al cargar los cintos:', error);
+                    cintoSelect.appendChild(option);
                 });
-        }
 
-        function cargarEscuelas(escuelaSeleccionada) {
-            const escuelaSelect = document.getElementById('escuela2');
-            fetch('http://localhost:3000/escuelas')
-                .then(response => response.json())
-                .then(data => {
-                    escuelaSelect.innerHTML = ''; // Limpiar las opciones anteriores
-                    let preseleccionado = false;
+                // Si no se encontró un cinto preseleccionado, seleccionar la primera opción por defecto
+                if (!preseleccionado && data.length > 0) {
+                    cintoSelect.selectedIndex = 0;
+                }
 
-                    data.forEach(escuela => {
-                        const option = document.createElement('option');
-                        option.value = escuela.id_escuela; // Usar id_escuela como valor
-                        option.textContent = escuela.nombre;
+                console.log("Cintos cargados:", data);
+                console.log("Cinto seleccionado:", cintoSeleccionado);
+            })
+            .catch(error => {
+                console.error('Error al cargar los cintos:', error);
+            });
+    }
 
-                        // Verificar coincidencia con nombre
-                        if (escuela.nombre === escuelaSeleccionada) {
-                            option.selected = true;
-                            preseleccionado = true;
-                        }
 
-                        escuelaSelect.appendChild(option);
-                    });
+    function cargarEscuelas(escuelaSeleccionada) {
+        const escuelaSelect = document.getElementById('escuela2');
+        const token = localStorage.getItem('authToken');
 
-                    // Si no se encontró una escuela preseleccionada, seleccionar la primera opción por defecto
-                    if (!preseleccionado && data.length > 0) {
-                        escuelaSelect.selectedIndex = 0;
+        fetch('http://localhost:3000/escuelas', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Header con el token
+                
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                escuelaSelect.innerHTML = ''; // Limpiar las opciones anteriores
+                let preseleccionado = false;
+
+                data.forEach(escuela => {
+                    const option = document.createElement('option');
+                    option.value = escuela.id_escuela; // Usar id_escuela como valor
+                    option.textContent = escuela.nombre;
+
+                    // Verificar coincidencia con nombre
+                    if (escuela.nombre === escuelaSeleccionada) {
+                        option.selected = true;
+                        preseleccionado = true;
                     }
 
-                    console.log("Escuelas cargadas:", data);
-                    console.log("Escuela seleccionada:", escuelaSeleccionada);
-                })
-                .catch(error => {
-                    console.error('Error al cargar las escuelas:', error);
+                    escuelaSelect.appendChild(option);
                 });
-        }
+
+                // Si no se encontró una escuela preseleccionada, seleccionar la primera opción por defecto
+                if (!preseleccionado && data.length > 0) {
+                    escuelaSelect.selectedIndex = 0;
+                }
+
+                console.log("Escuelas cargadas:", data);
+                console.log("Escuela seleccionada:", escuelaSeleccionada);
+            })
+            .catch(error => {
+                console.error('Error al cargar las escuelas:', error);
+            });
+    }
+
 
     </script>
     <script>
@@ -827,8 +855,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Cargar cintos al select
         document.addEventListener('DOMContentLoaded', () => {
             const cintoSelect = document.getElementById('cinto');
-            fetch('http://localhost:3000/cintos')
-                .then(response => response.json())
+            const token = localStorage.getItem('authToken');
+
+            fetch('http://localhost:3000/cintos', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Header con el token
+                    'Content-Type': 'application/json' // Opcional
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     data.forEach(cinto => {
                         const option = document.createElement('option');
@@ -922,27 +963,33 @@ document.addEventListener('DOMContentLoaded', function() {
         estado
     });
 
-    fetch(`${buscarUrl}?${queryParams.toString()}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No se encontraron miembros con los filtros proporcionados.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            miembros = data;
-            if (miembros.length === 0) {
-                mostrarMensajeNoResultados();
-            } else {
-                mostrarPagina(currentPage);
-                actualizarPaginador();
-                mostrarTotalRegistros();
-            }
-        })
-        .catch(error => {
-            console.error('Error en la búsqueda de miembros:', error);
-            mostrarMensajeNoResultados();
-        });
+    fetch(`${buscarUrl}?${queryParams.toString()}`, {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Agrega el token en los encabezados
+        'Content-Type': 'application/json' // Opcional, dependiendo del backend
+    }
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('No se encontraron miembros con los filtros proporcionados.');
+    }
+    return response.json();
+})
+.then(data => {
+    miembros = data;
+    if (miembros.length === 0) {
+        mostrarMensajeNoResultados();
+    } else {
+        mostrarPagina(currentPage);
+        actualizarPaginador();
+        mostrarTotalRegistros();
+    }
+})
+.catch(error => {
+    console.error('Error en la búsqueda de miembros:', error);
+    mostrarMensajeNoResultados();
+});
         
 }
 

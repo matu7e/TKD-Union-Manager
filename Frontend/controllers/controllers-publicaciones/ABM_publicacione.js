@@ -3,8 +3,7 @@ let publicaciones = [];
 let currentPage = 1;
 // Asumiendo que ya tienes el token en una variable
 const token = localStorage.getItem('authToken');
-const decodedToken = jwt_decode(token);
-const dni = decodedToken.dni;  
+
 
 const registrosPorPagina = 15;
 const publicacionesUrl = 'http://localhost:3000/publicaciones'; // URL de tus publicaciones

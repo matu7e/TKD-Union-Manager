@@ -113,8 +113,8 @@ function openModal(schoolId) {
     fetch(`http://localhost:3000/escuelas/${schoolId}`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json' // Opcional, dependiendo de tu backend
+            'Authorization': `Bearer ${token}`
+            
         }
     })
     .then(response => {
