@@ -4,7 +4,7 @@ const sedesController = require('../controllers/sedesController');
 const {validarAdministrador, validarInstructor, validarMiembro} = require('../middleware/authToken');
 
 // Rutas del ABMC de Sedes
-router.get('/',validarAdministrador, sedesController.getAll);
+router.get('/',validarInstructor, sedesController.getAll);
 router.get('/id/:id_sede',validarInstructor , sedesController.getById);
 router.post('/',validarInstructor,  sedesController.create);
 router.put('/:id_sede',validarInstructor, sedesController.update);
