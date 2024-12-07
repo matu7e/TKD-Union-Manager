@@ -11,6 +11,7 @@ router.post('/solicitarCambioPassw', miembrosController.solicitarCambioPassw);
 router.post('/cambiarPassw', miembrosController.cambioPassw);
 router.get('/cambiarPassw/:token')
 router.post('/', miembrosController.registrarMiembro);
+router.get('/buscar', validarInstructor, miembrosController.buscarMiembros);
 
 // Rutas para los miembros:
 router.get('/:dni', validarMiembro, miembrosController.obtenerByDni);
@@ -21,7 +22,7 @@ router.post('/:dni_miembro/cargaFichaMedica', validarMiembro, upload.single('fic
 
 // Rutas para Instructores
 router.get('/',  validarInstructor, miembrosController.obtenerTodos);
-router.get('/buscar', validarInstructor, miembrosController.buscarMiembros);
+
 
 
 
