@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+
+        
+
         fetchUserData(dni, token)
             .then(data => {
                 handleUserData(data, token, rol);
