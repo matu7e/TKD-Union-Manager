@@ -318,6 +318,25 @@ async function cambioPassw(req, res) {
     }
 }
 
+// Controlador: Obtener datos básicos por DNI
+async function obtenerDatosBasicosByDni(req, res) {
+    try {
+        const dni = req.params.dni;
+        const miembro = await Miembro.getByDniBasicos(dni); // Llamar a la nueva función
+
+        if (!miembro) {
+            return res.status(404).json({ message: 'No se encontró el miembro con ese DNI.' });
+        }
+
+        res.json(miembro);
+    } catch (err) {
+        console.error('Error al obtener datos básicos del miembro:', err);
+        res.status(500).send('Hubo un error al obtener los datos básicos del miembro.');
+    }
+}
+
+module.exports = { obtenerDatosBasicosByDni };
+
 module.exports = { obtenerTodos, registrarMiembro, 
                     asignarEscuela, loginMiembro, 
                     obtenerByDni, actualizarMiembro, 

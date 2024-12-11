@@ -345,6 +345,37 @@ async function actualizarContrasena(dni, nuevaContrasena) {
   }
 }
 
+async function getByDniBasicos(dni) {
+  try {
+      const result = await sql.query`
+      SELECT 
+          m.nombre, 
+          m.apellido, 
+          m.fecha_nacimiento, 
+          c.descripcion AS cinto, 
+          e.nombre AS escuela, 
+          m.grupo_sanguineo
+      FROM 
+          Miembros m
+      LEFT JOIN 
+          Cintos c ON m.id_cinto = c.id_cinto
+      LEFT JOIN
+          Escuelas e ON m.id_escuela = e.id_escuela
+      WHERE 
+          m.dni_miembro = ${dni}`;
+
+      // Verificar si la consulta devolvió algún resultado
+      if (!result || result.recordset.length === 0) {
+          console.log('No existe miembro con ese dni');
+          return null;
+      }
+      return result.recordset[0];  // Retornar el primer resultado
+  } catch (err) {
+      console.error('Hubo un error al obtener el miembro (datos básicos):', err);
+      throw err;
+  }
+}
+
 module.exports = { crearMiembro, 
   getMiembros, 
   updateMember, 
@@ -359,5 +390,6 @@ module.exports = { crearMiembro,
   subirPrivilegios,
   bajarPrivilegios,
   actualizarMiembroCompleto,
-  actualizarContrasena
+  actualizarContrasena,
+  getByDniBasicos
 };

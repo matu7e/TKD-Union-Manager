@@ -11,6 +11,7 @@ router.post('/solicitarCambioPassw', miembrosController.solicitarCambioPassw);
 router.post('/cambiarPassw', miembrosController.cambioPassw);
 router.get('/cambiarPassw/:token')
 router.post('/', miembrosController.registrarMiembro);
+router.get('/basicos/:dni', miembrosController.obtenerDatosBasicosByDni);
 router.get('/buscar', validarInstructor, miembrosController.buscarMiembros);
 
 // Rutas para los miembros:
