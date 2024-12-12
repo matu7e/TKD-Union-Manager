@@ -42,6 +42,9 @@ async function getLocalidadesPorProvincia(req, res) {
       id: localidad.id,
       nombre: localidad.nombre,
     }));
+
+    localidades.sort((a,b) => a.nombre.localeCompare(b.nombre));
+    
     return res.json(localidades);
   } catch (err) {
     console.error('Error al obtener las localidades: ', err.message);
@@ -53,6 +56,8 @@ async function getProvincias(req, res) {
   try {
     const response = await axios.get(`${BASE_URL}/provincias?campos=id,nombre`);
     const provincias = response.data.provincias;
+
+    provincias.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
     return res.json(provincias); // Enviar la lista de provincias como respuesta JSON
   } catch (err) {
