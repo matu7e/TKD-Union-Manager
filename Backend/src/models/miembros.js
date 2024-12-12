@@ -354,7 +354,8 @@ async function getByDniBasicos(dni) {
           m.fecha_nacimiento, 
           c.descripcion AS cinto, 
           e.nombre AS escuela, 
-          m.grupo_sanguineo
+          m.grupo_sanguineo,
+          m.activo
       FROM 
           Miembros m
       LEFT JOIN 
