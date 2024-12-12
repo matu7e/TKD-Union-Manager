@@ -344,4 +344,4 @@ module.exports = { obtenerTodos, registrarMiembro,
                     buscarMiembros, subirPrivilegios, 
                     eliminarMiembro, actualizarMiembroCompleto,
                     bajarPrivilegios, solicitarCambioPassw,
-                    cambioPassw}
+                    cambioPassw, obtenerDatosBasicosByDni}
