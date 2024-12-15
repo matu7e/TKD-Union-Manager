@@ -248,7 +248,7 @@ function showResult(message, isValid = true) {
 // Función para buscar datos del miembro por DNI
 async function fetchUserData(dni) {
   try {
-    const response = await fetch(`${API_BASE_URL}/miembros/${dni}`);
+    const response = await fetch(`${API_BASE_URL}/miembros/basicos/${dni}`);
     if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
     return await response.json();
   } catch (error) {

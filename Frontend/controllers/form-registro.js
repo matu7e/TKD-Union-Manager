@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         // Validar Email
-        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email.value)) {
+        if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email.value)) {
             document.getElementById('emailError').style.display = 'block';
             email.classList.add('is-invalid');
             isValid = false;

@@ -612,6 +612,7 @@ async function uploadLogo(idEscuela) {
     
                     if (!response.ok) {
                         if (responseText.includes("No se encontraron escuelas para ese instructor.")) {
+                            document.getElementById('imagePreview').src = '../../Backend/uploads/defaultLogo.jpg';
                             return;
                         }
                         throw new Error('Error al cargar los datos de la escuela: ' + response.statusText);
@@ -633,6 +634,7 @@ async function uploadLogo(idEscuela) {
                 
                 } catch (error) {
                     console.error('Error al cargar datos de la escuela:', error);
+
                 }
             }
             

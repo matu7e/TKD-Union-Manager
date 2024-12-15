@@ -226,7 +226,6 @@ input[readonly]:focus, select[readonly]:focus {
                 <li><a href="ABM_publicaciones.html">Publicaciones</a></li>
                 <li><a id="actual" href="ABM_alumnos.html">Miembros</a></li>
                 <li><a href="ABM_sedes.html">Escuelas</a></li>
-                <li><a href="Gestion_cobros.html">Cobros</a></li>
                 <li><a href="../login.html" class="login-btn" onclick="cerrarSesion()">Cerrar Sesión</a></li>
             </ul>
         </nav>
@@ -259,7 +258,7 @@ input[readonly]:focus, select[readonly]:focus {
                         <input type="text" id="apellido" name="apellido" class="form-control" />
                     </div>
                     <div class="filter-group">
-                        <label for="dni">DNI</label>
+                        <label for="dni">N° Documento</label>
                         <input type="text" id="dni" name="dni" class="form-control" />
                     </div>
                 </div>
@@ -365,37 +364,37 @@ input[readonly]:focus, select[readonly]:focus {
 
         <form id="formEdicion">
             <div class="mb-3">
-                <label for="dni_miembro" class="form-label">DNI:</label>
+                <label for="dni_miembro" class="form-label">N° Documento</label>
                 <input type="text" class="form-control" id="dni_miembro2" name="dni_miembro" readonly>
             </div>
 
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre:</label>
+                <label for="nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="nombre2" name="nombre" required>
             </div>
 
             <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido:</label>
+                <label for="apellido" class="form-label">Apellido</label>
                 <input type="text" class="form-control" id="apellido2" name="apellido" required>
             </div>
 
             <div class="mb-3">
-                <label for="telefono" class="form-label">Teléfono:</label>
+                <label for="telefono" class="form-label">Teléfono</label>
                 <input type="tel" class="form-control" id="telefono2" name="telefono" pattern="[0-9]{10}" title="Debe contener 10 dígitos" required>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
+                <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email2" name="email" required>
             </div>
 
             <div class="mb-3">
-                <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                 <input type="date" class="form-control" id="fecha_nacimiento2" name="fecha_nacimiento" max="${new Date().toISOString().split('T')[0]}" required>
             </div>
 
             <div class="mb-3">
-                <label for="grupo_sanguineo" class="form-label">Grupo Sanguíneo:</label>
+                <label for="grupo_sanguineo" class="form-label">Grupo Sanguíneo</label>
                 <select class="form-control" id="grupo_sanguineo2" name="grupo_sanguineo" required>
                     <option value="A+" selected>A+</option>
                     <option value="A-">A-</option>
@@ -409,7 +408,7 @@ input[readonly]:focus, select[readonly]:focus {
             </div>
 
             <div class="mb-3">
-                <label for="rol" class="form-label">Rol:</label>
+                <label for="rol" class="form-label">Rol</label>
                 <input type="text" class="form-control" id="rol2" name="rol" readonly>
             </div>
 
@@ -417,26 +416,26 @@ input[readonly]:focus, select[readonly]:focus {
 
 
             <div class="mb-3">
-                <label for="direccion" class="form-label">Dirección:</label>
+                <label for="direccion" class="form-label">Dirección</label>
                 <input type="text" class="form-control" id="direccion2" name="direccion" required>
             </div>
 
             <div class="mb-3">
-                <label for="cinto" class="form-label">Cinto:</label>
+                <label for="cinto" class="form-label">Cinto</label>
                 <select class="form-control" id="cinto2" name="cinto"></select>
             </div>
 
             <div class="mb-3">
-                <label for="estado" class="form-label">Estado:</label>
+                <label for="estado" class="form-label">Estado</label>
                 <input type="text" class="form-control" id="activo2" name="activo" readonly>
             </div>
 
             <div class="mb-3">
-                <label for="escuela" class="form-label">Escuela:</label>
+                <label for="escuela" class="form-label">Escuela</label>
                 <select class="form-control" id="escuela2" name="escuela"></select>
             </div>
             <div class="mb-3">
-                <label for="dni_tutor" class="form-label">DNI del Tutor:</label>
+                <label for="dni_tutor" class="form-label">N° Documento Tutor</label>
                 <input type="text" class="form-control" id="dni_tutor2" name="dni_tutor" readonly>
             </div>
 
@@ -445,15 +444,15 @@ input[readonly]:focus, select[readonly]:focus {
                 <input type="text" class="form-control" id="relacion_tutor2" name="relacion_tutor" required>
             </div>
             <div class="mb-3">
-                <label for="nombre_tutor" class="form-label">Nombre del Tutor:</label>
+                <label for="nombre_tutor" class="form-label">Nombre del Tutor</label>
                 <input type="text" class="form-control" id="nombre_tutor2" name="nombre_tutor" required>
             </div>
             <div class="mb-3">
-                <label for="apellido_tutor" class="form-label">Apellido del Tutor:</label>
+                <label for="apellido_tutor" class="form-label">Apellido Tutor</label>
                 <input type="text" class="form-control" id="apellido_tutor2" name="apellido_tutor" required>
             </div>
             <div class="mb-3">
-                <label for="telefono_tutor" class="form-label">Teléfono del Tutor:</label>
+                <label for="telefono_tutor" class="form-label">Teléfono Tutor</label>
                 <input type="tel" class="form-control" id="telefono_tutor2" name="telefono_tutor" pattern="[0-9]{10}" title="Debe contener 10 dígitos" required>
             </div>
             
