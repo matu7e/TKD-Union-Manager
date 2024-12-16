@@ -4,8 +4,8 @@ const sql = require('mssql');
 const config = {
   user: 'principal', 
   password: 'Analistas1', 
-  server: 'nodo1.database.windows.net', 
-  database: 'Principal', 
+  server: 'nodotdk.database.windows.net', 
+  database: 'unionTKM', 
   options: {
      encrypt: true, // necesario para Azure
      trustServerCertificate: false,
@@ -24,5 +24,4 @@ async function connectToDatabase() {
  }
 
 module.exports = { connectToDatabase, sql };
-
 
