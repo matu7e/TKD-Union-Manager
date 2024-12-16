@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validar el checkbox de términos y condiciones
         const terminosCheckbox = document.getElementById("terminos");
         const terminosError = document.getElementById("terminosError");
+        
         // Validar los campos del paso 3
         if (validateStep3()) {
             if (!terminosCheckbox.checked) {
@@ -257,52 +258,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 terminosError.style.display = "none";
             }
     
-        
-        
             const { miembroData, tutorData } = collectFormData();
     
             try {
-                // Enviar datos a /miembros
-                const miembroResponse = await fetch('http://localhost:3000/miembros', {
+                // Enviar datos para crear el tutor primero
+                const tutorResponse = await fetch('http://localhost:3000/tutores', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(miembroData)
+                    body: JSON.stringify(tutorData)
                 });
     
-                if (!miembroResponse.ok) {
-                    const miembroResponseText = await miembroResponse.text();
-                    if (miembroResponseText.includes('Usuario Existente')) {
-                        showAlert('aviso', 'Usuario Existente');
+                if (!tutorResponse.ok) {
+                    const tutorResponseText = await tutorResponse.text();
+                    if (tutorResponseText.includes('El tutor con este DNI ya existe')) {
+                        showAlert('error', 'El tutor con este DNI ya existe');
                     } else {
-                        throw new Error('Error al enviar los datos a /miembros');
+                        throw new Error('Error al enviar los datos a /tutores');
                     }
                 } else {
-                    // Si el miembro se creó con éxito, ahora enviar datos a /tutores
-                    const tutorResponse = await fetch('http://localhost:3000/tutores', {
+                    // Si el tutor se creó con éxito, ahora enviar datos para crear el miembro
+                    const miembroResponse = await fetch('http://localhost:3000/miembros', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(tutorData)
+                        body: JSON.stringify(miembroData)
                     });
     
-                    if (!tutorResponse.ok) {
-                        const tutorResponseText = await tutorResponse.text();
-                        if (tutorResponseText.includes('El tutor con este DNI ya existe')) {
-                            showAlert('error', 'El tutor con este DNI ya existe');
+                    if (!miembroResponse.ok) {
+                        const miembroResponseText = await miembroResponse.text();
+                        if (miembroResponseText.includes('Usuario Existente')) {
+                            showAlert('aviso', 'Usuario Existente');
                         } else {
-                            throw new Error('Error al enviar los datos a /tutores');
+                            throw new Error('Error al enviar los datos a /miembros');
                         }
+                    } else {
+                        // Limpia los datos del formulario
+                        document.querySelectorAll('input').forEach(input => input.value = '');
+    
+                        // Redirige al login con un mensaje de éxito
+                        showAlert('success', 'Miembro registrado con éxito');
+                        setTimeout(() => location.reload(), 500);
                     }
-    
-                    // Limpia los datos del formulario
-                    document.querySelectorAll('input').forEach(input => input.value = '');
-    
-                    // Redirige al login con un mensaje de éxito
-                    showAlert('success', 'Miembro registrado con éxito');
-                    setTimeout(() => location.reload(), 500);
                 }
             } catch (error) {
                 console.error('Error en la solicitud:', error);
@@ -310,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+    
     
     
 

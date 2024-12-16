@@ -147,8 +147,8 @@ function createPublication() {
     .then(data => {
         const id_pub = data.id_pub;
 
-        cargarPublicaciones(token); // Cargar las publicaciones después de la creación
-        uploadImage(id_pub, token); // Cargar la imagen después de crear la publicación
+        cargarPublicaciones(); // Cargar las publicaciones después de la creación
+        uploadImage(id_pub); // Cargar la imagen después de crear la publicación
         showAlert('success', 'Publicación creada con éxito.');
     })
     .catch(error => {
@@ -186,6 +186,7 @@ function uploadImage(id_pub) {
             'Authorization': `Bearer ${token}`
         },
         body: formData
+        
     })
     .then(response => {
         if (!response.ok) {
@@ -195,6 +196,7 @@ function uploadImage(id_pub) {
     })
     .then(data => {
         showAlert('success', 'Imagen cargada con éxito.');
+        cargarPublicaciones()
     })
     .catch(error => {
         console.error('Error al cargar la imagen:', error);
@@ -205,7 +207,7 @@ function uploadImage(id_pub) {
 // Evento para confirmar la acción
 confirmActionButton.addEventListener('click', () => {
     if (currentAction === 'eliminar') {
-        eliminarPublicacion(currentId, token);
+        eliminarPublicacion(currentId);
     } else if (currentAction === 'crear') {
         createPublication();
     }
@@ -217,7 +219,7 @@ function cargarPublicaciones() {
     
 
     showLoader(); // Mostrar loader al iniciar la carga
-
+    const token = localStorage.getItem('authToken');
     fetch(publicacionesUrl, {
         method: 'GET',
         headers: {
@@ -361,7 +363,7 @@ function eliminarPublicacion(id) {
             throw new Error('Error al eliminar publicación');
         }
         showAlert('success', 'Publicación eliminada con éxito.');
-        return cargarPublicaciones(token); // Recargar publicaciones después de eliminar
+        return cargarPublicaciones(); // Recargar publicaciones después de eliminar
     })
     .catch(error => {
         console.error('Error al eliminar la publicación:', error);
@@ -409,4 +411,4 @@ function mostrarTotalRegistros() {
 
 
 // Cargar las publicaciones al inicio
-document.addEventListener('DOMContentLoaded', cargarPublicaciones(token));
+document.addEventListener('DOMContentLoaded', cargarPublicaciones());

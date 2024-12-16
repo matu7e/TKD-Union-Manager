@@ -22,7 +22,8 @@ const decodedToken = jwt_decode(token);
 // Validación de datos personales
 const firstName = document.getElementById('firstName');
 const firstNameError = document.getElementById('firstNameError');
-toggleError(firstName, firstNameError, !firstName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{3,16}$/));
+toggleError(firstName,firstNameError,!firstName.value.match(/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]{3,16}$/));
+  
 
 const lastName = document.getElementById('lastName');
 const lastNameError = document.getElementById('lastNameError');
@@ -188,18 +189,8 @@ async function updateTutor(tutorDNI) {
         console.error('Error al actualizar datos del tutor:', error);
         handleAlerts('error', 'Ocurrió un error al actualizar intente de nuevo mas tarde.');
     }
-    // GET Miembro
-    async function fetchUserData(dni) {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
-        return response.json();
-    }
+    fetchUserData(dni)
+    
 }
 // Manejo de alertas
 function handleAlerts(type, message = null) {
@@ -221,3 +212,15 @@ function handleAlerts(type, message = null) {
 
 // Asigna el evento 'submit' al formulario
 document.getElementById('user-form').addEventListener('submit', validateForm);
+// GET Miembro
+async function fetchUserData(dni) {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_BASE_URL}/miembros/${dni}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if (!response.ok) throw new Error('Error en la red: ' + response.statusText);
+    return response.json();
+}

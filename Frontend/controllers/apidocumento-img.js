@@ -59,6 +59,7 @@ document.getElementById('upload-ficha-button').addEventListener('click', async (
             
         } else {
             showAlert('success', 'Ficha médica importada con éxito.');
+            fetchUserData(dni)
         }
 
         const result = await response.json();
@@ -66,7 +67,7 @@ document.getElementById('upload-ficha-button').addEventListener('click', async (
         alertMessage.textContent = 'Archivo subido exitosamente';
         alertMessage.className = 'alert alert-success';
         alertMessage.style.display = 'block';
-
+ 
         // GET Miembro
         async function fetchUserData(dni) {
             const token = localStorage.getItem('authToken');
